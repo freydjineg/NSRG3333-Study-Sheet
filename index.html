@@ -1,0 +1,1962 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NRSG 3333 — Study Sheet</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#fdf8f3;--card:#fff;--or:#c2621a;--orl:#e8905a;--orb:#fff3ea;
+  --green:#2d7a4f;--greenb:#edf7f1;--blue:#1a4fa0;--blueb:#eef3fc;
+  --red:#b91c1c;--redb:#fef2f2;--purple:#6d28d9;--purpleb:#f5f3ff;
+  --gold:#92640a;--goldb:#fffbeb;--txt:#1a0f00;--muted:#7a6050;
+  --bdr:#e8ddd0;--shadow:0 4px 24px rgba(180,120,60,.10);
+  --rad:14px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh}
+
+/* ── HEADER ── */
+.header{background:linear-gradient(135deg,#1a0a00 0%,#3d1a00 50%,#c2621a 100%);padding:32px 24px 24px;text-align:center;position:relative;overflow:hidden}
+.header::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Ccircle cx='30' cy='30' r='20'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")}
+.header h1{font-family:'Playfair Display',serif;color:#fff;font-size:2rem;letter-spacing:.02em;position:relative}
+.header p{color:rgba(255,255,255,.7);margin-top:6px;font-size:.9rem;position:relative}
+.header .badge{display:inline-flex;gap:8px;margin-top:12px;position:relative}
+.badge span{background:rgba(255,255,255,.15);color:#fff;padding:4px 12px;border-radius:20px;font-size:.78rem;font-weight:500;border:1px solid rgba(255,255,255,.2)}
+
+/* ── TABS ── */
+.tab-nav{display:flex;overflow-x:auto;background:#fff;border-bottom:2px solid var(--bdr);padding:0 16px;gap:2px;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.tab-btn{padding:14px 18px;border:none;background:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.85rem;font-weight:500;color:var(--muted);white-space:nowrap;border-bottom:3px solid transparent;transition:all .2s;position:relative;top:2px}
+.tab-btn:hover{color:var(--or);background:var(--orb)}
+.tab-btn.active{color:var(--or);border-bottom-color:var(--or);font-weight:600}
+.tab-btn .emoji{margin-right:6px}
+
+/* ── TAB CONTENT ── */
+.tab-content{display:none;padding:28px 20px;max-width:1100px;margin:0 auto;animation:fadeIn .25s ease}
+.tab-content.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── SECTION CARDS ── */
+.section{background:var(--card);border-radius:var(--rad);padding:24px;margin-bottom:20px;box-shadow:var(--shadow);border:1px solid var(--bdr)}
+.section h2{font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--or);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.section h3{font-size:1rem;font-weight:600;color:var(--txt);margin:16px 0 8px;display:flex;align-items:center;gap:6px}
+
+/* ── SIMPLE EXPLAIN BOXES ── */
+.explain{background:var(--orb);border-left:4px solid var(--or);border-radius:0 10px 10px 0;padding:16px 18px;margin:12px 0;font-size:.92rem;line-height:1.7}
+.explain .big{font-size:1.5rem;margin-right:8px}
+.explain strong{color:var(--or)}
+
+.explain-blue{background:var(--blueb);border-left-color:var(--blue)}
+.explain-blue strong{color:var(--blue)}
+.explain-green{background:var(--greenb);border-left-color:var(--green)}
+.explain-green strong{color:var(--green)}
+.explain-purple{background:var(--purpleb);border-left-color:var(--purple)}
+.explain-purple strong{color:var(--purple)}
+.explain-red{background:var(--redb);border-left-color:var(--red)}
+.explain-red strong{color:var(--red)}
+
+/* ── KEY POINTS LIST ── */
+.keylist{list-style:none;display:flex;flex-direction:column;gap:8px}
+.keylist li{padding:10px 14px;background:var(--bg);border-radius:8px;border:1px solid var(--bdr);font-size:.88rem;line-height:1.5;display:flex;gap:8px;align-items:flex-start}
+.keylist li .dot{width:8px;height:8px;min-width:8px;border-radius:50%;background:var(--or);margin-top:6px}
+
+/* ── 2-COL GRID ── */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:640px){.grid2{grid-template-columns:1fr}}
+
+/* ── DRUG TABLE ── */
+.drug-table{width:100%;border-collapse:collapse;font-size:.82rem}
+.drug-table th{background:var(--or);color:#fff;padding:10px 12px;text-align:left;font-weight:600;font-size:.78rem;text-transform:uppercase;letter-spacing:.04em}
+.drug-table td{padding:10px 12px;border-bottom:1px solid var(--bdr);vertical-align:top;line-height:1.5}
+.drug-table tr:nth-child(even) td{background:#fdf6ef}
+.drug-table tr:hover td{background:var(--orb)}
+.drug-table .hl{background:var(--redb);font-weight:600;color:var(--red)}
+.drug-table .badge-pill{display:inline-block;padding:2px 8px;border-radius:20px;font-size:.72rem;font-weight:600;margin:2px}
+.bp-red{background:var(--redb);color:var(--red)}
+.bp-green{background:var(--greenb);color:var(--green)}
+.bp-blue{background:var(--blueb);color:var(--blue)}
+
+/* ── FLASHCARDS ── */
+.fc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+.flashcard{perspective:600px;height:150px;cursor:pointer}
+.flashcard-inner{position:relative;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d}
+.flashcard.flipped .flashcard-inner{transform:rotateY(180deg)}
+.fc-front,.fc-back{position:absolute;inset:0;border-radius:12px;padding:18px;display:flex;align-items:center;justify-content:center;text-align:center;backface-visibility:hidden;-webkit-backface-visibility:hidden;font-size:.88rem;line-height:1.5}
+.fc-front{background:linear-gradient(135deg,var(--or),var(--orl));color:#fff;font-weight:600;font-size:.95rem;border:none;box-shadow:0 4px 16px rgba(194,98,26,.3)}
+.fc-back{background:var(--card);color:var(--txt);border:2px solid var(--or);transform:rotateY(180deg);font-size:.83rem}
+.fc-hint{text-align:center;color:var(--muted);font-size:.78rem;margin-bottom:12px}
+
+/* ── QUIZ GAME ── */
+.quiz-box{background:var(--card);border-radius:var(--rad);padding:24px;border:2px solid var(--bdr)}
+.quiz-q{font-size:1rem;font-weight:600;margin-bottom:16px;line-height:1.5;color:var(--txt)}
+.quiz-opts{display:flex;flex-direction:column;gap:8px}
+.quiz-opt{padding:11px 15px;border:1.5px solid var(--bdr);border-radius:9px;cursor:pointer;font-size:.88rem;transition:all .15s;background:var(--bg);text-align:left}
+.quiz-opt:hover:not(.dis){border-color:var(--orl);background:var(--orb)}
+.quiz-opt.correct{border-color:var(--green);background:var(--greenb);color:var(--green);font-weight:600}
+.quiz-opt.wrong{border-color:var(--red);background:var(--redb);color:var(--red)}
+.quiz-opt.dis{cursor:default}
+.quiz-feedback{margin-top:14px;padding:12px 16px;border-radius:9px;font-size:.88rem;line-height:1.6;display:none}
+.quiz-feedback.show{display:block}
+.quiz-feedback.good{background:var(--greenb);border-left:3px solid var(--green);color:var(--green)}
+.quiz-feedback.bad{background:var(--redb);border-left:3px solid var(--red);color:var(--red)}
+.quiz-nav{display:flex;gap:10px;margin-top:16px;align-items:center}
+.quiz-progress{flex:1;background:var(--bdr);border-radius:20px;height:8px;overflow:hidden}
+.quiz-progress-bar{height:100%;background:var(--or);border-radius:20px;transition:width .3s}
+.btn{padding:10px 20px;border-radius:8px;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:600;transition:all .15s}
+.btn-or{background:var(--or);color:#fff}
+.btn-or:hover{background:#a84f12}
+.btn-out{background:transparent;border:2px solid var(--or);color:var(--or)}
+.btn-out:hover{background:var(--orb)}
+.score-badge{font-size:.85rem;font-weight:600;color:var(--muted)}
+
+/* ── MATCH GAME ── */
+.match-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.match-card{padding:12px 14px;border:2px solid var(--bdr);border-radius:9px;cursor:pointer;font-size:.84rem;text-align:center;transition:all .15s;background:var(--bg);min-height:56px;display:flex;align-items:center;justify-content:center;line-height:1.4}
+.match-card:hover:not(.matched):not(.dis){border-color:var(--orl);background:var(--orb)}
+.match-card.selected{border-color:var(--or);background:var(--orb);font-weight:600}
+.match-card.matched{border-color:var(--green);background:var(--greenb);color:var(--green);cursor:default;font-weight:600}
+.match-card.wrong-flash{border-color:var(--red);background:var(--redb)}
+
+/* ── MNEMONICS ── */
+.mnemonic{background:linear-gradient(135deg,var(--goldb),#fff9e6);border:2px solid #d4a017;border-radius:var(--rad);padding:20px;margin-bottom:16px}
+.mnemonic h3{color:var(--gold);font-size:1rem;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.mnemonic-word{display:flex;gap:0;flex-wrap:wrap;margin:10px 0}
+.mnemonic-letter{display:flex;flex-direction:column;align-items:center;margin:4px;min-width:44px}
+.ml-letter{width:44px;height:44px;border-radius:8px;background:var(--or);color:#fff;font-weight:700;font-size:1.1rem;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif}
+.ml-word{font-size:.72rem;color:var(--muted);margin-top:4px;text-align:center;max-width:60px;line-height:1.2}
+.mnemonic-tip{font-size:.84rem;color:var(--txt);margin-top:8px;line-height:1.6;padding:10px;background:rgba(255,255,255,.7);border-radius:8px}
+
+/* ── RHYTHM STRIPS ── */
+.rhythm-strip{background:#fff9f5;border:1px solid var(--bdr);border-radius:8px;padding:8px;margin:8px 0}
+
+/* ── RESPONSIVE ── */
+@media(max-width:600px){
+  .tab-btn{padding:12px 12px;font-size:.78rem}
+  .header h1{font-size:1.5rem}
+  .match-grid{grid-template-columns:1fr}
+  .drug-table{font-size:.75rem}
+  .drug-table th,.drug-table td{padding:7px 8px}
+}
+
+/* ── CONFETTI ── */
+.confetti-piece{position:fixed;width:10px;height:10px;border-radius:2px;animation:confettiFall 1.5s ease-in forwards;pointer-events:none;z-index:9999}
+@keyframes confettiFall{0%{transform:translateY(-20px) rotate(0);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>📚 NRSG 3333 Study Sheet</h1>
+  <p>Advanced Health Assessment — Exam 1 Prep</p>
+  <div class="badge">
+    <span>Module 1</span><span>Module 2</span><span>Module 3</span><span>291 Questions</span>
+  </div>
+</div>
+
+<nav class="tab-nav">
+  <button class="tab-btn active" onclick="showTab('m1')"><span class="emoji">🩺</span>Module 1</button>
+  <button class="tab-btn" onclick="showTab('m2')"><span class="emoji">❤️</span>Module 2</button>
+  <button class="tab-btn" onclick="showTab('m3')"><span class="emoji">💉</span>Module 3</button>
+  <button class="tab-btn" onclick="showTab('recall')"><span class="emoji">🎮</span>Active Recall</button>
+  <button class="tab-btn" onclick="showTab('mnemonics')"><span class="emoji">🧠</span>Mnemonics</button>
+  <button class="tab-btn" onclick="showTab('drugs')"><span class="emoji">💊</span>Drug Guide</button>
+</nav>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- MODULE 1 TAB -->
+<!-- ══════════════════════════════════════════ -->
+<div id="tab-m1" class="tab-content active">
+
+  <div class="section">
+    <h2>🩺 Module 1 — Health Assessment, Communication & Fundamentals</h2>
+    <div class="explain">
+      <span class="big">🗣️</span><strong>Think of it like this:</strong> Imagine you're a doctor for your favorite stuffed animal. Before you do ANYTHING, you talk to them first. You ask what hurts, you listen, and you make sure they feel safe. That's what Module 1 is all about — <strong>how to talk to patients, how to listen, and how to understand what's going on before you even touch them.</strong>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>💬 Therapeutic Communication</h2>
+    <div class="explain">
+      <span class="big">👂</span>Think of therapeutic communication like being the <strong>best friend who actually listens</strong>. You don't say "you'll be fine!" You say "tell me more." You don't give advice right away. You sit quietly and let them talk. That's the whole goal.
+    </div>
+    <div class="grid2">
+      <div>
+        <h3>✅ DO These Things</h3>
+        <ul class="keylist">
+          <li><div class="dot"></div><strong>Reflecting</strong> — repeat their feeling back: "It sounds like you're scared"</li>
+          <li><div class="dot"></div><strong>Validating</strong> — repeat their words back to confirm you heard them</li>
+          <li><div class="dot"></div><strong>Clarifying</strong> — "Can you help me understand what you mean?"</li>
+          <li><div class="dot"></div><strong>General Lead</strong> — "Go on…" "Tell me more…" (let them keep talking)</li>
+          <li><div class="dot"></div><strong>Sequencing</strong> — "Walk me through exactly what happened step by step"</li>
+          <li><div class="dot"></div><strong>Silence</strong> — sit quietly, be present. Sometimes silence IS the answer</li>
+          <li><div class="dot"></div><strong>Open-ended questions</strong> — "How have you been feeling?" (can't answer yes/no)</li>
+        </ul>
+      </div>
+      <div>
+        <h3>❌ NEVER Do These</h3>
+        <ul class="keylist">
+          <li><div class="dot"></div>"You'll be fine!" — False reassurance. Don't promise what you can't deliver</li>
+          <li><div class="dot"></div>"You don't have any allergies, do you?" — Leading question. It pushes them to say no</li>
+          <li><div class="dot"></div>"I know exactly how you feel" — False empathy. You don't know. Say "that sounds really hard"</li>
+          <li><div class="dot"></div>Jumping to solutions before the patient feels heard</li>
+          <li><div class="dot"></div>Chewing gum in front of a deaf patient (blocks lip reading!)</li>
+        </ul>
+      </div>
+    </div>
+    <div class="explain explain-blue">
+      <span class="big">📏</span><strong>Proxemics (Personal Space Zones):</strong><br>
+      🤝 Intimate = &lt;18 inches (IV starts, physical assessment)<br>
+      👋 Personal = 18 in – 4 ft (health interviews, teaching)<br>
+      🗣️ Social = 4–12 ft (general conversation)<br>
+      📢 Public = &gt;12 ft (lectures only — NOT for sensitive topics!)
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>🧠 Tanner's Model — 4 Steps of Clinical Judgment</h2>
+    <div class="explain">
+      <span class="big">🕵️</span>Think of Tanner's model like being a detective. First you <strong>notice</strong> the clues. Then you figure out what they <strong>mean</strong>. Then you <strong>do something</strong> about it. Then you <strong>look back</strong> and learn from it.
+    </div>
+    <div class="grid2">
+      <div class="explain explain-green"><strong>Step 1 — NOTICING</strong><br>Open-ended questions + active observation. "What do you notice that's wrong?" This is where you GATHER information.</div>
+      <div class="explain explain-blue"><strong>Step 2 — INTERPRETING</strong><br>Teach-back + empathetic listening. "What does all this information MEAN?" This is where you MAKE SENSE of it.</div>
+      <div class="explain explain-purple"><strong>Step 3 — RESPONDING</strong><br>Advocacy + collaborative goal-setting. "What are you going to DO about it?" This is where you ACT.</div>
+      <div class="explain explain-red"><strong>Step 4 — REFLECTING</strong><br>Debriefing + self-reflection. "What can I LEARN from this?" This is where you GROW.</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>🕊️ Grief, Loss & End of Life</h2>
+    <div class="explain">
+      <span class="big">💛</span>When people are dying or losing someone they love, they go through big feelings. As a nurse, your job is to <strong>be present, be honest, and NOT run away from hard conversations</strong>. You can't fix death — but you can make it less scary.
+    </div>
+    <h3>Kübler-Ross 5 Stages (DABDA)</h3>
+    <ul class="keylist">
+      <li><div class="dot"></div><strong>D — Denial:</strong> "This can't be happening." They need time to process. Don't force reality.</li>
+      <li><div class="dot"></div><strong>A — Anger:</strong> "Why me? This isn't fair!" Let them express it. Don't take it personally.</li>
+      <li><div class="dot"></div><strong>B — Bargaining:</strong> "If I can just make it to my daughter's wedding…" A conditional acceptance — classic sign.</li>
+      <li><div class="dot"></div><strong>D — Depression:</strong> Withdrawal, sadness, no appetite. This is NORMAL. Don't force cheerfulness.</li>
+      <li><div class="dot"></div><strong>A — Acceptance:</strong> "I'm at peace." Be present, honor their peace. Not all patients reach this.</li>
+    </ul>
+    <div class="grid2" style="margin-top:16px">
+      <div class="explain explain-green"><strong>Grief</strong> = the FEELING inside (invisible)<br><strong>Mourning</strong> = how you show it on the outside (crying, rituals)<br><strong>Bereavement</strong> = the time period AFTER the loss</div>
+      <div class="explain explain-blue"><strong>Palliative Care</strong> = comfort + curative treatment together, ANY stage<br><strong>Hospice</strong> = comfort ONLY, ≤6 month prognosis, stop curative treatment</div>
+    </div>
+    <h3>Signs of Active Dying (tell the family!)</h3>
+    <ul class="keylist">
+      <li><div class="dot"></div>Cheyne-Stokes breathing (irregular, periods of no breath)</li>
+      <li><div class="dot"></div>Mottling and cyanosis of the knees and feet</li>
+      <li><div class="dot"></div>Extremities cool to touch</li>
+      <li><div class="dot"></div>No response to verbal or gentle touch</li>
+      <li><div class="dot"></div>The "death rattle" — not painful, just secretions pooling</li>
+    </ul>
+    <div class="explain explain-red"><strong>⚠️ KEY NURSING ROLE:</strong> Educate the family. "These changes tell us the body is naturally shutting down. This is expected and she is not in pain." Your presence IS the intervention.</div>
+  </div>
+
+  
+
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- MODULE 2 TAB -->
+<!-- ══════════════════════════════════════════ -->
+<div id="tab-m2" class="tab-content">
+
+  <div class="section">
+    <h2>❤️ Module 2 — Cardiac, Respiratory & Neurological Assessment</h2>
+    <div class="explain">
+      <span class="big">🔌</span><strong>Think of the heart like a house with electricity.</strong> The electrical system (wires) tells the muscle (walls) when to squeeze. When the wires work right = normal sinus rhythm. When the wires break or short-circuit = arrhythmia. Your job as a nurse is to read the ECG and figure out which wire is broken!
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>⚡ ECG Basics</h2>
+    <div class="grid2">
+      <div>
+        <h3>Normal Intervals</h3>
+        <ul class="keylist">
+          <li><div class="dot"></div><strong>P wave</strong> = atria depolarize (squeeze)</li>
+          <li><div class="dot"></div><strong>PR interval</strong> = SA node → AV node (0.12–0.20 sec / 3–5 small boxes)</li>
+          <li><div class="dot"></div><strong>QRS</strong> = ventricles depolarize (&lt;0.12 sec / &lt;3 boxes)</li>
+          <li><div class="dot"></div><strong>ST segment</strong> = isoelectric (flat = normal, elevated = STEMI!)</li>
+          <li><div class="dot"></div><strong>T wave</strong> = ventricles repolarize (recover)</li>
+          <li><div class="dot"></div><strong>QT interval</strong> = whole ventricular cycle (&lt;0.44 sec)</li>
+          <li><div class="dot"></div><strong>U wave</strong> = prominent = HYPOKALEMIA!</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Rate Calculation</h3>
+        <div class="explain explain-blue">
+          <strong>300-Method (regular rhythms):</strong><br>
+          Count large boxes between R waves.<br>
+          300 ÷ boxes = rate<br><br>
+          4 boxes = 75 bpm ✓<br>
+          5 boxes = 60 bpm ✓<br>
+          3 boxes = 100 bpm ✓
+        </div>
+        <h3>Pacemaker Hierarchy</h3>
+        <ul class="keylist">
+          <li><div class="dot"></div>SA Node = 60–100 bpm (boss)</li>
+          <li><div class="dot"></div>AV Node = 40–60 bpm (backup)</li>
+          <li><div class="dot"></div>Purkinje = 20–40 bpm (last resort)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>🫀 Rhythm Recognition</h2>
+    <div class="explain">
+      <span class="big">🕵️</span>For EVERY rhythm ask: (1) Is there a P wave? (2) Is the rhythm regular? (3) What's the rate? (4) Is the QRS narrow or wide?
+    </div>
+    <ul class="keylist">
+      <li><div class="dot"></div><strong>Normal Sinus Rhythm (NSR):</strong> Rate 60–100, regular, P before every QRS, PR 0.12–0.20, narrow QRS. ✅ All good.</li>
+      <li><div class="dot"></div><strong>Sinus Bradycardia:</strong> Same as NSR but rate &lt;60. Treat ONLY if symptomatic → atropine 0.5mg IV.</li>
+      <li><div class="dot"></div><strong>Sinus Tachycardia:</strong> Same as NSR but rate &gt;100. Treat the CAUSE (fever, pain, dehydration). Don't reach for rate meds first.</li>
+      <li><div class="dot"></div><strong>AFib:</strong> NO P waves, irregularly irregular, fibrillatory baseline, narrow QRS. Stroke risk 5×! Stable → rate control + anticoag. Unstable → synchronized cardioversion.</li>
+      <li><div class="dot"></div><strong>Atrial Flutter:</strong> Sawtooth waves 250–350 bpm, usually regular (2:1, 4:1 block).</li>
+      <li><div class="dot"></div><strong>SVT:</strong> Fast (150–250), regular, narrow, P waves hidden in T waves. Stable → vagal → adenosine. Unstable → synchronized cardioversion.</li>
+      <li><div class="dot"></div><strong>VTach:</strong> Wide QRS, regular, 100–250 bpm, no P waves. With pulse + stable → amiodarone. Unstable → synchronized cardioversion. Pulseless → defibrillate!</li>
+      <li><div class="dot"></div><strong>VFib:</strong> Totally chaotic, no organized waveforms. PULSELESS. SHOCKABLE → CPR + defib NOW.</li>
+      <li><div class="dot"></div><strong>Asystole:</strong> Flat line. NON-SHOCKABLE. Confirm in 2 leads → CPR + epi only.</li>
+      <li><div class="dot"></div><strong>PEA:</strong> Organized rhythm on monitor, NO pulse. NON-SHOCKABLE → CPR + epi + treat Hs & Ts.</li>
+    </ul>
+    <div class="explain explain-red">
+      <strong>🚨 Shockable vs Non-Shockable:</strong><br>
+      SHOCK: VFib ✅ | Pulseless VT ✅<br>
+      DO NOT SHOCK: Asystole ❌ | PEA ❌
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>🏥 Heart Blocks</h2>
+    <div class="explain">
+      <span class="big">🚦</span>Heart blocks = the electrical signal gets delayed or stopped on its way from the top of the heart to the bottom. First degree = slow but still gets through. Second degree = sometimes doesn't get through. Third degree = completely blocked.
+    </div>
+    <ul class="keylist">
+      <li><div class="dot"></div><strong>1st Degree:</strong> PR &gt;0.20 sec, constant, every P conducts. NOT a true block — just delayed. No treatment needed if asymptomatic.</li>
+      <li><div class="dot"></div><strong>2nd Degree Type I (Wenckebach):</strong> PR gets longer, longer, longer… then QRS drops, then resets. AV node level. Usually benign.</li>
+      <li><div class="dot"></div><strong>2nd Degree Type II (Mobitz II):</strong> Constant PR, then SUDDEN dropped QRS with no warning. Infranodal. Dangerous → often needs pacemaker.</li>
+      <li><div class="dot"></div><strong>3rd Degree (Complete):</strong> P waves and QRS are totally independent — no communication at all. Ventricular rate 20–45 bpm. Emergency → pacemaker.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>🧠 Neurological Assessment</h2>
+    <div class="grid2">
+      <div>
+        <h3>Glasgow Coma Scale (GCS)</h3>
+        <ul class="keylist">
+          <li><div class="dot"></div>Eye = 1–4 | Verbal = 1–5 | Motor = 1–6</li>
+          <li><div class="dot"></div>Total: 3–15. GCS ≤8 = severe (protect airway)</li>
+          <li><div class="dot"></div>GCS 15 = fully alert and oriented</li>
+          <li><div class="dot"></div>Motor is most prognostically significant</li>
+        </ul>
+        <h3 style="margin-top:16px">Posturing</h3>
+        <ul class="keylist">
+          <li><div class="dot"></div><strong>Decorticate</strong> = arms FLEX toward core. Cortical level. Less severe.</li>
+          <li><div class="dot"></div><strong>Decerebrate</strong> = ALL EXTREMITIES extend rigid. Brainstem level. More severe.</li>
+        </ul>
+      </div>
+      <div>
+        <h3>ICP — Early vs Late Signs</h3>
+        <div class="explain explain-green"><strong>EARLY (act NOW):</strong><br>
+        Restlessness + confusion<br>
+        Unilateral extremity weakness<br>
+        Worsening headache<br>
+        New pupil changes</div>
+        <div class="explain explain-red"><strong>LATE (herniation happening):</strong><br>
+        Cushing's Triad: HTN + bradycardia + irregular respirations<br>
+        Fixed dilated pupils<br>
+        Decerebrate posturing<br>
+        Widening pulse pressure</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>🫁 ABG Interpretation & COPD</h2>
+    <div class="grid2">
+      <div>
+        <h3>ABG Normal Values</h3>
+        <ul class="keylist">
+          <li><div class="dot"></div>pH: 7.35–7.45</li>
+          <li><div class="dot"></div>PaCO2: 35–45 (respiratory)</li>
+          <li><div class="dot"></div>HCO3: 22–26 (metabolic)</li>
+          <li><div class="dot"></div>PaO2: 80–100</li>
+        </ul>
+        <div class="explain explain-blue" style="margin-top:12px">
+          <strong>ROME Method:</strong><br>
+          Respiratory = Opposite (pH↑ CO2↓ or pH↓ CO2↑)<br>
+          Metabolic = Equal (pH↑ HCO3↑ or pH↓ HCO3↓)
+        </div>
+      </div>
+      <div>
+        <h3>COPD O2 Rule</h3>
+        <div class="explain explain-red">
+          <strong>⚠️ DANGER:</strong> COPD patients with chronic CO2 retention use HYPOXIA as their drive to breathe (not CO2).<br><br>
+          Target SpO2: <strong>88–92%</strong><br>
+          High-flow O2 → removes hypoxic drive → hypoventilation → CO2 narcosis<br><br>
+          Best device: <strong>Venturi mask</strong> (most precise)
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>💓 Heart Sounds</h2>
+    <ul class="keylist">
+      <li><div class="dot"></div><strong>S1 ("lub")</strong> = AV valves close (start of systole). Loudest at APEX (5th ICS MCL)</li>
+      <li><div class="dot"></div><strong>S2 ("dub")</strong> = Semilunar valves close (end of systole). Loudest at BASE (2nd ICS)</li>
+      <li><div class="dot"></div><strong>S3 (ventricular gallop)</strong> = early diastole. Volume overload → HEART FAILURE. Pathological in adults &gt;40</li>
+      <li><div class="dot"></div><strong>S4 (atrial gallop)</strong> = late diastole. Stiff ventricle → HYPERTROPHY. ALWAYS pathological</li>
+      <li><div class="dot"></div><strong>Murmurs</strong> = turbulent blood flow. Systolic murmur at 2nd ICS RSB + symptoms = aortic stenosis until proven otherwise</li>
+    </ul>
+    <div class="explain explain-blue"><strong>Landmarks (All People Enjoy Time Magazine):</strong><br>
+    Aortic = 2ICS RSB | Pulmonic = 2ICS LSB | Erb's = 3ICS LSB (S1=S2) | Tricuspid = 4ICS LSB | Mitral = 5ICS MCL</div>
+  </div>
+
+  <!-- ════════ ECG MINI RECALL ════════ -->
+  <div class="section">
+    <h2>⚡ ECG Rhythm Recognition — Mini Quiz</h2>
+    <p style="color:var(--muted);font-size:.85rem;margin-bottom:16px">Look at the rhythm strip, then identify what you see. Click a button to reveal the answer.</p>
+    <div id="ecgQuiz">
+      <div style="text-align:center;margin-bottom:14px">
+        <span id="ecgCounter" style="font-size:.85rem;color:var(--muted)">Rhythm 1 of 8</span>
+      </div>
+      <div style="background:#fff;border:2px solid var(--bdr);border-radius:12px;padding:16px;margin-bottom:16px">
+        <svg id="ecgStrip" viewBox="0 0 700 120" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto"></svg>
+      </div>
+      <div id="ecgOpts" style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:12px"></div>
+      <div id="ecgFeedback" style="display:none;padding:14px 16px;border-radius:10px;font-size:.88rem;line-height:1.6;margin-bottom:12px"></div>
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span id="ecgScore" style="font-size:.85rem;font-weight:600;color:var(--muted)">Score: 0/0</span>
+        <button class="btn btn-or" id="ecgNext" onclick="nextECG()" style="display:none">Next Rhythm →</button>
+      </div>
+    </div>
+    <div style="text-align:center"><button class="btn btn-out" onclick="startECG()">🔄 Restart ECG Quiz</button></div>
+  </div>
+
+  <!-- ════════ CRANIAL NERVE AVATAR GAME ════════ -->
+  <div class="section">
+    <h2>🧠 Cranial Nerve Avatar Challenge</h2>
+    <p style="color:var(--muted);font-size:.85rem;margin-bottom:16px">The avatar is showing signs of a cranial nerve problem. Which nerve is damaged?</p>
+    <div id="cnGame">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start">
+        <div>
+          <div style="background:#fff;border:2px solid var(--bdr);border-radius:14px;padding:20px;text-align:center">
+            <svg id="cnAvatar" viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:220px;height:auto"></svg>
+            <p id="cnClue" style="margin-top:12px;font-size:.85rem;color:var(--txt);font-weight:500;min-height:40px;line-height:1.5"></p>
+          </div>
+        </div>
+        <div>
+          <p style="font-size:.88rem;font-weight:600;margin-bottom:10px;color:var(--txt)">Which cranial nerve is affected?</p>
+          <div id="cnOpts" style="display:flex;flex-direction:column;gap:8px"></div>
+          <div id="cnFeedback" style="display:none;margin-top:12px;padding:12px 14px;border-radius:9px;font-size:.85rem;line-height:1.6"></div>
+          <div style="margin-top:14px;display:flex;justify-content:space-between;align-items:center">
+            <span id="cnScore" style="font-size:.84rem;font-weight:600;color:var(--muted)">Score: 0/0</span>
+            <button class="btn btn-or" id="cnNext" onclick="nextCN()" style="display:none">Next →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:12px"><button class="btn btn-out" onclick="startCN()">🔄 Restart CN Game</button></div>
+  </div>
+
+  <!-- ════════ CN QUICK REFERENCE ════════ -->
+  <div class="section">
+    <h2>👁️ Cranial Nerve Quick Review</h2>
+    <div class="explain">
+      <span class="big">🧠</span>You have 12 cranial nerves. Think of them like 12 different remote controls — each one controls something different in your head and neck. You test them one at a time!
+    </div>
+    <ul class="keylist">
+      <li><div class="dot"></div><strong>CN I — Olfactory:</strong> Smell the gum wrapper 👃 (sensory only)</li>
+      <li><div class="dot"></div><strong>CN II — Optic:</strong> Read the gum wrapper 👁️ — visual acuity (sensory only)</li>
+      <li><div class="dot"></div><strong>CN III, IV, VI:</strong> Follow the gum through the H-pattern 👀 — eye movement</li>
+      <li><div class="dot"></div><strong>CN V — Trigeminal:</strong> Chew the gum 😬 — facial sensation + chewing (LARGEST CN)</li>
+      <li><div class="dot"></div><strong>CN VII — Facial:</strong> Smile, raise eyebrows, puff cheeks — facial expression. Bell's palsy = CN VII!</li>
+      <li><div class="dot"></div><strong>CN VIII — Vestibulocochlear:</strong> Hear the wrapper crinkle 👂 — hearing + balance</li>
+      <li><div class="dot"></div><strong>CN IX + X:</strong> Swallow, say "Ahh" — gag reflex. No gag = aspiration risk!</li>
+      <li><div class="dot"></div><strong>CN XI — Accessory:</strong> Shrug shoulders against resistance 💪</li>
+      <li><div class="dot"></div><strong>CN XII — Hypoglossal:</strong> Stick out tongue — deviates TOWARD the damaged side</li>
+    </ul>
+  </div>
+
+
+
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- MODULE 3 TAB -->
+<!-- ══════════════════════════════════════════ -->
+<div id="tab-m3" class="tab-content">
+
+  <div class="section">
+    <h2>💉 Module 3 — Peripheral IV Therapy & Venous Access</h2>
+    <div class="explain">
+      <span class="big">🔧</span><strong>Think of IV therapy like a water pipe going straight into the body.</strong> Instead of swallowing medicine and waiting for it to travel through the stomach, IV medicine goes DIRECTLY into the blood. That means it works super fast — but it also means if something goes wrong, it happens fast too. That's why nurses check the site ALL THE TIME.
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>🩹 IV Catheter Gauges — Know These Cold</h2>
+    <div class="explain explain-blue">Smaller number = BIGGER hole = FASTER flow</div>
+    <ul class="keylist">
+      <li><div class="dot"></div><span style="color:#cc5500;font-weight:700">14 (Orange/Magma)</span> = Trauma, massive hemorrhage</li>
+      <li><div class="dot"></div><span style="color:#666;font-weight:700">16 (Gray)</span> = Major surgery, large volume, hemodynamically unstable</li>
+      <li><div class="dot"></div><span style="color:#2e7d32;font-weight:700">18 (Green)</span> = Large volume infusions, rapid/multiple transfusions</li>
+      <li><div class="dot"></div><span style="color:#e91e8c;font-weight:700">20 (Pink)</span> = Medications, hydration, transfusions (minimum for blood)</li>
+      <li><div class="dot"></div><span style="color:#1565c0;font-weight:700">22 (Blue)</span> = Small veins, short-term access. Usually can't administer blood</li>
+      <li><div class="dot"></div><span style="color:#f9a825;font-weight:700">24 (Yellow)</span> = Fragile/pediatric veins, last resort for adults</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>⚠️ IV Complications — Recognize & Act</h2>
+    <div class="grid2">
+      <div>
+        <h3>Phlebitis Scale (0–4)</h3>
+        <ul class="keylist">
+          <li><div class="dot"></div><strong>0</strong> = No symptoms</li>
+          <li><div class="dot"></div><strong>1+</strong> = Erythema ± pain</li>
+          <li><div class="dot"></div><strong>2+</strong> = + Edema + pain</li>
+          <li><div class="dot"></div><strong>3+</strong> = + Streak + palpable cord</li>
+          <li><div class="dot"></div><strong>4+</strong> = + Cord &gt;1 inch + purulent drainage → notify provider, culture site</li>
+        </ul>
+        <div class="explain explain-green" style="margin-top:10px">All grades: remove catheter, warm compresses, document, restart elsewhere</div>
+      </div>
+      <div>
+        <h3>Infiltration Scale (0–4)</h3>
+        <ul class="keylist">
+          <li><div class="dot"></div><strong>0</strong> = No symptoms</li>
+          <li><div class="dot"></div><strong>1</strong> = Edema &lt;1 inch, cool, pale</li>
+          <li><div class="dot"></div><strong>2</strong> = Edema 1–6 inches, cool, pale</li>
+          <li><div class="dot"></div><strong>3</strong> = Gross edema &gt;6 inches, pain, possible numbness</li>
+          <li><div class="dot"></div><strong>4</strong> = Pitting edema, skin tight/leaking, severe pain</li>
+        </ul>
+        <div class="explain explain-red" style="margin-top:10px">⭐ ANY vesicant or blood product infiltration = automatically Grade 4</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>🧪 Vesicants — Know Every Single One</h2>
+    <div class="explain explain-red">
+      <strong>Vesicant</strong> = any drug that causes blistering, severe tissue injury, or necrosis if it leaks out of the vein. ANY amount = Grade 4 extravasation = emergency.
+    </div>
+    <ul class="keylist">
+      <li><div class="dot"></div><strong>Catecholamines:</strong> Dopamine, Epinephrine, Norepinephrine (Levophed) → antidote: Phentolamine</li>
+      <li><div class="dot"></div><strong>Vinca Alkaloids:</strong> Vincristine, Vinblastine (chemo drugs)</li>
+      <li><div class="dot"></div><strong>Others:</strong> Gentamycin, Mannitol</li>
+    </ul>
+    <div class="explain explain-purple">
+      <strong>Extravasation Treatment (STOP order):</strong><br>
+      1️⃣ STOP infusion immediately<br>
+      2️⃣ Keep catheter IN (need it for antidote delivery!)<br>
+      3️⃣ Notify Pharmacy (antidote order)<br>
+      4️⃣ Notify Provider<br>
+      5️⃣ Clean the site<br>
+      6️⃣ Remove IV AFTER antidote given<br>
+      7️⃣ Photograph + Document everything
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>🔢 IV Drip Rate Calculations</h2>
+    <div class="explain explain-blue">
+      <strong>Formula:</strong> (mL/hr × drop factor) ÷ 60 = gtt/min<br><br>
+      <strong>Shortcuts:</strong><br>
+      10 gtt/mL → mL/hr ÷ 6<br>
+      15 gtt/mL → mL/hr ÷ 4<br>
+      20 gtt/mL → mL/hr ÷ 3<br>
+      60 gtt/mL (microdrip) → gtt/min = mL/hr exactly!
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>🚨 IV Safety Rules — Never Break These</h2>
+    <ul class="keylist">
+      <li><div class="dot"></div>🔴 <strong>KCl NEVER IV push</strong> — causes immediate cardiac arrest. Always diluted, always pumped, max 10 mEq/hr peripheral</li>
+      <li><div class="dot"></div>🔴 <strong>Vancomycin ≥60 minutes</strong> — faster = Red Man Syndrome (flushing, pruritus). Slow down + diphenhydramine. NOT an allergy.</li>
+      <li><div class="dot"></div>🔴 <strong>Blood = 0.9% NS only</strong> — never LR (calcium → clots), never D5W (hemolysis)</li>
+      <li><div class="dot"></div>🔴 <strong>Phenytoin = NS only</strong> — precipitates in ANY dextrose solution</li>
+      <li><div class="dot"></div>🔴 <strong>Pip-tazo + D5W = incompatible</strong> — flush with NS before and after</li>
+      <li><div class="dot"></div>🔴 <strong>Scrub the hub ≥15 seconds</strong> before every IV access — prevents CLABSI</li>
+      <li><div class="dot"></div>🔴 <strong>No re-palpating</strong> after chlorhexidine prep with ungloved finger — must reclean</li>
+    </ul>
+  </div>
+
+  <!-- ════════ IV SETUP INTERACTIVE LABELING GAME ════════ -->
+  <div class="section">
+    <h2>💉 IV Setup Labeling Challenge</h2>
+    <p style="color:var(--muted);font-size:.85rem;margin-bottom:16px">Drag the labels to the correct parts of the IV setup diagram, or click a part to identify it.</p>
+    <div id="ivGame">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start">
+        <div style="position:relative">
+          <svg id="ivDiagram" viewBox="0 0 320 500" xmlns="http://www.w3.org/2000/svg" style="width:100%;cursor:pointer;border:2px solid var(--bdr);border-radius:12px;background:#f8f5f0"></svg>
+        </div>
+        <div>
+          <p style="font-size:.88rem;font-weight:600;margin-bottom:10px">Click a highlighted part on the diagram →</p>
+          <div id="ivQuestion" style="background:var(--orb);border:2px solid var(--orl);border-radius:10px;padding:14px;margin-bottom:12px;min-height:60px;font-size:.9rem;font-weight:600;color:var(--or);display:flex;align-items:center;justify-content:center;text-align:center">Click any glowing part to start!</div>
+          <div id="ivOpts" style="display:flex;flex-direction:column;gap:8px"></div>
+          <div id="ivFeedback" style="display:none;margin-top:10px;padding:11px 14px;border-radius:9px;font-size:.85rem;line-height:1.6"></div>
+          <div style="margin-top:14px;display:flex;justify-content:space-between">
+            <span id="ivScore" style="font-size:.84rem;font-weight:600;color:var(--muted)">Parts identified: 0/12</span>
+            <button class="btn btn-out" onclick="resetIV()" style="font-size:.8rem;padding:6px 12px">🔄 Reset</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- ACTIVE RECALL TAB -->
+<!-- ══════════════════════════════════════════ -->
+<div id="tab-recall" class="tab-content">
+
+  <div class="section">
+    <h2>🎮 Active Recall Games</h2>
+    <p style="color:var(--muted);margin-bottom:20px">Research shows active recall is 2–3× more effective than re-reading. Pick a game and go!</p>
+
+    <!-- QUIZ GAME -->
+    <h3>⚡ Quick Fire Quiz</h3>
+    <div class="quiz-box" id="quizBox">
+      <div class="quiz-q" id="quizQ"></div>
+      <div class="quiz-opts" id="quizOpts"></div>
+      <div class="quiz-feedback" id="quizFeedback"></div>
+      <div class="quiz-nav">
+        <div class="quiz-progress"><div class="quiz-progress-bar" id="quizBar"></div></div>
+        <span class="score-badge" id="quizScore">0/0</span>
+        <button class="btn btn-or" id="quizNext" onclick="nextQuizQ()" style="display:none">Next →</button>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:10px">
+      <button class="btn btn-out" onclick="startQuiz()">🔄 Restart Quiz</button>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>🃏 Flashcards — Click to Flip</h2>
+    <p class="fc-hint">Click any card to reveal the answer</p>
+    <div class="fc-grid" id="flashcardGrid"></div>
+  </div>
+
+  <div class="section">
+    <h2>🔗 Match Game — Connect the Pairs</h2>
+    <p style="color:var(--muted);font-size:.85rem;margin-bottom:14px">Click a term, then click its match. Get them all right!</p>
+    <div id="matchStatus" style="font-weight:600;color:var(--or);margin-bottom:10px;min-height:24px"></div>
+    <div class="match-grid" id="matchGrid"></div>
+    <div style="text-align:center;margin-top:14px">
+      <button class="btn btn-out" onclick="startMatch()">🔄 New Match Game</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- MNEMONICS TAB -->
+<!-- ══════════════════════════════════════════ -->
+<div id="tab-mnemonics" class="tab-content">
+
+  <div class="section">
+    <h2>🧠 Mnemonics & Memory Tricks</h2>
+  </div>
+
+  <div class="mnemonic">
+    <h3>🫀 DABDA — Kübler-Ross 5 Stages of Grief</h3>
+    <div class="mnemonic-word">
+      <div class="mnemonic-letter"><div class="ml-letter">D</div><div class="ml-word">Denial</div></div>
+      <div class="mnemonic-letter"><div class="ml-letter">A</div><div class="ml-word">Anger</div></div>
+      <div class="mnemonic-letter"><div class="ml-letter">B</div><div class="ml-word">Bargaining</div></div>
+      <div class="mnemonic-letter"><div class="ml-letter">D</div><div class="ml-word">Depression</div></div>
+      <div class="mnemonic-letter"><div class="ml-letter">A</div><div class="ml-word">Acceptance</div></div>
+    </div>
+    <div class="mnemonic-tip">💡 "Don't Allow Bad Days Again" | Stages are NOT linear — patients can skip, revisit, or experience multiple at once.</div>
+  </div>
+
+  <div class="mnemonic">
+    <h3>🧠 Cranial Nerves I–XII</h3>
+    <div class="mnemonic-word">
+      <div class="mnemonic-letter"><div class="ml-letter">O</div><div class="ml-word">Oh (CN I)</div></div>
+      <div class="mnemonic-letter"><div class="ml-letter">O</div><div class="ml-word">Oh (CN II)</div></div>
+      <div class="mnemonic-letter"><div class="ml-letter">O</div><div class="ml-word">Oh (CN III)</div></div>
+      <div class="mnemonic-letter"><div class="ml-letter">T</div><div class="ml-word">To (CN IV)</div></div>
+      <div class="mnemonic-letter"><div class="ml-letter">T</div><div class="ml-word">Touch (CN V)</div></div>
+      <div class="mnemonic-letter"><div class="ml-letter">A</div><div class="ml-word">And (CN VI)</div></div>
+      <div class="mnemonic-letter"><div class="ml-letter">F</div><div class="ml-word">Feel (CN VII)</div></div>
+      <div class="mnemonic-letter"><div class="ml-letter">V</div><div class="ml-word">Very (CN VIII)</div></div>
+      <div class="mnemonic-letter"><div class="ml-letter">G</div><div class="ml-word">Green (CN IX)</div></div>
+      <div class="mnemonic-letter"><div class="ml-letter">V</div><div class="ml-word">Vegetables (CN X)</div></div>
+      <div class="mnemonic-letter"><div class="ml-letter">A</div><div class="ml-word">AH! (CN XI)</div></div>
+      <div class="mnemonic-letter"><div class="ml-letter">H</div><div class="ml-word">Hmm (CN XII)</div></div>
+    </div>
+    <div class="mnemonic-tip">💡 Oh Oh Oh To Touch And Feel Very Green Vegetables AH! | Sensory (I,II,VIII) = Some | Motor (III,IV,VI,XI,XII) = Move | Both (V,VII,IX,X) = Both</div>
+  </div>
+
+  <div class="mnemonic">
+    <h3>❤️ Cardiac Auscultation Landmarks</h3>
+    <div class="mnemonic-word">
+      <div class="mnemonic-letter"><div class="ml-letter">A</div><div class="ml-word">All (Aortic 2R)</div></div>
+      <div class="mnemonic-letter"><div class="ml-letter">P</div><div class="ml-word">People (Pulmonic 2L)</div></div>
+      <div class="mnemonic-letter"><div class="ml-letter">E</div><div class="ml-word">Enjoy (Erb's 3L)</div></div>
+      <div class="mnemonic-letter"><div class="ml-letter">T</div><div class="ml-word">Time (Tricuspid 4L)</div></div>
+      <div class="mnemonic-letter"><div class="ml-letter">M</div><div class="ml-word">Magazine (Mitral 5L MCL)</div></div>
+    </div>
+    <div class="mnemonic-tip">💡 S2&gt;S1 at the BASE (top) | S1&gt;S2 at the APEX (bottom) | Equal at Erb's point</div>
+  </div>
+
+  <div class="mnemonic">
+    <h3>🏥 Heart Block Memory Poem</h3>
+    <div class="mnemonic-tip" style="font-size:.95rem;font-style:italic;line-height:2">
+      "If the <strong>R</strong> is far from <strong>P</strong>, then you have <strong>FIRST degree</strong>.<br>
+      <strong>Longer, longer, longer, drop</strong> — then you have <strong>WENCKEBACH</strong>.<br>
+      If some <strong>P's just don't go through</strong> — then you have <strong>MOBITZ TWO</strong>.<br>
+      If <strong>P's and Q's just don't agree</strong> — then you have <strong>THIRD degree</strong>."
+    </div>
+  </div>
+
+  <div class="mnemonic">
+    <h3>🚨 Hs and Ts — Reversible Causes of Cardiac Arrest</h3>
+    <div class="grid2">
+      <div>
+        <div class="mnemonic-word">
+          <div class="mnemonic-letter"><div class="ml-letter">H</div><div class="ml-word">Hypovolemia</div></div>
+          <div class="mnemonic-letter"><div class="ml-letter">H</div><div class="ml-word">Hypoxia</div></div>
+          <div class="mnemonic-letter"><div class="ml-letter">H</div><div class="ml-word">H+ (acidosis)</div></div>
+          <div class="mnemonic-letter"><div class="ml-letter">H</div><div class="ml-word">Hypo/Hyperkalemia</div></div>
+          <div class="mnemonic-letter"><div class="ml-letter">H</div><div class="ml-word">Hypothermia</div></div>
+        </div>
+      </div>
+      <div>
+        <div class="mnemonic-word">
+          <div class="mnemonic-letter"><div class="ml-letter">T</div><div class="ml-word">Tension pneumo</div></div>
+          <div class="mnemonic-letter"><div class="ml-letter">T</div><div class="ml-word">Tamponade</div></div>
+          <div class="mnemonic-letter"><div class="ml-letter">T</div><div class="ml-word">Toxins</div></div>
+          <div class="mnemonic-letter"><div class="ml-letter">T</div><div class="ml-word">Thrombosis PE</div></div>
+          <div class="mnemonic-letter"><div class="ml-letter">T</div><div class="ml-word">Thrombosis MI</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="mnemonic-tip">💡 For asystole and PEA — fixing the Hs and Ts is the ONLY way to get ROSC. No shock, just CPR + epi + fix the cause!</div>
+  </div>
+
+  <div class="mnemonic">
+    <h3>💉 IV Catheter Colors — G-Gray-G-P-B-Y</h3>
+    <div class="mnemonic-tip" style="font-size:.95rem">
+      <strong>"Good Guys Give People Big Yellow Balloons"</strong><br>
+      Green (18) · Gray (16) · Green… No wait —<br><br>
+      Try this instead: <strong>"My Gray Green Pink Blue Yellow"</strong><br>
+      <strong>M</strong>agma 14 · <strong>G</strong>ray 16 · <strong>G</strong>reen 18 · <strong>P</strong>ink 20 · <strong>B</strong>lue 22 · <strong>Y</strong>ellow 24<br><br>
+      Remember: <strong>Smaller number = bigger bore = faster flow</strong>
+    </div>
+  </div>
+
+  <div class="mnemonic">
+    <h3>🔴 ABG Interpretation — ROME</h3>
+    <div class="mnemonic-word">
+      <div class="mnemonic-letter"><div class="ml-letter">R</div><div class="ml-word">Respiratory</div></div>
+      <div class="mnemonic-letter"><div class="ml-letter">O</div><div class="ml-word">Opposite</div></div>
+      <div class="mnemonic-letter"><div class="ml-letter">M</div><div class="ml-word">Metabolic</div></div>
+      <div class="mnemonic-letter"><div class="ml-letter">E</div><div class="ml-word">Equal</div></div>
+    </div>
+    <div class="mnemonic-tip">
+      <strong>Respiratory OPPOSITE:</strong> pH↑ = CO2↓ (alkalosis) | pH↓ = CO2↑ (acidosis)<br>
+      <strong>Metabolic EQUAL:</strong> pH↑ = HCO3↑ (alkalosis) | pH↓ = HCO3↓ (acidosis)
+    </div>
+  </div>
+
+  <div class="mnemonic">
+    <h3>⚡ Tanner's Model — NIRR</h3>
+    <div class="mnemonic-word">
+      <div class="mnemonic-letter"><div class="ml-letter">N</div><div class="ml-word">Noticing</div></div>
+      <div class="mnemonic-letter"><div class="ml-letter">I</div><div class="ml-word">Interpreting</div></div>
+      <div class="mnemonic-letter"><div class="ml-letter">R</div><div class="ml-word">Responding</div></div>
+      <div class="mnemonic-letter"><div class="ml-letter">R</div><div class="ml-word">Reflecting</div></div>
+    </div>
+    <div class="mnemonic-tip">💡 "Nurses In Real Relationships" | N=gather, I=make sense, R=act, R=learn</div>
+  </div>
+
+  <div class="mnemonic">
+    <h3>🧠 Decorticate vs Decerebrate</h3>
+    <div class="mnemonic-tip" style="font-size:.95rem">
+      <strong>DeCORticate</strong> = arms flex toward the CORE → cortical damage (less severe)<br>
+      <strong>DeCEREBrate</strong> = all extremities rigid EXTENSION → brainstem damage (more severe)<br><br>
+      💡 "If you're CORE-ct, you flex. If your CEREBRUM is gone, you're a board."
+    </div>
+  </div>
+
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- DRUGS TAB -->
+<!-- ══════════════════════════════════════════ -->
+<div id="tab-drugs" class="tab-content">
+  <div class="section">
+    <h2>💊 Drug Reference Guide — NRSG 3333</h2>
+    <p style="color:var(--muted);font-size:.85rem;margin-bottom:16px">All drugs sourced from your lecture slides and textbook chapters. Organized by module.</p>
+
+    <h3 style="color:var(--or);font-size:1.1rem;margin-bottom:12px">🕊️ Module 1 — Palliative Care Drugs</h3>
+    <div style="overflow-x:auto">
+    <table class="drug-table">
+      <thead><tr><th>Drug</th><th>Mechanism</th><th>Used For</th><th>Adverse Effects</th><th>Antidote/Reversal</th><th>💡 Pearl</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>Morphine / Opioids</strong></td>
+          <td>Mu-opioid receptor agonist → ↓pain signal transmission, ↓dyspnea</td>
+          <td>Palliative pain, dyspnea in terminal illness</td>
+          <td>Respiratory depression, constipation, nausea, sedation, urinary retention</td>
+          <td>Naloxone (Narcan) — use cautiously in palliative; reverses analgesia too</td>
+          <td>Principle of Double Effect: intent = comfort, not death. Adequate dosing does NOT shorten life. Always prescribe a bowel regimen with opioids.</td>
+        </tr>
+        <tr>
+          <td><strong>Varenicline (Chantix)</strong></td>
+          <td>Partial nicotinic receptor agonist → reduces cravings + blocks nicotine reward</td>
+          <td>Smoking cessation (especially COPD patients)</td>
+          <td>Nausea (most common), neuropsychiatric symptoms, mood changes, suicidal ideation, alcohol interaction</td>
+          <td>No specific antidote</td>
+          <td>Set quit date within 1–2 weeks. Take with food. Warn: avoid alcohol (↑intoxication). Report mood changes immediately. First-line with bupropion and NRT.</td>
+        </tr>
+        <tr>
+          <td><strong>Acetazolamide</strong></td>
+          <td>Carbonic anhydrase inhibitor → blocks HCO3 reabsorption → kidneys excrete bicarbonate</td>
+          <td>Metabolic alkalosis in HF patients who cannot tolerate large NS volumes</td>
+          <td>Metabolic acidosis if overdosed, hypokalemia, sulfonamide allergy risk, renal calculi</td>
+          <td>No specific antidote</td>
+          <td>Used when metabolic alkalosis persists despite NS correction. Monitor electrolytes closely.</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+
+    <h3 style="color:var(--or);font-size:1.1rem;margin:24px 0 12px">⚡ Module 2 — Cardiac ACLS Drugs</h3>
+    <div style="overflow-x:auto">
+    <table class="drug-table">
+      <thead><tr><th>Drug</th><th>Mechanism</th><th>Used For</th><th>Adverse Effects</th><th>Antidote/Reversal</th><th>💡 Pearl</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>Atropine</strong><br>0.5 mg IV</td>
+          <td>Blocks vagal (parasympathetic) tone at SA &amp; AV nodes → ↑HR</td>
+          <td>Symptomatic bradycardia (1st line), symptomatic 1st/2nd degree AV block</td>
+          <td>Tachycardia, dry mouth, urinary retention, blurred vision, confusion in elderly</td>
+          <td>No specific antidote. Physostigmine for severe toxicity</td>
+          <td>Max dose 3 mg. Doses &lt;0.5 mg can paradoxically worsen bradycardia. NOT effective for Mobitz II or 3rd degree block — those need pacing.</td>
+        </tr>
+        <tr>
+          <td><strong>Adenosine</strong><br>6 mg IV (then 12 mg)</td>
+          <td>Transiently blocks AV node conduction — interrupts SVT re-entry circuit</td>
+          <td>SVT (first-line after vagal maneuvers fail)</td>
+          <td>Transient asystole, chest tightness, flushing, dyspnea, bronchospasm</td>
+          <td>Half-life 6–10 sec — self-limiting</td>
+          <td>RAPID push into proximal vein + immediate 20 mL NS flush. Warn client about brief chest pressure. Contraindicated in 2nd/3rd degree block.</td>
+        </tr>
+        <tr>
+          <td><strong>Amiodarone</strong><br>300 mg IV (VFib)</td>
+          <td>Class III antiarrhythmic — prolongs action potential &amp; refractory period. Also Class I, II, IV properties</td>
+          <td>VFib/pulseless VT (after 3rd shock), refractory arrhythmias, stable VT</td>
+          <td class="hl">Pulmonary toxicity, thyroid dysfunction (hypo/hyper), hepatotoxicity, photosensitivity, QT prolongation, blue-gray skin, corneal deposits</td>
+          <td>No specific antidote. Monitor and discontinue</td>
+          <td>Half-life 40–55 days — effects persist long after stopping. Monitor thyroid, LFTs, chest X-ray. Major interactions: warfarin (↑INR), digoxin.</td>
+        </tr>
+        <tr>
+          <td><strong>Epinephrine</strong><br>1 mg IV q3–5 min</td>
+          <td>Alpha-1: vasoconstriction → ↑coronary perfusion. Beta-1: ↑HR &amp; contractility</td>
+          <td>VFib, pulseless VT, asystole, PEA (cardiac arrest)</td>
+          <td>Hypertension, tachycardia, tissue ischemia if extravasated</td>
+          <td>Phentolamine for extravasation</td>
+          <td>Does NOT directly convert VFib — improves coronary perfusion during CPR. Also a VESICANT — peripheral infiltration = tissue necrosis.</td>
+        </tr>
+        <tr>
+          <td><strong>Digoxin</strong></td>
+          <td>Inhibits Na-K ATPase → ↑intracellular Ca²⁺ → ↑contractility. Slows AV conduction via vagal effect</td>
+          <td>Rate control in AFib, HF with reduced EF</td>
+          <td class="hl">Narrow therapeutic index! Toxicity: nausea, vomiting, yellow-green vision, halos around lights, bradyarrhythmias</td>
+          <td>DigiFab (digoxin-specific antibody fragments) for severe toxicity</td>
+          <td>Hypokalemia potentiates toxicity. Check K+ before giving. Hold if HR &lt;60. Therapeutic level 0.5–2 ng/mL. Teach: check pulse daily, report vision changes.</td>
+        </tr>
+        <tr>
+          <td><strong>Metoprolol / Beta-blockers</strong></td>
+          <td>Beta-1 blockade → ↓HR, ↓conduction, ↓contractility</td>
+          <td>Rate control in AFib/flutter, hypertension, HFrEF, post-MI</td>
+          <td>Bradycardia, hypotension, bronchospasm (avoid in asthma), fatigue, masks hypoglycemia signs</td>
+          <td>Glucagon for overdose</td>
+          <td>Common cause of sinus bradycardia — always check the med list! Do NOT stop abruptly. Contraindicated in cardiogenic shock, severe bradycardia, 2nd/3rd degree block.</td>
+        </tr>
+        <tr>
+          <td><strong>Diltiazem / CCBs</strong></td>
+          <td>Calcium channel blockade → vasodilation + ↓SA/AV node activity → ↓HR, ↓BP</td>
+          <td>Rate control in AFib/SVT, hypertension, angina</td>
+          <td>Hypotension, bradycardia, peripheral edema, constipation</td>
+          <td>Calcium gluconate IV for CCB overdose</td>
+          <td>HOLD if SBP &lt;90 or HR &lt;60. Contraindicated in severe HF (EF &lt;35%). Do NOT give IV diltiazem with IV beta-blockers — risk of cardiac arrest.</td>
+        </tr>
+        <tr>
+          <td><strong>Warfarin</strong></td>
+          <td>Vitamin K antagonist → inhibits clotting factors II, VII, IX, X</td>
+          <td>AFib stroke prevention, DVT/PE treatment, mechanical heart valves</td>
+          <td>Bleeding (major &amp; minor), hair loss, purple toe syndrome</td>
+          <td>Vitamin K (slow), FFP (fast), 4-factor PCC (fastest)</td>
+          <td>INR target 2–3 for AFib. Dozens of drug &amp; food interactions. Takes 3–5 days to reach therapeutic effect. Avoid major dietary changes in vitamin K.</td>
+        </tr>
+        <tr>
+          <td><strong>Furosemide (Lasix)</strong></td>
+          <td>Loop diuretic — blocks Na-K-2Cl transporter → massive salt &amp; water excretion</td>
+          <td>Heart failure (pulmonary edema), hypertension, edema, hypercalcemia</td>
+          <td class="hl">Hypokalemia (→ metabolic alkalosis, U waves, PVCs), hyponatremia, hypomagnesemia, ototoxicity, dehydration</td>
+          <td>Potassium replacement; no specific antidote</td>
+          <td>Check K+ BEFORE giving — hold if K+ &lt;3.5, notify provider. Onset IV: 5 min. Have urinal ready. Weigh daily. Hypokalemia potentiates digoxin toxicity.</td>
+        </tr>
+        <tr>
+          <td><strong>Mannitol</strong></td>
+          <td>Osmotic diuretic — ↑serum osmolality → draws fluid from brain cells into vascular space</td>
+          <td>Elevated ICP, acute glaucoma</td>
+          <td>Electrolyte imbalance, pulmonary edema (if renal failure), rebound cerebral edema</td>
+          <td>No specific antidote</td>
+          <td>HOLD if serum osmolality &gt;320 mOsm/kg. Foley catheter required — massive diuresis. Also a VESICANT — infiltration = tissue injury.</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+
+    <h3 style="color:var(--or);font-size:1.1rem;margin:24px 0 12px">💉 Module 3 — IV Therapy Drugs</h3>
+    <div style="overflow-x:auto">
+    <table class="drug-table">
+      <thead><tr><th>Drug</th><th>Mechanism</th><th>Used For</th><th>Adverse Effects</th><th>Antidote/Reversal</th><th>💡 Pearl</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>Dopamine</strong><br><span class="badge-pill bp-red">⚠️ VESICANT</span></td>
+          <td>Dose-dependent: Low = renal vasodilation. Mid = beta-1 (↑HR). High = alpha-1 (vasoconstriction, ↑BP)</td>
+          <td>Cardiogenic shock, septic shock, hemodynamic instability</td>
+          <td>Tachyarrhythmias, tissue necrosis if extravasated, hypertension</td>
+          <td class="hl">Phentolamine for extravasation</td>
+          <td>Ideally run via central line. If peripheral: large proximal vein, check hourly. Signs of extravasation: pallor, coolness, burning → STOP immediately, keep catheter for phentolamine.</td>
+        </tr>
+        <tr>
+          <td><strong>Norepinephrine (Levophed)</strong><br><span class="badge-pill bp-red">⚠️ VESICANT</span></td>
+          <td>Potent alpha-1 &amp; beta-1 agonist → intense vasoconstriction + ↑cardiac contractility</td>
+          <td>Septic shock (first-line vasopressor), severe hypotension</td>
+          <td>Tissue ischemia, severe HTN, reflex bradycardia, necrosis if extravasated</td>
+          <td class="hl">Phentolamine for extravasation</td>
+          <td>Central line preferred. "Levophed = Leave 'em dead" if extravasation untreated. Keep catheter IN until phentolamine is given.</td>
+        </tr>
+        <tr>
+          <td><strong>KCl (Potassium Chloride)</strong><br><span class="badge-pill bp-red">🔴 HIGH ALERT</span></td>
+          <td>Replenishes potassium → restores Na-K ATPase function → corrects hypokalemia</td>
+          <td>Hypokalemia (K+ &lt;3.5 mEq/L)</td>
+          <td class="hl">IV PUSH = CARDIAC ARREST. Phlebitis, burning at site, hyperkalemia if over-replaced</td>
+          <td>Calcium gluconate IV for hyperkalemia (membrane stabilization)</td>
+          <td>NEVER IV push. ALWAYS diluted (100 mL min). ALWAYS pump. Max 10 mEq/hr peripheral. Second nurse verification required.</td>
+        </tr>
+        <tr>
+          <td><strong>Vancomycin</strong></td>
+          <td>Glycopeptide antibiotic — inhibits Gram-positive bacterial cell wall synthesis</td>
+          <td>MRSA, C. diff, serious Gram-positive infections</td>
+          <td>Red Man Syndrome (rate-related), nephrotoxicity, ototoxicity, thrombophlebitis</td>
+          <td>Diphenhydramine for Red Man Syndrome. No antidote for nephrotoxicity.</td>
+          <td>Infuse ≥60 min (max 10 mg/min). Red Man Syndrome = NOT an allergy — rate-related. Slow rate + diphenhydramine. Monitor BUN/Cr and trough levels.</td>
+        </tr>
+        <tr>
+          <td><strong>Phentolamine</strong></td>
+          <td>Alpha-adrenergic BLOCKER → reverses catecholamine-induced vasoconstriction → restores tissue perfusion</td>
+          <td>Antidote for catecholamine extravasation (dopamine, epi, norepi)</td>
+          <td>Hypotension, tachycardia, cardiac arrhythmias</td>
+          <td>N/A (IS the antidote)</td>
+          <td>Inject THROUGH the existing catheter into the extravasated area. Do NOT remove catheter first. Works best within 12 hours of extravasation.</td>
+        </tr>
+        <tr>
+          <td><strong>Phenytoin (Dilantin)</strong></td>
+          <td>Blocks voltage-gated sodium channels → stabilizes neuronal membranes → prevents seizure firing</td>
+          <td>Seizure prophylaxis, certain arrhythmias</td>
+          <td>Nystagmus, ataxia, gingival hyperplasia, hypotension if infused fast, QT prolongation</td>
+          <td>No specific antidote</td>
+          <td>INCOMPATIBLE with dextrose — use NS only. Max rate 50 mg/min (25 mg/min elderly). Monitor ECG during infusion. Avoid extravasation — severe tissue damage.</td>
+        </tr>
+        <tr>
+          <td><strong>Diphenhydramine (Benadryl)</strong></td>
+          <td>H1 receptor antagonist → blocks histamine-mediated flushing and pruritus</td>
+          <td>Red Man Syndrome premedication, allergic reactions</td>
+          <td>Sedation, dry mouth, urinary retention, confusion (especially elderly)</td>
+          <td>No specific antidote</td>
+          <td>Premedicate susceptible vancomycin patients before infusion. Significant sedation → fall risk. Avoid in elderly (Beers criteria).</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── TAB LOGIC ──
+function showTab(id){
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  event.target.closest('.tab-btn').classList.add('active');
+  if(id==='recall') initRecall();
+  if(id==='m2') setTimeout(()=>{if(typeof startECG==='function'){startECG();startCN();}},50);
+  if(id==='m3') setTimeout(()=>{if(typeof drawIVDiagram==='function') drawIVDiagram();},50);
+}
+
+// ── QUIZ DATA ──
+const quizData=[
+  {q:"A client with SVT has BP 88/54 and reports chest tightness. Which action does the nurse take FIRST?",opts:["Administer adenosine 6 mg IV push","Perform vagal maneuvers","Prepare for synchronized cardioversion","Administer metoprolol 5 mg IV"],ans:2,exp:"Unstable SVT (hemodynamic compromise) = synchronized cardioversion. Adenosine and vagal maneuvers are for STABLE SVT only."},
+  {q:"A nurse is about to give digoxin. The client's potassium is 2.8 mEq/L. What does the nurse do FIRST?",opts:["Give the digoxin as ordered","Hold digoxin and notify the provider","Give the digoxin with a potassium supplement","Check the digoxin level first"],ans:1,exp:"Hypokalemia potentiates digoxin toxicity — the drug binds more avidly to Na-K ATPase when K+ is low. Hold and notify."},
+  {q:"Which finding indicates a Grade 4 phlebitis?",opts:["Erythema and mild pain","Streak formation and palpable cord","Palpable cord >1 inch with purulent drainage","Edema and pain without streak"],ans:2,exp:"Grade 4 = all Grade 3 features PLUS cord >1 inch AND purulent drainage. Grade 3 = streak + cord. Grade 2 = erythema + edema + pain only."},
+  {q:"A client receiving vancomycin develops facial flushing and itching after 15 min. BP is 120/80. What is this?",opts:["Anaphylaxis — give epinephrine IM","Red Man Syndrome — slow the infusion rate","Septic reaction — stop and culture","Allergic reaction — document allergy"],ans:1,exp:"Red Man Syndrome = rate-related mast cell degranulation, NOT immune-mediated (not a true allergy). Treatment: slow to ≥60 min + diphenhydramine. No hemodynamic compromise = not anaphylaxis."},
+  {q:"A client's ABG shows pH 7.32, PaCO2 58, HCO3 28. Which interpretation is correct?",opts:["Metabolic acidosis","Respiratory alkalosis","Respiratory acidosis with partial metabolic compensation","Normal for a COPD patient — no action needed"],ans:2,exp:"pH<7.35 = acidosis. PaCO2 elevated = respiratory cause. HCO3 elevated = kidneys compensating. = Respiratory acidosis with partial metabolic compensation. Classic COPD exacerbation pattern."},
+  {q:"Which cranial nerve is damaged when a client cannot shrug their right shoulder against resistance?",opts:["CN VII (Facial)","CN X (Vagus)","CN XI (Accessory)","CN XII (Hypoglossal)"],ans:2,exp:"CN XI (Spinal Accessory) supplies the SCM and trapezius muscles. Shoulder shrug + neck rotation against resistance tests CN XI. At risk during neck dissections."},
+  {q:"A client in VFib does not convert after 2 defibrillations. What medication does the nurse prepare?",opts:["Atropine 0.5 mg IV","Adenosine 6 mg IV","Amiodarone 300 mg IV","Digoxin 0.5 mg IV"],ans:2,exp:"ACLS VFib algorithm: CPR + defib + epinephrine (q3-5 min) + amiodarone 300 mg IV after 3rd shock. Amiodarone is the antiarrhythmic of choice in refractory VFib."},
+  {q:"Which sign is a LATE indicator of increased ICP?",opts:["Restlessness and confusion","Unilateral extremity weakness","Bradycardia + hypertension + irregular respirations","Worsening headache"],ans:2,exp:"Cushing's triad (bradycardia, hypertension, irregular respirations) = VERY LATE sign of ICP indicating herniation may already be occurring. Restlessness, weakness, and headache are EARLY signs."},
+  {q:"What is the minimum acceptable IV gauge for blood transfusion?",opts:["24 gauge (yellow)","22 gauge (blue)","20 gauge (pink)","18 gauge (green)"],ans:2,exp:"20 gauge is the minimum acceptable for blood products. Smaller gauges cause hemolysis of RBCs. 18 gauge is preferred for rapid transfusion."},
+  {q:"A client says 'If I can just make it to my grandchild's birth, I'll be ready to go.' Which grief stage is this?",opts:["Denial","Anger","Bargaining","Acceptance"],ans:2,exp:"Bargaining = conditional acceptance ('If I can just get to X, then I'll accept dying'). Classic Kübler-Ross bargaining — a deal with time or fate."},
+];
+
+let quizIdx=0, quizScore=0, quizAnswered=false;
+
+function startQuiz(){
+  quizIdx=0; quizScore=0; quizAnswered=false;
+  shuffleArray(quizData);
+  renderQuiz();
+}
+
+function renderQuiz(){
+  if(quizIdx>=quizData.length){
+    document.getElementById('quizQ').textContent='🎉 Quiz Complete!';
+    document.getElementById('quizOpts').innerHTML=`<div style="text-align:center;font-size:1.1rem;padding:20px;color:var(--or);font-weight:600">Score: ${quizScore}/${quizData.length} (${Math.round(quizScore/quizData.length*100)}%)</div>`;
+    document.getElementById('quizFeedback').style.display='none';
+    document.getElementById('quizNext').style.display='none';
+    if(quizScore===quizData.length) confetti();
+    updateQuizBar();
+    return;
+  }
+  quizAnswered=false;
+  const q=quizData[quizIdx];
+  document.getElementById('quizQ').textContent=`Q${quizIdx+1}/${quizData.length}: ${q.q}`;
+  document.getElementById('quizFeedback').className='quiz-feedback';
+  document.getElementById('quizNext').style.display='none';
+  document.getElementById('quizOpts').innerHTML=q.opts.map((o,i)=>
+    `<button class="quiz-opt" onclick="answerQuiz(${i})">${String.fromCharCode(65+i)}. ${o}</button>`
+  ).join('');
+  updateQuizBar();
+}
+
+function answerQuiz(i){
+  if(quizAnswered) return;
+  quizAnswered=true;
+  const q=quizData[quizIdx];
+  const opts=document.querySelectorAll('.quiz-opt');
+  opts.forEach(o=>o.classList.add('dis'));
+  opts[i].classList.add(i===q.ans?'correct':'wrong');
+  if(i!==q.ans) opts[q.ans].classList.add('correct');
+  if(i===q.ans) quizScore++;
+  const fb=document.getElementById('quizFeedback');
+  fb.className='quiz-feedback show '+(i===q.ans?'good':'bad');
+  fb.textContent=(i===q.ans?'✅ Correct! ':'❌ Incorrect. ')+q.exp;
+  document.getElementById('quizNext').style.display='block';
+  document.getElementById('quizScore').textContent=`${quizScore}/${quizIdx+1}`;
+  updateQuizBar();
+}
+
+function nextQuizQ(){quizIdx++;renderQuiz();}
+
+function updateQuizBar(){
+  const pct=quizData.length?Math.round((quizIdx/quizData.length)*100):0;
+  document.getElementById('quizBar').style.width=pct+'%';
+}
+
+// ── FLASHCARD DATA ──
+const flashcards=[
+  {front:"What does S3 heart sound indicate in an adult over 40?",back:"Volume overload / Heart Failure. Early diastolic, best heard at apex with bell, left lateral decubitus position."},
+  {front:"Atropine mechanism of action",back:"Blocks vagal (parasympathetic) tone at SA & AV nodes → ↑HR. NOT effective for Mobitz II or 3rd degree block."},
+  {front:"What are the 4 signs of active dying?",back:"1) Cheyne-Stokes respirations 2) Mottling/cyanosis of extremities 3) Cool extremities 4) Unresponsiveness"},
+  {front:"Red Man Syndrome vs Anaphylaxis",back:"Red Man = rate-related flushing/pruritus, BP normal → slow infusion + diphenhydramine. Anaphylaxis = bronchospasm + hypotension → epinephrine!"},
+  {front:"What is the MINIMUM gauge for blood transfusion?",back:"20 gauge (Pink). 18 gauge preferred for rapid transfusion. Never use 22 or smaller — causes hemolysis."},
+  {front:"Wenckebach vs Mobitz II",back:"Wenckebach = PR progressively lengthens until QRS drops, cycle resets (AV node, usually benign). Mobitz II = constant PR, sudden dropped QRS (infranodal, dangerous → pacemaker)."},
+  {front:"Hs and Ts of cardiac arrest",back:"H: Hypovolemia, Hypoxia, H+ acidosis, Hypo/Hyperkalemia, Hypothermia. T: Tension pneumo, Tamponade, Toxins, Thrombosis PE, Thrombosis MI"},
+  {front:"KCl IV safety rules",back:"NEVER IV push (cardiac arrest!). Always diluted (min 100 mL). Always pump. Max 10 mEq/hr peripheral. Second nurse verification required."},
+  {front:"COPD O2 target SpO2",back:"88–92%. These patients use hypoxia (not CO2) as respiratory drive. High-flow O2 → CO2 narcosis → respiratory failure."},
+  {front:"Digoxin toxicity signs",back:"Nausea/vomiting + yellow-green visual disturbances (xanthopsia) + halos + bradyarrhythmias. Hold drug, check level + K+, notify provider."},
+  {front:"What does the tongue deviation tell you?",back:"Tongue deviates TOWARD the side of CN XII (Hypoglossal) damage — the weak side. LMN lesion."},
+  {front:"Extravasation treatment sequence",back:"STOP → Keep catheter IN → Notify Pharmacy (antidote) → Notify Provider → Clean site → Remove IV AFTER antidote → Photograph + Document"},
+  {front:"Cushing's Triad",back:"↑BP (widened pulse pressure) + Bradycardia + Irregular respirations = LATE sign of severely elevated ICP / herniation. Act IMMEDIATELY."},
+  {front:"Which drugs are vesicants?",back:"Catecholamines: Dopamine, Epi, Norepi. Chemo: Vincristine, Vinblastine. Others: Gentamycin, Mannitol. Antidote for catecholamines = Phentolamine."},
+  {front:"Principle of Double Effect (opioids in palliative)",back:"Intent = relief of suffering, not death. Research shows adequate opioid dosing does NOT shorten life and may extend it by reducing physiologic stress of uncontrolled pain."},
+];
+
+function renderFlashcards(){
+  const grid=document.getElementById('flashcardGrid');
+  grid.innerHTML=flashcards.map((fc,i)=>`
+    <div class="flashcard" onclick="this.classList.toggle('flipped')">
+      <div class="flashcard-inner">
+        <div class="fc-front">${fc.front}</div>
+        <div class="fc-back">${fc.back}</div>
+      </div>
+    </div>`).join('');
+}
+
+// ── MATCH GAME ──
+const matchPairs=[
+  ["Atrial Fibrillation","Irregularly irregular + no P waves + fibrillatory baseline"],
+  ["VFib","Chaotic waveforms + pulseless → SHOCKABLE"],
+  ["Wenckebach","PR gets longer then QRS drops then resets"],
+  ["Asystole","Flat line + non-shockable → CPR + epi only"],
+  ["S3 Heart Sound","Early diastole = Heart Failure / volume overload"],
+  ["Phentolamine","Alpha blocker — antidote for catecholamine extravasation"],
+  ["CN VII damage","Bell's palsy — cannot close eye or raise eyebrow on affected side"],
+  ["Grade 4 Phlebitis","Cord >1 inch + purulent drainage → notify provider"],
+];
+
+let matchSelected=null, matchSolved=0;
+
+function startMatch(){
+  const pairs=shuffleArray([...matchPairs]).slice(0,5);
+  const terms=shuffleArray([...pairs.map(p=>({text:p[0],pair:p[0]}))]);
+  const defs=shuffleArray([...pairs.map(p=>({text:p[1],pair:p[0]}))]);
+  const all=shuffleArray([...terms,...defs]);
+  matchSelected=null; matchSolved=0;
+  document.getElementById('matchStatus').textContent='Match the terms with their definitions!';
+  document.getElementById('matchGrid').innerHTML=all.map((item,i)=>
+    `<div class="match-card" onclick="matchClick(this,'${item.pair.replace(/'/g,"\\'")}','${item.text.replace(/'/g,"\\'")}')" data-pair="${item.pair}">${item.text}</div>`
+  ).join('');
+}
+
+function matchClick(el,pair,text){
+  if(el.classList.contains('matched')||el.classList.contains('dis')) return;
+  if(!matchSelected){
+    document.querySelectorAll('.match-card').forEach(c=>c.classList.remove('selected'));
+    el.classList.add('selected');
+    matchSelected={el,pair};
+  } else {
+    if(matchSelected.el===el){el.classList.remove('selected');matchSelected=null;return;}
+    if(matchSelected.pair===pair){
+      el.classList.add('matched');matchSelected.el.classList.add('matched');
+      matchSelected.el.classList.remove('selected');
+      matchSelected=null; matchSolved++;
+      const total=document.querySelectorAll('.match-card').length/2;
+      if(matchSolved===total){
+        document.getElementById('matchStatus').textContent='🎉 All matched! Perfect score!';
+        confetti();
+      } else {
+        document.getElementById('matchStatus').textContent=`✅ Match! ${matchSolved}/${total} pairs found`;
+      }
+    } else {
+      el.classList.add('wrong-flash');matchSelected.el.classList.add('wrong-flash');
+      setTimeout(()=>{el.classList.remove('wrong-flash','selected');matchSelected.el.classList.remove('wrong-flash','selected');matchSelected=null;},700);
+      document.getElementById('matchStatus').textContent='❌ Not a match — try again!';
+    }
+  }
+}
+
+// ── UTILS ──
+function shuffleArray(arr){for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];}return arr;}
+
+function confetti(){
+  const colors=['#c2621a','#e8905a','#2d7a4f','#1a4fa0','#6d28d9','#f59e0b'];
+  for(let i=0;i<60;i++){
+    const el=document.createElement('div');
+    el.className='confetti-piece';
+    el.style.cssText=`left:${Math.random()*100}vw;top:-20px;background:${colors[Math.floor(Math.random()*colors.length)]};animation-delay:${Math.random()*1}s;animation-duration:${1+Math.random()}s;transform:rotate(${Math.random()*360}deg)`;
+    document.body.appendChild(el);
+    setTimeout(()=>el.remove(),2500);
+  }
+}
+
+let recallInited=false;
+function initRecall(){
+  if(recallInited) return;
+  recallInited=true;
+  startQuiz();
+  renderFlashcards();
+  startMatch();
+}
+
+
+// ══════════════════════════════
+// ECG RHYTHM QUIZ
+// ══════════════════════════════
+const ecgRhythms=[
+  {name:"Normal Sinus Rhythm",
+   draw:(s)=>drawNSR(s,75,false,false),
+   opts:["Normal Sinus Rhythm","Sinus Tachycardia","Atrial Fibrillation","First-Degree AV Block"],
+   ans:0,
+   exp:"NSR: Rate 60–100, regular R-R, upright P before every QRS, PR 0.12–0.20 sec, narrow QRS. The gold standard — everything working perfectly!"},
+  {name:"Sinus Bradycardia",
+   draw:(s)=>drawNSR(s,38,false,false),
+   opts:["Normal Sinus Rhythm","Sinus Bradycardia","Junctional Rhythm","Third-Degree Block"],
+   ans:1,
+   exp:"Sinus Bradycardia: All NSR features but rate <60. Regular, upright P waves, narrow QRS. Treat only if symptomatic → atropine 0.5 mg IV."},
+  {name:"Sinus Tachycardia",
+   draw:(s)=>drawNSR(s,118,false,false),
+   opts:["SVT","Sinus Tachycardia","Atrial Flutter","AFib"],
+   ans:1,
+   exp:"Sinus Tachycardia: Rate >100, all NSR features intact (P waves visible, regular). ALWAYS treat the CAUSE — fever, pain, dehydration, anxiety. Not a primary arrhythmia."},
+  {name:"Atrial Fibrillation",
+   draw:(s)=>drawAFib(s),
+   opts:["Atrial Flutter","Sinus Tachycardia","Atrial Fibrillation","SVT"],
+   ans:2,
+   exp:"AFib: No distinct P waves, fibrillatory wavy baseline, IRREGULARLY IRREGULAR R-R intervals, narrow QRS. Stroke risk 5×! Rate control + anticoagulation."},
+  {name:"Ventricular Fibrillation",
+   draw:(s)=>drawVFib(s),
+   opts:["Coarse Atrial Flutter","Ventricular Tachycardia","Ventricular Fibrillation","Artifact"],
+   ans:2,
+   exp:"VFib: Completely chaotic waveforms, no identifiable P/QRS/T. PULSELESS. SHOCKABLE. CPR + defibrillate immediately — every second counts!"},
+  {name:"Ventricular Tachycardia",
+   draw:(s)=>drawVTach(s),
+   opts:["SVT with aberrancy","Ventricular Tachycardia","Accelerated Junctional","Sinus Tachycardia"],
+   ans:1,
+   exp:"VTach: Wide QRS (>0.12 sec), regular, rate 100–250, no P waves. With pulse+stable → amiodarone. Unstable → synchronized cardioversion. Pulseless → defibrillate!"},
+  {name:"First-Degree AV Block",
+   draw:(s)=>drawFirstDegree(s),
+   opts:["Normal Sinus Rhythm","Wenckebach (Mobitz I)","First-Degree AV Block","Sinus Bradycardia"],
+   ans:2,
+   exp:"1st Degree AV Block: PR interval consistently >0.20 sec (>5 small boxes), every P conducts, regular. Asymptomatic → monitor only. NOT a true block — just delayed."},
+  {name:"Wenckebach (Mobitz I)",
+   draw:(s)=>drawWenckebach(s),
+   opts:["First-Degree AV Block","Wenckebach (Mobitz I)","Mobitz II","Third-Degree Block"],
+   ans:1,
+   exp:"Wenckebach: PR progressively lengthens → QRS drops → cycle resets. 'Longer longer longer DROP!' AV node level. Often benign. Heart block poem: 'Longer longer longer drop — Wenckebach!'"},
+];
+
+let ecgIdx=0,ecgScore=0,ecgAnswered=false;
+
+function drawGrid(svg){
+  svg.innerHTML='';
+  // Light grid
+  for(let x=0;x<=700;x+=20){
+    const l=document.createElementNS('http://www.w3.org/2000/svg','line');
+    l.setAttribute('x1',x);l.setAttribute('y1',0);l.setAttribute('x2',x);l.setAttribute('y2',120);
+    l.setAttribute('stroke',x%100===0?'#ffccaa':'#ffe5d0');l.setAttribute('stroke-width',x%100===0?'1':'0.5');
+    svg.appendChild(l);
+  }
+  for(let y=0;y<=120;y+=20){
+    const l=document.createElementNS('http://www.w3.org/2000/svg','line');
+    l.setAttribute('x1',0);l.setAttribute('y1',y);l.setAttribute('x2',700);l.setAttribute('y2',y);
+    l.setAttribute('stroke',y%100===0?'#ffccaa':'#ffe5d0');l.setAttribute('stroke-width',y%100===0?'1':'0.5');
+    svg.appendChild(l);
+  }
+}
+
+function addPath(svg,d,color,width){
+  const p=document.createElementNS('http://www.w3.org/2000/svg','path');
+  p.setAttribute('d',d);p.setAttribute('stroke',color||'#c2621a');
+  p.setAttribute('stroke-width',width||2);p.setAttribute('fill','none');
+  svg.appendChild(p);
+}
+
+function sinusBeat(x,baseline,pAmp,qrsAmp,rate){
+  // x=start, returns path segment and end x
+  const beatWidth=Math.round(700/rate*60/2); // approx spacing
+  const bw=Math.min(beatWidth,180);
+  const p_w=8,pr_seg=10,q_d=4,qrs_up=22,s_d=4,st=8,t_w=18;
+  const bsl=baseline;
+  let d=`M${x},${bsl}`;
+  // P wave
+  d+=` C${x+4},${bsl-pAmp} ${x+p_w-4},${bsl-pAmp} ${x+p_w},${bsl}`;
+  // PR segment
+  d+=` L${x+p_w+pr_seg},${bsl}`;
+  const qrs_start=x+p_w+pr_seg;
+  // Q
+  d+=` L${qrs_start+q_d},${bsl+6}`;
+  // R
+  d+=` L${qrs_start+q_d+4},${bsl-qrsAmp}`;
+  // S
+  d+=` L${qrs_start+q_d+8},${bsl+s_d}`;
+  // ST
+  d+=` L${qrs_start+q_d+8+st},${bsl}`;
+  const t_start=qrs_start+q_d+8+st;
+  // T wave
+  d+=` C${t_start+4},${bsl-qrsAmp*0.35} ${t_start+t_w-4},${bsl-qrsAmp*0.35} ${t_start+t_w},${bsl}`;
+  return {d, endX: t_start+t_w+10};
+}
+
+function drawNSR(svg,rate,wideQRS,noP){
+  drawGrid(svg);
+  const baseline=70, pAmp=noP?0:8, qrsAmp=wideQRS?28:36;
+  const spacing=Math.round(60/rate*700/4);
+  let pts=[],x=20;
+  while(x<680){
+    const b=sinusBeat(x,baseline,pAmp,qrsAmp,rate);
+    pts.push(b.d);
+    x=b.endX+Math.max(spacing-80,10);
+  }
+  addPath(svg,pts.join(' '),'#c2621a',2.2);
+}
+
+function drawAFib(svg){
+  drawGrid(svg);
+  // Fibrillatory baseline + irregular narrow QRS
+  let d='M10,70';
+  // Chaotic baseline
+  for(let x=10;x<680;x+=3){
+    const y=70+Math.sin(x*0.7)*2.5+Math.sin(x*1.3)*2+Math.random()*1.5-0.75;
+    d+=` L${x},${y}`;
+  }
+  addPath(svg,d,'#e8905a',1.2);
+  // Irregular QRS complexes
+  const positions=[55,130,185,270,355,415,500,580,650];
+  positions.forEach(qx=>{
+    const qd=`M${qx},70 L${qx+3},76 L${qx+6},32 L${qx+9},76 L${qx+16},70`;
+    addPath(svg,qd,'#c2621a',2.5);
+  });
+}
+
+function drawVFib(svg){
+  drawGrid(svg);
+  let d='M10,70';
+  for(let x=10;x<690;x+=2){
+    const amp=15+Math.sin(x*0.15)*8;
+    const y=70+Math.sin(x*0.4+Math.random()*0.8)*amp+(Math.random()-0.5)*6;
+    d+=` L${Math.round(x)},${Math.round(y)}`;
+  }
+  addPath(svg,d,'#b91c1c',2);
+}
+
+function drawVTach(svg){
+  drawGrid(svg);
+  const baseline=70;
+  let d='M10,70';
+  for(let i=0;i<7;i++){
+    const x=10+i*95;
+    // Wide bizarre QRS
+    d+=` L${x},70 L${x+5},85 L${x+12},28 L${x+22},90 L${x+30},70`;
+    // ST segment + T
+    d+=` L${x+40},68 C${x+48},55 ${x+58},55 ${x+65},70`;
+  }
+  addPath(svg,d,'#c2621a',2.5);
+}
+
+function drawFirstDegree(svg){
+  drawGrid(svg);
+  const baseline=70;
+  // Same as NSR but PR interval is longer (0.28 sec = 7 boxes)
+  let pts=[],x=15;
+  const rate=60;
+  while(x<660){
+    const bsl=baseline,pAmp=8,qrsAmp=36;
+    let d=`M${x},${bsl}`;
+    d+=` C${x+4},${bsl-pAmp} ${x+12},${bsl-pAmp} ${x+16},${bsl}`;
+    // Long PR segment (28 units instead of 10)
+    d+=` L${x+44},${bsl}`;
+    const qrs=x+44;
+    d+=` L${qrs+4},${bsl+6} L${qrs+8},${bsl-qrsAmp} L${qrs+12},${bsl+4} L${qrs+20},${bsl}`;
+    d+=` C${qrs+28},${bsl-12} ${qrs+38},${bsl-12} ${qrs+44},${bsl}`;
+    pts.push(d);
+    x=qrs+44+45;
+  }
+  addPath(svg,pts.join(' '),'#c2621a',2.2);
+}
+
+function drawWenckebach(svg){
+  drawGrid(svg);
+  const baseline=70;
+  const prLengths=[8,18,28]; // progressively longer PR
+  let x=15;
+  for(let cycle=0;cycle<2;cycle++){
+    prLengths.forEach((pr,i)=>{
+      let d=`M${x},${baseline}`;
+      // P wave
+      d+=` C${x+4},${baseline-8} ${x+12},${baseline-8} ${x+16},${baseline}`;
+      // PR segment (variable length)
+      d+=` L${x+16+pr},${baseline}`;
+      const qrs=x+16+pr;
+      d+=` L${qrs+4},${baseline+6} L${qrs+8},${baseline-34} L${qrs+12},${baseline+4} L${qrs+20},${baseline}`;
+      d+=` C${qrs+28},${baseline-12} ${qrs+38},${baseline-12} ${qrs+44},${baseline}`;
+      addPath(svg,d,'#c2621a',2.2);
+      x=qrs+44+30;
+    });
+    // Dropped beat — just P wave, no QRS
+    let d=`M${x},${baseline} C${x+4},${baseline-8} ${x+12},${baseline-8} ${x+16},${baseline} L${x+50},${baseline}`;
+    addPath(svg,d,'#c2621a',2.2);
+    x+=80;
+  }
+}
+
+function startECG(){
+  ecgIdx=0;ecgScore=0;ecgAnswered=false;
+  shuffleArray(ecgRhythms);
+  renderECG();
+}
+
+function renderECG(){
+  if(ecgIdx>=ecgRhythms.length){
+    document.getElementById('ecgStrip').innerHTML='';
+    document.getElementById('ecgOpts').innerHTML=`<div style="text-align:center;width:100%;padding:20px;font-size:1.1rem;font-weight:600;color:var(--or)">🎉 Complete! Score: ${ecgScore}/${ecgRhythms.length}</div>`;
+    document.getElementById('ecgFeedback').style.display='none';
+    document.getElementById('ecgNext').style.display='none';
+    if(ecgScore===ecgRhythms.length) confetti();
+    return;
+  }
+  ecgAnswered=false;
+  const r=ecgRhythms[ecgIdx];
+  document.getElementById('ecgCounter').textContent=`Rhythm ${ecgIdx+1} of ${ecgRhythms.length}`;
+  document.getElementById('ecgScore').textContent=`Score: ${ecgScore}/${ecgIdx}`;
+  const svg=document.getElementById('ecgStrip');
+  r.draw(svg);
+  document.getElementById('ecgFeedback').style.display='none';
+  document.getElementById('ecgNext').style.display='none';
+  const shuffledOpts=[...r.opts];
+  shuffleArray(shuffledOpts);
+  document.getElementById('ecgOpts').innerHTML=shuffledOpts.map(o=>
+    `<button class="quiz-opt" onclick="answerECG('${o.replace(/'/g,"\'")}',this)">${o}</button>`
+  ).join('');
+}
+
+function answerECG(choice,btn){
+  if(ecgAnswered)return;
+  ecgAnswered=true;
+  const r=ecgRhythms[ecgIdx];
+  const correct=choice===r.opts[r.ans];
+  if(correct)ecgScore++;
+  document.querySelectorAll('#ecgOpts .quiz-opt').forEach(b=>{
+    b.classList.add('dis');
+    if(b.textContent===r.opts[r.ans])b.classList.add('correct');
+    else if(b===btn&&!correct)b.classList.add('wrong');
+  });
+  const fb=document.getElementById('ecgFeedback');
+  fb.className='quiz-feedback show '+(correct?'good':'bad');
+  fb.style.display='block';
+  fb.innerHTML=(correct?'✅ ':'❌ ')+`<strong>${r.name}</strong> — ${r.exp}`;
+  document.getElementById('ecgScore').textContent=`Score: ${ecgScore}/${ecgIdx+1}`;
+  document.getElementById('ecgNext').style.display='block';
+}
+
+function nextECG(){ecgIdx++;ecgAnswered=false;renderECG();}
+
+
+// ══════════════════════════════
+// CRANIAL NERVE AVATAR GAME
+// ══════════════════════════════
+const cnChallenges=[
+  {cn:"CN I (Olfactory)",
+   clue:"The patient cannot smell anything — coffee, vanilla, nothing registers at all.",
+   draw:drawSmellLoss,
+   opts:["CN I (Olfactory)","CN II (Optic)","CN V (Trigeminal)","CN VII (Facial)"],
+   ans:0,
+   exp:"CN I (Olfactory) = smell only. Anosmia (loss of smell) = CN I damage. Test: hold familiar scent under each nostril with eyes closed."},
+  {cn:"CN II (Optic)",
+   clue:"The patient cannot read the eye chart. Visual fields are severely limited.",
+   draw:drawVisionLoss,
+   opts:["CN I (Olfactory)","CN II (Optic)","CN III (Oculomotor)","CN VI (Abducens)"],
+   ans:1,
+   exp:"CN II (Optic) = vision. Visual acuity + peripheral vision (confrontation test). Papilledema on fundoscopy = CN II finding and sign of elevated ICP."},
+  {cn:"CN III (Oculomotor)",
+   clue:"The patient has a drooping right eyelid and the right eye is deviated down and out. Right pupil is fixed and dilated.",
+   draw:drawCN3Palsy,
+   opts:["CN II (Optic)","CN IV (Trochlear)","CN III (Oculomotor)","CN VI (Abducens)"],
+   ans:2,
+   exp:"CN III damage = ptosis (drooping lid) + eye deviated DOWN and OUT + fixed dilated pupil ('blown pupil'). A blown pupil after head trauma = herniation emergency!"},
+  {cn:"CN IV (Trochlear)",
+   clue:"The patient tilts their head to one side and reports double vision that is worst when looking down, like when reading or descending stairs.",
+   draw:drawCN4Palsy,
+   opts:["CN III (Oculomotor)","CN IV (Trochlear)","CN VI (Abducens)","CN II (Optic)"],
+   ans:1,
+   exp:"CN IV (Trochlear) = superior oblique muscle = downward/inward gaze. Damage = vertical diplopia worst on downgaze, compensatory head tilt. Think: difficulty going DOWN stairs."},
+  {cn:"CN V (Trigeminal)",
+   clue:"The patient reports numbness across the entire right side of their face and has difficulty chewing — jaw weakness on that side.",
+   draw:drawCN5Palsy,
+   opts:["CN VII (Facial)","CN V (Trigeminal)","CN IX (Glossopharyngeal)","CN XII (Hypoglossal)"],
+   ans:1,
+   exp:"CN V (Trigeminal) = LARGEST cranial nerve. Facial SENSATION (forehead, cheek, jaw) + MOTOR for chewing. Mixed nerve. Three branches: V1 ophthalmic, V2 maxillary, V3 mandibular."},
+  {cn:"CN VII (Facial)",
+   clue:"The entire right side of the patient's face is drooping. They cannot close their right eye or raise their right eyebrow.",
+   draw:drawCN7Palsy,
+   opts:["CN V (Trigeminal)","CN VII (Facial)","CN IX (Glossopharyngeal)","CN XII (Hypoglossal)"],
+   ans:1,
+   exp:"CN VII (Facial) = muscles of facial expression. Peripheral damage (Bell's palsy): ENTIRE face affected including forehead. Central stroke: forehead SPARED (bilateral cortical input). Key nursing concern: corneal exposure from inability to close eye."},
+  {cn:"CN VIII (Vestibulocochlear)",
+   clue:"The patient reports hearing loss in the left ear and episodes of vertigo. They lose balance when eyes are closed (positive Romberg).",
+   draw:drawCN8Palsy,
+   opts:["CN VII (Facial)","CN VIII (Vestibulocochlear)","CN IX (Glossopharyngeal)","CN I (Olfactory)"],
+   ans:1,
+   exp:"CN VIII = hearing (cochlear branch) + balance/equilibrium (vestibular branch). Damage = sensorineural hearing loss + vertigo. Test: whisper test, Weber/Rinne, Romberg. Implement fall precautions!"},
+  {cn:"CN XII (Hypoglossal)",
+   clue:"When the patient sticks out their tongue, it deviates to the right side.",
+   draw:drawCN12Palsy,
+   opts:["CN IX (Glossopharyngeal)","CN X (Vagus)","CN XI (Accessory)","CN XII (Hypoglossal)"],
+   ans:3,
+   exp:"CN XII (Hypoglossal) = tongue movement (motor only). Tongue deviates TOWARD the side of the lesion (the weak side is pushed by the intact side). Assess: protrude tongue, check for deviation and atrophy."},
+];
+
+let cnIdx=0,cnScore=0,cnAnswered=false;
+
+function drawFaceBase(svg,cx,cy){
+  svg.innerHTML='';
+  const ns='http://www.w3.org/2000/svg';
+  // Head
+  const head=document.createElementNS(ns,'ellipse');
+  head.setAttribute('cx',cx);head.setAttribute('cy',cy);
+  head.setAttribute('rx','70');head.setAttribute('ry','85');
+  head.setAttribute('fill','#fde8d0');head.setAttribute('stroke','#c2621a');head.setAttribute('stroke-width','2');
+  svg.appendChild(head);
+  // Hair
+  const hair=document.createElementNS(ns,'path');
+  hair.setAttribute('d',`M${cx-70},${cy-20} Q${cx-65},${cy-90} ${cx},${cy-88} Q${cx+65},${cy-90} ${cx+70},${cy-20}`);
+  hair.setAttribute('fill','#3d1a00');hair.setAttribute('stroke','none');
+  svg.appendChild(hair);
+  // Ears
+  ['left','right'].forEach((side,i)=>{
+    const ex=i===0?cx-72:cx+72;
+    const ear=document.createElementNS(ns,'ellipse');
+    ear.setAttribute('cx',ex);ear.setAttribute('cy',cy+5);
+    ear.setAttribute('rx','10');ear.setAttribute('ry','14');
+    ear.setAttribute('fill','#fde8d0');ear.setAttribute('stroke','#c2621a');ear.setAttribute('stroke-width','1.5');
+    svg.appendChild(ear);
+  });
+  return ns;
+}
+
+function addElem(svg,ns,tag,attrs){
+  const el=document.createElementNS(ns,tag);
+  Object.entries(attrs).forEach(([k,v])=>el.setAttribute(k,v));
+  svg.appendChild(el);return el;
+}
+
+function drawSmellLoss(svg){
+  const ns=drawFaceBase(svg,100,125);
+  const cx=100,cy=125;
+  // Normal eyes
+  addElem(svg,ns,'ellipse',{cx:cx-22,cy:cy-18,rx:14,ry:10,fill:'white',stroke:'#333','stroke-width':'1.5'});
+  addElem(svg,ns,'circle',{cx:cx-22,cy:cy-18,r:6,fill:'#1a4fa0'});
+  addElem(svg,ns,'circle',{cx:cx-20,cy:cy-20,r:2,fill:'white'});
+  addElem(svg,ns,'ellipse',{cx:cx+22,cy:cy-18,rx:14,ry:10,fill:'white',stroke:'#333','stroke-width':'1.5'});
+  addElem(svg,ns,'circle',{cx:cx+22,cy:cy-18,r:6,fill:'#1a4fa0'});
+  addElem(svg,ns,'circle',{cx:cx+24,cy:cy-20,r:2,fill:'white'});
+  // Nose with X
+  addElem(svg,ns,'path',{d:`M${cx},${cy} L${cx-8},${cy+18} L${cx+8},${cy+18}`,stroke:'#c2621a','stroke-width':'2',fill:'none'});
+  addElem(svg,ns,'text',{x:cx,y:cy+15,'text-anchor':'middle','font-size':'18',fill:'#b91c1c','font-weight':'bold'},);
+  const t=document.createElementNS(ns,'text');
+  t.setAttribute('x',cx+22);t.setAttribute('y',cy-2);t.setAttribute('text-anchor','middle');
+  t.setAttribute('font-size','20');t.setAttribute('fill','#b91c1c');t.setAttribute('font-weight','bold');
+  t.textContent='✕';svg.appendChild(t);
+  // Neutral mouth
+  addElem(svg,ns,'path',{d:`M${cx-22},${cy+38} Q${cx},${cy+44} ${cx+22},${cy+38}`,stroke:'#333','stroke-width':'2',fill:'none'});
+  // Smell crossed out
+  addElem(svg,ns,'text',{x:cx,y:cy+75,'text-anchor':'middle','font-size':'13',fill:'#b91c1c'},);
+  const t2=document.createElementNS(ns,'text');
+  t2.setAttribute('x',cx);t2.setAttribute('y',cy+75);t2.setAttribute('text-anchor','middle');
+  t2.setAttribute('font-size','12');t2.setAttribute('fill','#b91c1c');t2.setAttribute('font-weight','600');
+  t2.textContent='No smell detected';svg.appendChild(t2);
+}
+
+function drawVisionLoss(svg){
+  const ns=drawFaceBase(svg,100,125);
+  const cx=100,cy=125;
+  // Squinting/X eyes
+  addElem(svg,ns,'ellipse',{cx:cx-22,cy:cy-18,rx:14,ry:10,fill:'#eee',stroke:'#333','stroke-width':'1.5'});
+  const t1=document.createElementNS(ns,'text');
+  t1.setAttribute('x',cx-22);t1.setAttribute('y',cy-14);t1.setAttribute('text-anchor','middle');
+  t1.setAttribute('font-size','16');t1.setAttribute('fill','#b91c1c');t1.textContent='✕';svg.appendChild(t1);
+  addElem(svg,ns,'ellipse',{cx:cx+22,cy:cy-18,rx:14,ry:10,fill:'#eee',stroke:'#333','stroke-width':'1.5'});
+  const t2=document.createElementNS(ns,'text');
+  t2.setAttribute('x',cx+22);t2.setAttribute('y',cy-14);t2.setAttribute('text-anchor','middle');
+  t2.setAttribute('font-size','16');t2.setAttribute('fill','#b91c1c');t2.textContent='✕';svg.appendChild(t2);
+  // Nose
+  addElem(svg,ns,'path',{d:`M${cx},${cy} L${cx-8},${cy+18} L${cx+8},${cy+18}`,stroke:'#c2621a','stroke-width':'2',fill:'none'});
+  // Neutral mouth
+  addElem(svg,ns,'path',{d:`M${cx-22},${cy+38} Q${cx},${cy+44} ${cx+22},${cy+38}`,stroke:'#333','stroke-width':'2',fill:'none'});
+  // Glasses
+  addElem(svg,ns,'circle',{cx:cx-22,cy:cy-18,r:16,fill:'none',stroke:'#666','stroke-width':'2'});
+  addElem(svg,ns,'circle',{cx:cx+22,cy:cy-18,r:16,fill:'none',stroke:'#666','stroke-width':'2'});
+  addElem(svg,ns,'line',{x1:cx-6,y1:cy-18,x2:cx+6,y2:cy-18,stroke:'#666','stroke-width':'2'});
+  const t3=document.createElementNS(ns,'text');
+  t3.setAttribute('x',cx);t3.setAttribute('y',cy+75);t3.setAttribute('text-anchor','middle');
+  t3.setAttribute('font-size','12');t3.setAttribute('fill','#b91c1c');t3.setAttribute('font-weight','600');
+  t3.textContent='Cannot see';svg.appendChild(t3);
+}
+
+function drawCN3Palsy(svg){
+  const ns=drawFaceBase(svg,100,125);
+  const cx=100,cy=125;
+  // LEFT eye normal
+  addElem(svg,ns,'ellipse',{cx:cx-22,cy:cy-18,rx:14,ry:10,fill:'white',stroke:'#333','stroke-width':'1.5'});
+  addElem(svg,ns,'circle',{cx:cx-22,cy:cy-18,r:6,fill:'#1a4fa0'});
+  addElem(svg,ns,'circle',{cx:cx-20,cy:cy-20,r:2,fill:'white'});
+  // RIGHT eye: ptosis (drooping lid) + deviated down-out + dilated pupil
+  addElem(svg,ns,'ellipse',{cx:cx+26,cy:cy-12,rx:14,ry:7,fill:'white',stroke:'#333','stroke-width':'1.5'});
+  addElem(svg,ns,'circle',{cx:cx+28,cy:cy-10,r:8,fill:'#111'});// dilated
+  // Drooping eyelid
+  addElem(svg,ns,'path',{d:`M${cx+12},${cy-18} Q${cx+26},${cy-8} ${cx+40},${cy-18}`,fill:'#fde8d0',stroke:'#c2621a','stroke-width':'2'});
+  // Nose
+  addElem(svg,ns,'path',{d:`M${cx},${cy} L${cx-8},${cy+18} L${cx+8},${cy+18}`,stroke:'#c2621a','stroke-width':'2',fill:'none'});
+  addElem(svg,ns,'path',{d:`M${cx-22},${cy+38} Q${cx},${cy+44} ${cx+22},${cy+38}`,stroke:'#333','stroke-width':'2',fill:'none'});
+  const t=document.createElementNS(ns,'text');
+  t.setAttribute('x',cx);t.setAttribute('y',cy+75);t.setAttribute('text-anchor','middle');
+  t.setAttribute('font-size','11');t.setAttribute('fill','#b91c1c');t.setAttribute('font-weight','600');
+  t.textContent='Ptosis + dilated pupil (R)';svg.appendChild(t);
+}
+
+function drawCN4Palsy(svg){
+  const ns=drawFaceBase(svg,100,125);
+  const cx=100,cy=125;
+  // Both eyes visible but head tilted
+  addElem(svg,ns,'ellipse',{cx:cx-22,cy:cy-18,rx:14,ry:10,fill:'white',stroke:'#333','stroke-width':'1.5'});
+  addElem(svg,ns,'circle',{cx:cx-22,cy:cy-18,r:6,fill:'#1a4fa0'});
+  addElem(svg,ns,'circle',{cx:cx-20,cy:cy-20,r:2,fill:'white'});
+  addElem(svg,ns,'ellipse',{cx:cx+22,cy:cy-18,rx:14,ry:10,fill:'white',stroke:'#333','stroke-width':'1.5'});
+  addElem(svg,ns,'circle',{cx:cx+22,cy:cy-18,r:6,fill:'#1a4fa0'});
+  addElem(svg,ns,'circle',{cx:cx+24,cy:cy-20,r:2,fill:'white'});
+  addElem(svg,ns,'path',{d:`M${cx},${cy} L${cx-8},${cy+18} L${cx+8},${cy+18}`,stroke:'#c2621a','stroke-width':'2',fill:'none'});
+  addElem(svg,ns,'path',{d:`M${cx-22},${cy+38} Q${cx},${cy+44} ${cx+22},${cy+38}`,stroke:'#333','stroke-width':'2',fill:'none'});
+  // Head tilt indicator
+  addElem(svg,ns,'path',{d:`M${cx+55},${cy-60} Q${cx+75},${cy-40} ${cx+60},${cy-20}`,stroke:'#c2621a','stroke-width':'2',fill:'none','stroke-dasharray':'4'});
+  addElem(svg,ns,'text',{x:cx+70,y:cy-55,'text-anchor':'middle','font-size':'10',fill:'#c2621a','font-weight':'600'},'');
+  const arr=document.createElementNS(ns,'text');
+  arr.setAttribute('x',cx+70);arr.setAttribute('y',cy-50);arr.setAttribute('font-size','18');arr.setAttribute('fill','#c2621a');
+  arr.textContent='↻';svg.appendChild(arr);
+  const t=document.createElementNS(ns,'text');
+  t.setAttribute('x',cx);t.setAttribute('y',cy+75);t.setAttribute('text-anchor','middle');
+  t.setAttribute('font-size','11');t.setAttribute('fill','#b91c1c');t.setAttribute('font-weight','600');
+  t.textContent='Head tilt + diplopia on downgaze';svg.appendChild(t);
+}
+
+function drawCN5Palsy(svg){
+  const ns=drawFaceBase(svg,100,125);
+  const cx=100,cy=125;
+  addElem(svg,ns,'ellipse',{cx:cx-22,cy:cy-18,rx:14,ry:10,fill:'white',stroke:'#333','stroke-width':'1.5'});
+  addElem(svg,ns,'circle',{cx:cx-22,cy:cy-18,r:6,fill:'#1a4fa0'});
+  addElem(svg,ns,'ellipse',{cx:cx+22,cy:cy-18,rx:14,ry:10,fill:'white',stroke:'#333','stroke-width':'1.5'});
+  addElem(svg,ns,'circle',{cx:cx+22,cy:cy-18,r:6,fill:'#1a4fa0'});
+  addElem(svg,ns,'path',{d:`M${cx},${cy} L${cx-8},${cy+18} L${cx+8},${cy+18}`,stroke:'#c2621a','stroke-width':'2',fill:'none'});
+  addElem(svg,ns,'path',{d:`M${cx-22},${cy+38} Q${cx},${cy+44} ${cx+22},${cy+38}`,stroke:'#333','stroke-width':'2',fill:'none'});
+  // Numbness shading on right face
+  addElem(svg,ns,'path',{d:`M${cx},${cy-70} Q${cx+70},${cy-60} ${cx+70},${cy+50} Q${cx+30},${cy+65} ${cx},${cy+65}`,fill:'rgba(185,28,28,0.12)',stroke:'#b91c1c','stroke-width':'1.5','stroke-dasharray':'4'});
+  const t=document.createElementNS(ns,'text');
+  t.setAttribute('x',cx);t.setAttribute('y',cy+75);t.setAttribute('text-anchor','middle');
+  t.setAttribute('font-size','11');t.setAttribute('fill','#b91c1c');t.setAttribute('font-weight','600');
+  t.textContent='Facial numbness + jaw weakness';svg.appendChild(t);
+}
+
+function drawCN7Palsy(svg){
+  const ns=drawFaceBase(svg,100,125);
+  const cx=100,cy=125;
+  // LEFT eye normal
+  addElem(svg,ns,'ellipse',{cx:cx-22,cy:cy-18,rx:14,ry:10,fill:'white',stroke:'#333','stroke-width':'1.5'});
+  addElem(svg,ns,'circle',{cx:cx-22,cy:cy-18,r:6,fill:'#1a4fa0'});
+  addElem(svg,ns,'circle',{cx:cx-20,cy:cy-20,r:2,fill:'white'});
+  addElem(svg,ns,'path',{d:`M${cx-36},${cy-28} Q${cx-22},${cy-32} ${cx-8},${cy-28}`,stroke:'#333','stroke-width':'1.5',fill:'none'});// left brow
+  // RIGHT eye — cannot close
+  addElem(svg,ns,'ellipse',{cx:cx+22,cy:cy-18,rx:14,ry:12,fill:'white',stroke:'#b91c1c','stroke-width':'2'});
+  addElem(svg,ns,'circle',{cx:cx+22,cy:cy-18,r:6,fill:'#1a4fa0'});
+  // Right eyebrow flat (cannot raise)
+  addElem(svg,ns,'path',{d:`M${cx+8},${cy-30} L${cx+36},${cy-30}`,stroke:'#333','stroke-width':'2'});
+  // Asymmetric mouth — drooping right
+  addElem(svg,ns,'path',{d:`M${cx-22},${cy+36} Q${cx-5},${cy+38} ${cx+5},${cy+40} Q${cx+15},${cy+48} ${cx+22},${cy+50}`,stroke:'#333','stroke-width':'2',fill:'none'});
+  addElem(svg,ns,'path',{d:`M${cx},${cy} L${cx-8},${cy+18} L${cx+8},${cy+18}`,stroke:'#c2621a','stroke-width':'2',fill:'none'});
+  const t=document.createElementNS(ns,'text');
+  t.setAttribute('x',cx);t.setAttribute('y',cy+75);t.setAttribute('text-anchor','middle');
+  t.setAttribute('font-size','11');t.setAttribute('fill','#b91c1c');t.setAttribute('font-weight','600');
+  t.textContent="Facial droop + can't close eye (R)";svg.appendChild(t);
+}
+
+function drawCN8Palsy(svg){
+  const ns=drawFaceBase(svg,100,125);
+  const cx=100,cy=125;
+  addElem(svg,ns,'ellipse',{cx:cx-22,cy:cy-18,rx:14,ry:10,fill:'white',stroke:'#333','stroke-width':'1.5'});
+  addElem(svg,ns,'circle',{cx:cx-22,cy:cy-18,r:6,fill:'#1a4fa0'});
+  addElem(svg,ns,'circle',{cx:cx-20,cy:cy-20,r:2,fill:'white'});
+  addElem(svg,ns,'ellipse',{cx:cx+22,cy:cy-18,rx:14,ry:10,fill:'white',stroke:'#333','stroke-width':'1.5'});
+  addElem(svg,ns,'circle',{cx:cx+22,cy:cy-18,r:6,fill:'#1a4fa0'});
+  addElem(svg,ns,'path',{d:`M${cx},${cy} L${cx-8},${cy+18} L${cx+8},${cy+18}`,stroke:'#c2621a','stroke-width':'2',fill:'none'});
+  addElem(svg,ns,'path',{d:`M${cx-22},${cy+38} Q${cx},${cy+44} ${cx+22},${cy+38}`,stroke:'#333','stroke-width':'2',fill:'none'});
+  // X over left ear
+  const earX=cx-72;
+  addElem(svg,ns,'text',{x:earX,y:cy+12,'text-anchor':'middle','font-size':'20',fill:'#b91c1c','font-weight':'bold'},'');
+  const tx=document.createElementNS(ns,'text');
+  tx.setAttribute('x',earX);tx.setAttribute('y',cy+12);tx.setAttribute('text-anchor','middle');
+  tx.setAttribute('font-size','20');tx.setAttribute('fill','#b91c1c');tx.setAttribute('font-weight','bold');
+  tx.textContent='✕';svg.appendChild(tx);
+  // Swirl for vertigo
+  addElem(svg,ns,'text',{x:cx+90,y:cy-40,'font-size':'24',fill:'#6d28d9'},'');
+  const ts=document.createElementNS(ns,'text');
+  ts.setAttribute('x',cx+85);ts.setAttribute('y',cy-35);ts.setAttribute('font-size','22');ts.setAttribute('fill','#6d28d9');
+  ts.textContent='🌀';svg.appendChild(ts);
+  const t=document.createElementNS(ns,'text');
+  t.setAttribute('x',cx);t.setAttribute('y',cy+75);t.setAttribute('text-anchor','middle');
+  t.setAttribute('font-size','11');t.setAttribute('fill','#b91c1c');t.setAttribute('font-weight','600');
+  t.textContent='Hearing loss + vertigo (L)';svg.appendChild(t);
+}
+
+function drawCN12Palsy(svg){
+  const ns=drawFaceBase(svg,100,125);
+  const cx=100,cy=125;
+  addElem(svg,ns,'ellipse',{cx:cx-22,cy:cy-18,rx:14,ry:10,fill:'white',stroke:'#333','stroke-width':'1.5'});
+  addElem(svg,ns,'circle',{cx:cx-22,cy:cy-18,r:6,fill:'#1a4fa0'});
+  addElem(svg,ns,'circle',{cx:cx-20,cy:cy-20,r:2,fill:'white'});
+  addElem(svg,ns,'ellipse',{cx:cx+22,cy:cy-18,rx:14,ry:10,fill:'white',stroke:'#333','stroke-width':'1.5'});
+  addElem(svg,ns,'circle',{cx:cx+22,cy:cy-18,r:6,fill:'#1a4fa0'});
+  addElem(svg,ns,'path',{d:`M${cx},${cy} L${cx-8},${cy+18} L${cx+8},${cy+18}`,stroke:'#c2621a','stroke-width':'2',fill:'none'});
+  // Open mouth with tongue deviating RIGHT
+  addElem(svg,ns,'path',{d:`M${cx-24},${cy+36} Q${cx},${cy+50} ${cx+24},${cy+36}`,stroke:'#333','stroke-width':'2',fill:'#ffe0e0'});
+  // Tongue pointing right
+  addElem(svg,ns,'path',{d:`M${cx-5},${cy+44} Q${cx+10},${cy+58} ${cx+22},${cy+52} Q${cx+28},${cy+50} ${cx+20},${cy+44}`,fill:'#e87070',stroke:'#c2621a','stroke-width':'1.5'});
+  const arr=document.createElementNS(ns,'text');
+  arr.setAttribute('x',cx+35);arr.setAttribute('y',cy+52);arr.setAttribute('font-size','20');arr.setAttribute('fill','#b91c1c');
+  arr.textContent='→';svg.appendChild(arr);
+  const t=document.createElementNS(ns,'text');
+  t.setAttribute('x',cx);t.setAttribute('y',cy+80);t.setAttribute('text-anchor','middle');
+  t.setAttribute('font-size','11');t.setAttribute('fill','#b91c1c');t.setAttribute('font-weight','600');
+  t.textContent='Tongue deviates toward lesion (R)';svg.appendChild(t);
+}
+
+function startCN(){
+  cnIdx=0;cnScore=0;cnAnswered=false;
+  shuffleArray(cnChallenges);
+  renderCN();
+}
+
+function renderCN(){
+  if(cnIdx>=cnChallenges.length){
+    document.getElementById('cnAvatar').innerHTML='';
+    document.getElementById('cnClue').textContent='';
+    document.getElementById('cnOpts').innerHTML=`<div style="text-align:center;padding:20px;font-size:1.1rem;font-weight:600;color:var(--or)">🎉 Complete! Score: ${cnScore}/${cnChallenges.length}</div>`;
+    document.getElementById('cnFeedback').style.display='none';
+    document.getElementById('cnNext').style.display='none';
+    if(cnScore===cnChallenges.length) confetti();
+    return;
+  }
+  cnAnswered=false;
+  const ch=cnChallenges[cnIdx];
+  document.getElementById('cnScore').textContent=`Score: ${cnScore}/${cnIdx}`;
+  document.getElementById('cnClue').textContent=ch.clue;
+  ch.draw(document.getElementById('cnAvatar'));
+  document.getElementById('cnFeedback').style.display='none';
+  document.getElementById('cnNext').style.display='none';
+  const shuffled=[...ch.opts];shuffleArray(shuffled);
+  document.getElementById('cnOpts').innerHTML=shuffled.map(o=>
+    `<button class="quiz-opt" onclick="answerCN('${o.replace(/'/g,"\'")}',this)">${o}</button>`
+  ).join('');
+}
+
+function answerCN(choice,btn){
+  if(cnAnswered)return;cnAnswered=true;
+  const ch=cnChallenges[cnIdx];
+  const correct=choice===ch.opts[ch.ans];
+  if(correct)cnScore++;
+  document.querySelectorAll('#cnOpts .quiz-opt').forEach(b=>{
+    b.classList.add('dis');
+    if(b.textContent===ch.opts[ch.ans])b.classList.add('correct');
+    else if(b===btn&&!correct)b.classList.add('wrong');
+  });
+  const fb=document.getElementById('cnFeedback');
+  fb.className='quiz-feedback show '+(correct?'good':'bad');
+  fb.style.display='block';
+  fb.innerHTML=(correct?'✅ ':'❌ ')+`<strong>${ch.cn}</strong> — ${ch.exp}`;
+  document.getElementById('cnScore').textContent=`Score: ${cnScore}/${cnIdx+1}`;
+  document.getElementById('cnNext').style.display='block';
+}
+function nextCN(){cnIdx++;renderCN();}
+
+
+// ══════════════════════════════
+// IV SETUP LABELING GAME
+// ══════════════════════════════
+const ivParts=[
+  {id:'hook',      label:'Hook',           x:195, y:22,  r:12, desc:'The hook attaches the IV pole to the bag hanger system at the top.'},
+  {id:'primary',   label:'Primary IV Bag', x:130, y:78,  r:18, desc:'The primary IV bag contains the main continuous infusion fluid (e.g., NS, D5W, LR).'},
+  {id:'secondary', label:'Secondary IV Bag',x:210,y:65,  r:18, desc:'The secondary (piggyback) bag contains intermittent medications hung HIGHER than the primary bag.'},
+  {id:'injport',   label:'Injection Port', x:145, y:135, r:10, desc:'Injection ports allow medication to be added to the running IV without disrupting the line.'},
+  {id:'spike',     label:'Sterile Spike',  x:145, y:158, r:10, desc:'The sterile spike is inserted into the IV bag using aseptic technique. Never contaminate this tip.'},
+  {id:'drip',      label:'Drip Chamber',   x:145, y:182, r:10, desc:'The drip chamber is filled halfway. Count drops here for gravity drip rate calculation (gtt/min).'},
+  {id:'backcheck', label:'Back Check Valve',x:145,y:205, r:10, desc:'The back check valve prevents primary solution from flowing backward into the secondary line during piggyback infusion.'},
+  {id:'roller',    label:'Roller Clamp',   x:148, y:285, r:10, desc:'The roller clamp regulates IV flow rate. Gravity = drops/min. Pump = mL/hr. PATIENT should never touch this.'},
+  {id:'luerlock',  label:'Luer Lock',      x:165, y:430, r:10, desc:'The luer lock is a threaded connection that prevents accidental disconnection. Always use luer-lock connections for IV tubing.'},
+  {id:'extension', label:'Extension Tubing',x:215,y:400, r:10, desc:'Extension tubing provides extra length between the IV line and the catheter insertion site, allowing more patient movement.'},
+  {id:'cannula',   label:'Cannula',        x:270, y:435, r:10, desc:'The cannula (IV catheter) is the flexible plastic tube that remains in the vein after the needle is removed. Bevel up on insertion!'},
+  {id:'clamp',     label:'Clamp',          x:240, y:415, r:10, desc:'The clamp on extension tubing allows the line to be clamped when not in use. Always clamp before disconnecting.'},
+];
+
+let ivAnswered=new Set(), ivCurrent=null;
+
+function drawIVDiagram(){
+  const svg=document.getElementById('ivDiagram');
+  const ns='http://www.w3.org/2000/svg';
+  svg.innerHTML='';
+
+  // ── IV Pole ──
+  const addEl=(tag,attrs,text)=>{
+    const el=document.createElementNS(ns,tag);
+    Object.entries(attrs).forEach(([k,v])=>el.setAttribute(k,v));
+    if(text!==undefined)el.textContent=text;
+    svg.appendChild(el);return el;
+  };
+
+  // Pole
+  addEl('rect',{x:155,y:30,width:6,height:390,fill:'#aaa',rx:3});
+  // Pole base
+  addEl('ellipse',{cx:158,cy:420,rx:55,ry:10,fill:'#888'});
+  addEl('line',{x1:103,y1:420,x2:80,y2:440,stroke:'#888','stroke-width':6,'stroke-linecap':'round'});
+  addEl('line',{x1:213,y1:420,x2:236,y2:440,stroke:'#888','stroke-width':6,'stroke-linecap':'round'});
+  addEl('line',{x1:103,y1:420,x2:80,y2:400,stroke:'#888','stroke-width':6,'stroke-linecap':'round'});
+  addEl('line',{x1:213,y1:420,x2:236,y2:400,stroke:'#888','stroke-width':6,'stroke-linecap':'round'});
+  addEl('circle',{cx:80,cy:440,r:6,fill:'#666'});
+  addEl('circle',{cx:236,cy:440,r:6,fill:'#666'});
+  addEl('circle',{cx:80,cy:400,r:6,fill:'#666'});
+  addEl('circle',{cx:236,cy:400,r:6,fill:'#666'});
+
+  // Hook
+  addEl('path',{d:'M158,20 Q175,8 188,15 Q200,22 195,35',stroke:'#888','stroke-width':4,fill:'none','stroke-linecap':'round'});
+
+  // Primary IV bag
+  addEl('rect',{x:100,y:50,width:50,height:70,rx:8,fill:'#def0ff',stroke:'#aad','stroke-width':1.5});
+  addEl('rect',{x:120,y:46,width:10,height:8,rx:2,fill:'#aad'});
+  addEl('text',{x:125,y:92,'text-anchor':'middle','font-size':8,fill:'#445'},'Primary');
+  addEl('text',{x:125,y:102,'text-anchor':'middle','font-size':8,fill:'#445'},'IV Bag');
+
+  // Secondary IV bag  
+  addEl('rect',{x:175,y:38,width:44,height:54,rx:8,fill:'#dfffdf',stroke:'#8a8','stroke-width':1.5});
+  addEl('rect',{x:193,y:34,width:8,height:7,rx:2,fill:'#8a8'});
+  addEl('text',{x:197,y:68,'text-anchor':'middle','font-size':7,fill:'#454'},'Secondary');
+  addEl('text',{x:197,y:78,'text-anchor':'middle','font-size':7,fill:'#454'},'IV Bag');
+
+  // Tubing from primary bag
+  addEl('path',{d:'M125,120 L125,165',stroke:'#89a','stroke-width':3,fill:'none'});
+  // Drip chamber
+  addEl('rect',{x:118,y:165,width:14,height:28,rx:4,fill:'#eef5ff',stroke:'#aad','stroke-width':1.5});
+  // Back check valve
+  addEl('rect',{x:120,y:197,width:10,height:10,rx:2,fill:'#c8a',stroke:'#987','stroke-width':1.5});
+  // Injection port
+  addEl('circle',{cx:125,cy:215,r:5,fill:'#fcc',stroke:'#c88','stroke-width':1.5});
+  // Slider clamp
+  addEl('rect',{x:119,y:225,width:12,height:6,rx:2,fill:'#bbb',stroke:'#888','stroke-width':1});
+  // Tubing continues
+  addEl('path',{d:'M125,232 L125,280',stroke:'#89a','stroke-width':3,fill:'none'});
+  // Roller clamp
+  addEl('rect',{x:119,y:280,width:12,height:14,rx:3,fill:'#c8c',stroke:'#a6a','stroke-width':1.5});
+  // Port
+  addEl('circle',{cx:125,cy:305,r:4,fill:'#fcc',stroke:'#c88','stroke-width':1.5});
+  // Lower tubing
+  addEl('path',{d:'M125,310 L125,375 Q125,390 140,395 L220,420',stroke:'#89a','stroke-width':3,fill:'none'});
+
+  // Secondary tubing
+  addEl('path',{d:'M197,92 L197,120 Q197,135 158,155',stroke:'#6a6','stroke-width':2,fill:'none'});
+  // Injection port (secondary)
+  addEl('circle',{cx:178,cy:125,r:4,fill:'#cfc',stroke:'#8a8','stroke-width':1.5});
+
+  // Extension tubing
+  addEl('path',{d:'M220,420 L255,430',stroke:'#89a','stroke-width':3,fill:'none'});
+  // Clamp on extension
+  addEl('rect',{x:235,y:420,width:10,height:8,rx:2,fill:'#bbb',stroke:'#888','stroke-width':1.5});
+  // Luer lock
+  addEl('circle',{cx:258,cy:432,r:6,fill:'#fde8d0',stroke:'#c2621a','stroke-width':2});
+  // Cannula
+  addEl('path',{d:'M262,428 L290,418 L300,422',stroke:'#c2621a','stroke-width':2.5,fill:'none','stroke-linecap':'round'});
+  // Hand outline
+  addEl('path',{d:'M270,435 Q280,415 310,412 Q320,415 315,430 Q310,445 280,448 Z',fill:'#fde8d0',stroke:'#c2621a','stroke-width':1.5});
+
+  // Hook
+  addEl('text',{x:190,y:22,'text-anchor':'middle','font-size':7,fill:'#555'},'Hook');
+
+  // ── Interactive hotspots ──
+  ivParts.forEach(part=>{
+    const done=ivAnswered.has(part.id);
+    const circle=addEl('circle',{
+      cx:part.x, cy:part.y, r:part.r,
+      fill: done?'rgba(45,122,79,0.3)':'rgba(194,98,26,0.15)',
+      stroke: done?'#2d7a4f':'#c2621a',
+      'stroke-width': ivCurrent===part.id?3:1.5,
+      cursor:'pointer',
+      opacity:0.85
+    });
+    if(!done){
+      circle.style.animation='ivPulse 1.5s ease-in-out infinite';
+    }
+    circle.addEventListener('click',()=>clickIVPart(part));
+
+    // Label for solved parts
+    if(done){
+      const lbl=addEl('text',{
+        x:part.x, y:part.y-part.r-3,
+        'text-anchor':'middle','font-size':7,
+        fill:'#2d7a4f','font-weight':'600'
+      },part.label);
+    }
+  });
+}
+
+function clickIVPart(part){
+  ivCurrent=part.id;
+  const q=document.getElementById('ivQuestion');
+  const opts=document.getElementById('ivOpts');
+  const fb=document.getElementById('ivFeedback');
+  fb.style.display='none';
+
+  if(ivAnswered.has(part.id)){
+    q.textContent='✅ Already identified: '+part.label;
+    q.style.color='var(--green)';
+    opts.innerHTML='';
+    drawIVDiagram();
+    return;
+  }
+
+  q.textContent='What is this part of the IV setup?';
+  q.style.color='var(--or)';
+
+  const wrong=ivParts.filter(p=>p.id!==part.id);
+  shuffleArray(wrong);
+  const choices=[part,...wrong.slice(0,3)];
+  shuffleArray(choices);
+
+  // Store current choices globally so onclick can reference by index
+  window._ivChoices=choices;
+  window._ivCorrect=part;
+
+  opts.innerHTML=choices.map((c,i)=>
+    `<button class="quiz-opt" onclick="answerIV(${i})">${c.label}</button>`
+  ).join('');
+  drawIVDiagram();
+}
+
+function answerIV(chosenIdx){
+  const choices=window._ivChoices;
+  const part=window._ivCorrect;
+  if(!choices||!part) return;
+  const chosen=choices[chosenIdx];
+  const correct=chosen.id===part.id;
+
+  document.querySelectorAll('#ivOpts .quiz-opt').forEach((b,i)=>{
+    b.classList.add('dis');
+    if(choices[i].id===part.id) b.classList.add('correct');
+    else if(i===chosenIdx&&!correct) b.classList.add('wrong');
+  });
+
+  const fb=document.getElementById('ivFeedback');
+  fb.style.display='block';
+  fb.className='quiz-feedback show '+(correct?'good':'bad');
+  fb.innerHTML=(correct?'✅ Correct! ':'❌ That is the '+part.label+'. ')+part.desc;
+
+  if(correct){
+    ivAnswered.add(part.id);
+    const count=ivAnswered.size;
+    document.getElementById('ivScore').textContent=`Parts identified: ${count}/${ivParts.length}`;
+    if(count===ivParts.length){
+      fb.innerHTML+=' 🎉 <strong>All parts identified!</strong>';
+      confetti();
+    }
+  }
+  drawIVDiagram();
+}
+
+function resetIV(){
+  ivAnswered=new Set();ivCurrent=null;
+  document.getElementById('ivQuestion').textContent='Click any glowing part to start!';
+  document.getElementById('ivQuestion').style.color='var(--or)';
+  document.getElementById('ivOpts').innerHTML='';
+  document.getElementById('ivFeedback').style.display='none';
+  document.getElementById('ivScore').textContent='Parts identified: 0/'+ivParts.length;
+  drawIVDiagram();
+}
+
+// Game init handled in showTab directly
+
+// Add CSS for IV pulse animation
+const ivStyle=document.createElement('style');
+ivStyle.textContent='@keyframes ivPulse{0%,100%{opacity:0.6}50%{opacity:1}}';
+document.head.appendChild(ivStyle);
+
+</script>
+</body>
+</html>
