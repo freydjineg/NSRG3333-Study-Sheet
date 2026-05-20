@@ -659,25 +659,93 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--txt);min-
 
   <div class="section">
     <h2>🎮 Active Recall Games</h2>
-    <p style="color:var(--muted);margin-bottom:20px">Research shows active recall is 2–3× more effective than re-reading. Pick a game and go!</p>
+    <p style="color:var(--muted);margin-bottom:6px">Three games to lock in the content. Each one tests a different type of thinking.</p>
+  </div>
 
-    <!-- QUIZ GAME -->
-    <h3>⚡ Quick Fire Quiz</h3>
-    <div class="quiz-box" id="quizBox">
-      <div class="quiz-q" id="quizQ"></div>
-      <div class="quiz-opts" id="quizOpts"></div>
-      <div class="quiz-feedback" id="quizFeedback"></div>
-      <div class="quiz-nav">
-        <div class="quiz-progress"><div class="quiz-progress-bar" id="quizBar"></div></div>
-        <span class="score-badge" id="quizScore">0/0</span>
-        <button class="btn btn-or" id="quizNext" onclick="nextQuizQ()" style="display:none">Next →</button>
+  <!-- ══ GAME 1: HOT OR NOT ══ -->
+  <div class="section">
+    <h2>🔥 Hot or Not — Safe or Dangerous?</h2>
+    <p style="color:var(--muted);font-size:.85rem;margin-bottom:16px">A clinical action appears. You have 4 seconds to decide — Safe ✅ or Dangerous ❌. Tests your clinical safety instincts.</p>
+    <div id="honGame">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+        <span id="honTimer" style="font-size:2rem;font-weight:700;color:var(--or);min-width:36px">4</span>
+        <span id="honScore" style="font-size:.85rem;font-weight:600;color:var(--muted)">Score: 0 | Streak: 0</span>
+        <span id="honCount" style="font-size:.85rem;color:var(--muted)">1/20</span>
       </div>
-    </div>
-    <div style="text-align:center;margin-top:10px">
-      <button class="btn btn-out" onclick="startQuiz()">🔄 Restart Quiz</button>
+      <div id="honTimerBar" style="height:6px;background:var(--bdr);border-radius:4px;margin-bottom:16px;overflow:hidden">
+        <div id="honTimerFill" style="height:100%;background:var(--or);border-radius:4px;transition:width .1s linear;width:100%"></div>
+      </div>
+      <div id="honCard" style="background:var(--bg);border:2px solid var(--bdr);border-radius:14px;padding:24px 20px;text-align:center;font-size:1rem;font-weight:500;min-height:90px;display:flex;align-items:center;justify-content:center;line-height:1.5;margin-bottom:16px;color:var(--txt)"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
+        <button id="honSafe" onclick="honAnswer(true)" style="padding:16px;border-radius:10px;border:2px solid #2d7a4f;background:#edf7f1;color:#2d7a4f;font-size:1.1rem;font-weight:700;cursor:pointer;transition:all .13s">✅ Safe</button>
+        <button id="honDanger" onclick="honAnswer(false)" style="padding:16px;border-radius:10px;border:2px solid #b91c1c;background:#fef2f2;color:#b91c1c;font-size:1.1rem;font-weight:700;cursor:pointer;transition:all .13s">❌ Dangerous</button>
+      </div>
+      <div id="honFeedback" style="display:none;padding:12px 16px;border-radius:9px;font-size:.88rem;line-height:1.6;margin-bottom:10px"></div>
+      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+        <button class="btn btn-or" id="honStartBtn" onclick="honStart()">▶ Start Round</button>
+        <button class="btn btn-out" id="honStopBtn" onclick="honStop()" style="display:none">⏹ Stop</button>
+        <button class="btn btn-out" id="honResetBtn" onclick="startHON()" style="display:none">🔄 New Round</button>
+      </div>
     </div>
   </div>
 
+  <!-- ══ GAME 2: CHAIN REACTION ══ -->
+  <div class="section">
+    <h2>⛓️ Chain Reaction — Drug → Antidote</h2>
+    <p style="color:var(--muted);font-size:.85rem;margin-bottom:16px">A drug or situation appears. Name the antidote, reversal agent, or correct treatment. One wrong answer breaks the chain. How long can you go?</p>
+    <div id="chainGame">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <div>
+          <span style="font-size:.8rem;color:var(--muted)">Current streak</span>
+          <div style="font-size:2rem;font-weight:700;color:var(--or)" id="chainStreak">0</div>
+        </div>
+        <div style="text-align:center">
+          <span style="font-size:.8rem;color:var(--muted)">Best streak</span>
+          <div style="font-size:2rem;font-weight:700;color:var(--muted)" id="chainBest">0</div>
+        </div>
+        <div style="text-align:right">
+          <span style="font-size:.8rem;color:var(--muted)">Total correct</span>
+          <div style="font-size:2rem;font-weight:700;color:var(--green)" id="chainTotal">0</div>
+        </div>
+      </div>
+      <div id="chainLinks" style="display:flex;flex-wrap:wrap;gap:6px;min-height:32px;margin-bottom:14px;padding:8px 12px;background:var(--bg);border-radius:8px;border:1px solid var(--bdr)">
+        <span style="color:var(--muted);font-size:.82rem;align-self:center">Your chain will appear here…</span>
+      </div>
+      <div id="chainCard" style="background:var(--bg);border:2px solid var(--bdr);border-radius:14px;padding:22px 20px;text-align:center;margin-bottom:14px">
+        <p style="font-size:.8rem;color:var(--muted);margin:0 0 8px">What is the antidote / reversal / correct action for:</p>
+        <p id="chainQ" style="font-size:1.05rem;font-weight:700;color:var(--txt);margin:0"></p>
+      </div>
+      <div id="chainOpts" style="display:flex;flex-direction:column;gap:8px;margin-bottom:12px"></div>
+      <div id="chainFeedback" style="display:none;padding:12px 16px;border-radius:9px;font-size:.88rem;line-height:1.6;margin-bottom:10px"></div>
+      <div style="text-align:center">
+        <button class="btn btn-out" onclick="startChain()">🔄 Restart Chain</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ GAME 3: PATIENT SCENARIO BUILDER ══ -->
+  <div class="section">
+    <h2>🏥 Patient Scenario — What Happens Next?</h2>
+    <p style="color:var(--muted);font-size:.85rem;margin-bottom:16px">You receive a patient. The scenario unfolds in stages — vitals, then assessment, then monitor. At each stage decide what to do. Tests Tanner&rsquo;s Model reasoning.</p>
+    <div id="scenGame">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <div id="scenStageBar" style="display:flex;gap:6px"></div>
+        <span id="scenScoreDisp" style="font-size:.84rem;font-weight:600;color:var(--muted)">Score: 0</span>
+      </div>
+      <div id="scenCard" style="border:2px solid var(--bdr);border-radius:14px;overflow:hidden;margin-bottom:14px">
+        <div id="scenHeader" style="padding:12px 16px;background:var(--or);color:#fff;font-size:.85rem;font-weight:700"></div>
+        <div id="scenBody" style="padding:16px;background:var(--bg);min-height:80px;font-size:.92rem;line-height:1.7;color:var(--txt)"></div>
+      </div>
+      <p id="scenPrompt" style="font-size:.88rem;font-weight:600;color:var(--txt);margin:0 0 10px"></p>
+      <div id="scenOpts" style="display:flex;flex-direction:column;gap:8px;margin-bottom:12px"></div>
+      <div id="scenFeedback" style="display:none;padding:12px 16px;border-radius:9px;font-size:.88rem;line-height:1.6;margin-bottom:10px"></div>
+      <div style="text-align:center">
+        <button class="btn btn-out" onclick="startScen()">🔄 New Scenario</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ KEEP: FLASHCARDS + MATCH ══ -->
   <div class="section">
     <h2>🃏 Flashcards — Click to Flip</h2>
     <p class="fc-hint">Click any card to reveal the answer</p>
@@ -1037,73 +1105,6 @@ function showTab(id){
   if(id==='recall') initRecall();
   if(id==='m2') setTimeout(()=>{if(typeof startECG==='function'){startECG();startCN();}},50);
   if(id==='m3') setTimeout(()=>{if(typeof drawIVDiagram==='function') drawIVDiagram();},50);
-}
-
-// ── QUIZ DATA ──
-const quizData=[
-  {q:"A client with SVT has BP 88/54 and reports chest tightness. Which action does the nurse take FIRST?",opts:["Administer adenosine 6 mg IV push","Perform vagal maneuvers","Prepare for synchronized cardioversion","Administer metoprolol 5 mg IV"],ans:2,exp:"Unstable SVT (hemodynamic compromise) = synchronized cardioversion. Adenosine and vagal maneuvers are for STABLE SVT only."},
-  {q:"A nurse is about to give digoxin. The client's potassium is 2.8 mEq/L. What does the nurse do FIRST?",opts:["Give the digoxin as ordered","Hold digoxin and notify the provider","Give the digoxin with a potassium supplement","Check the digoxin level first"],ans:1,exp:"Hypokalemia potentiates digoxin toxicity — the drug binds more avidly to Na-K ATPase when K+ is low. Hold and notify."},
-  {q:"Which finding indicates a Grade 4 phlebitis?",opts:["Erythema and mild pain","Streak formation and palpable cord","Palpable cord >1 inch with purulent drainage","Edema and pain without streak"],ans:2,exp:"Grade 4 = all Grade 3 features PLUS cord >1 inch AND purulent drainage. Grade 3 = streak + cord. Grade 2 = erythema + edema + pain only."},
-  {q:"A client receiving vancomycin develops facial flushing and itching after 15 min. BP is 120/80. What is this?",opts:["Anaphylaxis — give epinephrine IM","Red Man Syndrome — slow the infusion rate","Septic reaction — stop and culture","Allergic reaction — document allergy"],ans:1,exp:"Red Man Syndrome = rate-related mast cell degranulation, NOT immune-mediated (not a true allergy). Treatment: slow to ≥60 min + diphenhydramine. No hemodynamic compromise = not anaphylaxis."},
-  {q:"A client's ABG shows pH 7.32, PaCO2 58, HCO3 28. Which interpretation is correct?",opts:["Metabolic acidosis","Respiratory alkalosis","Respiratory acidosis with partial metabolic compensation","Normal for a COPD patient — no action needed"],ans:2,exp:"pH<7.35 = acidosis. PaCO2 elevated = respiratory cause. HCO3 elevated = kidneys compensating. = Respiratory acidosis with partial metabolic compensation. Classic COPD exacerbation pattern."},
-  {q:"Which cranial nerve is damaged when a client cannot shrug their right shoulder against resistance?",opts:["CN VII (Facial)","CN X (Vagus)","CN XI (Accessory)","CN XII (Hypoglossal)"],ans:2,exp:"CN XI (Spinal Accessory) supplies the SCM and trapezius muscles. Shoulder shrug + neck rotation against resistance tests CN XI. At risk during neck dissections."},
-  {q:"A client in VFib does not convert after 2 defibrillations. What medication does the nurse prepare?",opts:["Atropine 0.5 mg IV","Adenosine 6 mg IV","Amiodarone 300 mg IV","Digoxin 0.5 mg IV"],ans:2,exp:"ACLS VFib algorithm: CPR + defib + epinephrine (q3-5 min) + amiodarone 300 mg IV after 3rd shock. Amiodarone is the antiarrhythmic of choice in refractory VFib."},
-  {q:"Which sign is a LATE indicator of increased ICP?",opts:["Restlessness and confusion","Unilateral extremity weakness","Bradycardia + hypertension + irregular respirations","Worsening headache"],ans:2,exp:"Cushing's triad (bradycardia, hypertension, irregular respirations) = VERY LATE sign of ICP indicating herniation may already be occurring. Restlessness, weakness, and headache are EARLY signs."},
-  {q:"What is the minimum acceptable IV gauge for blood transfusion?",opts:["24 gauge (yellow)","22 gauge (blue)","20 gauge (pink)","18 gauge (green)"],ans:2,exp:"20 gauge is the minimum acceptable for blood products. Smaller gauges cause hemolysis of RBCs. 18 gauge is preferred for rapid transfusion."},
-  {q:"A client says 'If I can just make it to my grandchild's birth, I'll be ready to go.' Which grief stage is this?",opts:["Denial","Anger","Bargaining","Acceptance"],ans:2,exp:"Bargaining = conditional acceptance ('If I can just get to X, then I'll accept dying'). Classic Kübler-Ross bargaining — a deal with time or fate."},
-];
-
-let quizIdx=0, quizScore=0, quizAnswered=false;
-
-function startQuiz(){
-  quizIdx=0; quizScore=0; quizAnswered=false;
-  shuffleArray(quizData);
-  renderQuiz();
-}
-
-function renderQuiz(){
-  if(quizIdx>=quizData.length){
-    document.getElementById('quizQ').textContent='🎉 Quiz Complete!';
-    document.getElementById('quizOpts').innerHTML=`<div style="text-align:center;font-size:1.1rem;padding:20px;color:var(--or);font-weight:600">Score: ${quizScore}/${quizData.length} (${Math.round(quizScore/quizData.length*100)}%)</div>`;
-    document.getElementById('quizFeedback').style.display='none';
-    document.getElementById('quizNext').style.display='none';
-    if(quizScore===quizData.length) confetti();
-    updateQuizBar();
-    return;
-  }
-  quizAnswered=false;
-  const q=quizData[quizIdx];
-  document.getElementById('quizQ').textContent=`Q${quizIdx+1}/${quizData.length}: ${q.q}`;
-  document.getElementById('quizFeedback').className='quiz-feedback';
-  document.getElementById('quizNext').style.display='none';
-  document.getElementById('quizOpts').innerHTML=q.opts.map((o,i)=>
-    `<button class="quiz-opt" onclick="answerQuiz(${i})">${String.fromCharCode(65+i)}. ${o}</button>`
-  ).join('');
-  updateQuizBar();
-}
-
-function answerQuiz(i){
-  if(quizAnswered) return;
-  quizAnswered=true;
-  const q=quizData[quizIdx];
-  const opts=document.querySelectorAll('.quiz-opt');
-  opts.forEach(o=>o.classList.add('dis'));
-  opts[i].classList.add(i===q.ans?'correct':'wrong');
-  if(i!==q.ans) opts[q.ans].classList.add('correct');
-  if(i===q.ans) quizScore++;
-  const fb=document.getElementById('quizFeedback');
-  fb.className='quiz-feedback show '+(i===q.ans?'good':'bad');
-  fb.textContent=(i===q.ans?'✅ Correct! ':'❌ Incorrect. ')+q.exp;
-  document.getElementById('quizNext').style.display='block';
-  document.getElementById('quizScore').textContent=`${quizScore}/${quizIdx+1}`;
-  updateQuizBar();
-}
-
-function nextQuizQ(){quizIdx++;renderQuiz();}
-
-function updateQuizBar(){
-  const pct=quizData.length?Math.round((quizIdx/quizData.length)*100):0;
-  document.getElementById('quizBar').style.width=pct+'%';
 }
 
 // ── FLASHCARD DATA ──
@@ -2350,6 +2351,349 @@ window.ssReset=function(){
 if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',ssRender);
 else ssRender();
 })();
+
+
+// ══════════════════════════════════════════════════════════
+// GAME 1: HOT OR NOT
+// ══════════════════════════════════════════════════════════
+const HON_DATA=[
+  // SAFE actions
+  {stmt:"Nurse flushes a peripheral IV with 2–3 mL normal saline before and after vancomycin administration",safe:true,exp:"Correct — always flush before and after vancomycin (incompatible with many drugs). Scrub the hub first."},
+  {stmt:"Nurse holds digoxin when the client's heart rate is 54 bpm and calls the provider",safe:true,exp:"Correct — hold digoxin if HR < 60 and notify provider. Normal threshold to withhold."},
+  {stmt:"Nurse dilutes KCl 20 mEq in 100 mL NS and runs it via infusion pump at 10 mEq/hr",safe:true,exp:"Correct — this meets all KCl safety requirements: diluted, pump, max rate 10 mEq/hr peripheral."},
+  {stmt:"Nurse slows vancomycin infusion to run over 90 minutes after the client develops facial flushing",safe:true,exp:"Correct — Red Man Syndrome is rate-related. Slowing the infusion (≥60 min) resolves it. Not an allergy."},
+  {stmt:"Nurse checks serum potassium before administering furosemide to a client with K+ 3.2",safe:false,exp:"DANGEROUS — K+ 3.2 is critically low. Furosemide causes more potassium loss. Hold and notify provider before giving."},
+  {stmt:"Nurse checks serum potassium before administering furosemide and holds it for K+ 3.2",safe:true,exp:"Correct — K+ below 3.5 is a contraindication to loop diuretics without replacement. Always check electrolytes first."},
+  {stmt:"Nurse infuses phenytoin in a D5W IV line",safe:false,exp:"DANGEROUS — phenytoin precipitates in any dextrose solution. Must use normal saline only."},
+  {stmt:"Nurse uses normal saline to flush the line before and after phenytoin infusion",safe:true,exp:"Correct — NS is the only compatible solution for phenytoin. Flush with NS before and after."},
+  {stmt:"Nurse stops a dopamine infusion and keeps the catheter in place after observing cool pale tissue at the IV site",safe:true,exp:"Correct — extravasation protocol: STOP infusion, keep catheter (needed for phentolamine antidote), notify pharmacy and provider."},
+  {stmt:"Nurse removes the IV catheter immediately after dopamine extravasation to prevent further tissue damage",safe:false,exp:"DANGEROUS — removing the catheter eliminates the route for phentolamine antidote delivery. Keep it in until antidote is given."},
+  {stmt:"Nurse gives atropine 0.5 mg IV push to a client with symptomatic sinus bradycardia at 38 bpm and BP 78/50",safe:true,exp:"Correct — atropine 0.5 mg IV is first-line for symptomatic sinus bradycardia. Dose is appropriate."},
+  {stmt:"Nurse administers adenosine 6 mg as a slow IV push over 3 minutes into a hand vein for SVT",safe:false,exp:"DANGEROUS — adenosine half-life is 6–10 sec. Must be RAPID push into a PROXIMAL vein + immediate 20 mL flush. Slow push = ineffective."},
+  {stmt:"Nurse gives adenosine 6 mg rapid IV push into the antecubital vein followed immediately by 20 mL NS flush",safe:true,exp:"Correct — rapid push into a large proximal vein + immediate 20 mL flush gets the drug to the heart before it degrades."},
+  {stmt:"Nurse increases oxygen flow to 6 L/min via nasal cannula for a COPD patient with SpO2 of 90%",safe:false,exp:"DANGEROUS — COPD patients with chronic CO2 retention use hypoxia as their breathing drive. Target SpO2 88–92%. High O2 can cause CO2 narcosis."},
+  {stmt:"Nurse applies a Venturi mask at 28% FiO2 for a COPD patient to target SpO2 88–92%",safe:true,exp:"Correct — Venturi mask provides the most precise O2 delivery. Target 88–92% for COPD. Venturi at 28% FiO2 is appropriate first-line."},
+  {stmt:"Nurse administers KCl 40 mEq IV push over 10 minutes for a potassium of 2.6",safe:false,exp:"DANGEROUS — KCl IV push at ANY concentration causes immediate cardiac arrest from ventricular fibrillation. NEVER IV push."},
+  {stmt:"Nurse positions a post-craniotomy client with HOB at 30 degrees",safe:true,exp:"Correct — HOB 30° promotes cerebral venous drainage and reduces ICP. Standard post-craniotomy positioning."},
+  {stmt:"Nurse holds mannitol when the client's serum osmolality is 326 mOsm/kg",safe:true,exp:"Correct — mannitol is contraindicated when serum osmolality exceeds 320 mOsm/kg due to renal failure risk. Hold and notify."},
+  {stmt:"Nurse documents a client's IV site as 20G PIV left cephalic vein, patent, no redness or swelling, flushed with 2 mL NS",safe:true,exp:"Correct — this is complete IV site documentation: gauge, location, assessment findings, flush performed."},
+  {stmt:"Nurse uses therapeutic silence after a hospice client says 'I just don't understand why this is happening to me'",safe:true,exp:"Correct — therapeutic silence validates the client's feelings and gives them space to process. Rushing to respond with reassurance would block communication."},
+];
+
+let honIdx=0, honScore=0, honStreak=0, honBest=0, honAnswered=false, honTimer=null, honTimeLeft=4, honData=[];
+
+function startHON(){
+  // Reset state but do NOT start timer — wait for user to press Start
+  honData=[...HON_DATA]; shuffleArray(honData);
+  honIdx=0; honScore=0; honStreak=0; honAnswered=false;
+  clearInterval(honTimer);
+  // Show the first card without starting the timer
+  const item=honData[0];
+  document.getElementById('honCard').textContent=item.stmt;
+  document.getElementById('honCount').textContent='1/'+honData.length;
+  document.getElementById('honScore').textContent='Score: 0 | Streak: 0';
+  document.getElementById('honTimer').textContent='4';
+  document.getElementById('honTimer').style.color='var(--or)';
+  document.getElementById('honTimerFill').style.width='100%';
+  document.getElementById('honFeedback').style.display='none';
+  document.getElementById('honSafe').style.opacity='0.4';
+  document.getElementById('honDanger').style.opacity='0.4';
+  document.getElementById('honSafe').disabled=true;
+  document.getElementById('honDanger').disabled=true;
+  // Button states
+  document.getElementById('honStartBtn').style.display='inline-block';
+  document.getElementById('honStopBtn').style.display='none';
+  document.getElementById('honResetBtn').style.display='none';
+}
+
+function honStart(){
+  // Activate buttons and start the timer for the current card
+  document.getElementById('honSafe').disabled=false;
+  document.getElementById('honDanger').disabled=false;
+  document.getElementById('honSafe').style.opacity='1';
+  document.getElementById('honDanger').style.opacity='1';
+  document.getElementById('honStartBtn').style.display='none';
+  document.getElementById('honStopBtn').style.display='inline-block';
+  document.getElementById('honResetBtn').style.display='none';
+  honRunTimer();
+}
+
+function honStop(){
+  // Pause — stop the timer and disable buttons, show start again
+  clearInterval(honTimer);
+  document.getElementById('honSafe').disabled=true;
+  document.getElementById('honDanger').disabled=true;
+  document.getElementById('honSafe').style.opacity='0.4';
+  document.getElementById('honDanger').style.opacity='0.4';
+  document.getElementById('honStartBtn').style.display='none';
+  document.getElementById('honStopBtn').style.display='none';
+  document.getElementById('honResetBtn').style.display='inline-block';
+  document.getElementById('honFeedback').style.display='block';
+  document.getElementById('honFeedback').style.background='var(--orb)';
+  document.getElementById('honFeedback').style.borderLeft='3px solid var(--or)';
+  document.getElementById('honFeedback').textContent='⏹ Stopped. Click New Round to reset or keep your progress.';
+}
+
+function honRunTimer(){
+  honTimeLeft=4;
+  document.getElementById('honTimerFill').style.width='100%';
+  document.getElementById('honTimer').textContent='4';
+  document.getElementById('honTimer').style.color='var(--or)';
+  clearInterval(honTimer);
+  honTimer=setInterval(()=>{
+    honTimeLeft-=0.1;
+    const pct=Math.max(0,(honTimeLeft/4)*100);
+    document.getElementById('honTimerFill').style.width=pct+'%';
+    const t=Math.ceil(honTimeLeft);
+    document.getElementById('honTimer').textContent=t;
+    if(t<=1) document.getElementById('honTimer').style.color='#b91c1c';
+    if(honTimeLeft<=0){ clearInterval(honTimer); honAnswer(null); }
+  },100);
+}
+
+function renderHON(){
+  if(honIdx>=honData.length){
+    clearInterval(honTimer);
+    document.getElementById('honCard').textContent='🎉 Round complete! Score: '+honScore+'/'+honData.length;
+    document.getElementById('honFeedback').style.display='none';
+    document.getElementById('honCount').textContent='Done!';
+    document.getElementById('honSafe').disabled=true;
+    document.getElementById('honDanger').disabled=true;
+    document.getElementById('honSafe').style.opacity='0.4';
+    document.getElementById('honDanger').style.opacity='0.4';
+    document.getElementById('honStartBtn').style.display='none';
+    document.getElementById('honStopBtn').style.display='none';
+    document.getElementById('honResetBtn').style.display='inline-block';
+    if(honScore===honData.length) confetti();
+    return;
+  }
+  honAnswered=false;
+  const item=honData[honIdx];
+  document.getElementById('honCard').textContent=item.stmt;
+  document.getElementById('honCount').textContent=(honIdx+1)+'/'+honData.length;
+  document.getElementById('honScore').textContent='Score: '+honScore+' | Streak: '+honStreak;
+  document.getElementById('honFeedback').style.display='none';
+  document.getElementById('honSafe').style.opacity='1';
+  document.getElementById('honDanger').style.opacity='1';
+  document.getElementById('honSafe').disabled=false;
+  document.getElementById('honDanger').disabled=false;
+  honRunTimer();
+}
+
+function honAnswer(safe){
+  if(honAnswered) return;
+  honAnswered=true;
+  clearInterval(honTimer);
+  const item=honData[honIdx];
+  const correct=(safe===item.safe);
+  const timedOut=(safe===null);
+  if(correct){ honScore++; honStreak++; if(honStreak>honBest) honBest=honStreak; }
+  else honStreak=0;
+  document.getElementById('honSafe').disabled=true;
+  document.getElementById('honDanger').disabled=true;
+  document.getElementById('honSafe').style.opacity=item.safe?'1':'0.4';
+  document.getElementById('honDanger').style.opacity=!item.safe?'1':'0.4';
+  const fb=document.getElementById('honFeedback');
+  fb.style.display='block';
+  fb.style.background=correct?'var(--okb)':'var(--redb)';
+  fb.style.borderLeft='3px solid '+(correct?'var(--ok)':'var(--er)');
+  fb.innerHTML=(timedOut?'⏱ Time up! ':(correct?'✅ Correct! ':'❌ Wrong. '))+item.exp;
+  document.getElementById('honScore').textContent='Score: '+honScore+' | Streak: '+honStreak+' | Best: '+honBest;
+  honIdx++;
+  setTimeout(()=>renderHON(), 2400);
+}
+
+
+// ══════════════════════════════════════════════════════════
+// GAME 2: CHAIN REACTION
+// ══════════════════════════════════════════════════════════
+const CHAIN_DATA=[
+  {q:"Dopamine extravasation into tissue",ans:"Phentolamine (alpha-blocker)",opts:["Phentolamine (alpha-blocker)","Naloxone (Narcan)","Calcium gluconate","Vitamin K"],exp:"Phentolamine is an alpha-adrenergic blocker that reverses catecholamine-induced vasoconstriction and restores tissue perfusion. Inject through the existing catheter."},
+  {q:"KCl overdose → severe hyperkalemia with peaked T waves",ans:"Calcium gluconate IV",opts:["Calcium gluconate IV","Phentolamine","Atropine","Furosemide"],exp:"Calcium gluconate stabilizes the cardiac membrane in hyperkalemia — it doesn't lower potassium but protects the heart from fatal arrhythmia while other measures work."},
+  {q:"Vancomycin Red Man Syndrome (facial flushing, pruritus)",ans:"Diphenhydramine + slow rate",opts:["Epinephrine IM","Diphenhydramine + slow rate","Stop permanently + document allergy","Calcium gluconate IV"],exp:"Red Man Syndrome is rate-related, NOT a true allergy. Slow the infusion to ≥60 min + give diphenhydramine. The infusion can continue at the slower rate."},
+  {q:"Warfarin supratherapeutic — active serious bleeding",ans:"Vitamin K + FFP or 4-factor PCC",opts:["Protamine sulfate","Vitamin K + FFP or 4-factor PCC","Naloxone","DigiFab"],exp:"Vitamin K reverses warfarin slowly (12–24 hr). For active serious bleeding: FFP or 4-factor PCC provides immediate clotting factor replacement."},
+  {q:"Opioid overdose — respiratory rate 4/min, unresponsive",ans:"Naloxone (Narcan)",opts:["Flumazenil","Naloxone (Narcan)","Atropine","Calcium gluconate"],exp:"Naloxone (Narcan) reverses opioid-induced respiratory depression within minutes. In palliative care — use cautiously as it also reverses analgesia."},
+  {q:"Digoxin toxicity — life-threatening arrhythmia",ans:"DigiFab (digoxin-specific antibody)",opts:["Atropine","Calcium gluconate","DigiFab (digoxin-specific antibody)","Amiodarone"],exp:"DigiFab binds and neutralizes digoxin molecules, rapidly reversing toxicity. For severe toxicity with arrhythmia — don't wait. Also correct electrolytes (especially K+)."},
+  {q:"Calcium channel blocker (diltiazem) overdose — bradycardia, hypotension",ans:"Calcium gluconate IV",opts:["Atropine only","Naloxone","Calcium gluconate IV","Phentolamine"],exp:"Calcium gluconate IV reverses CCB toxicity by restoring calcium-mediated cardiac conduction and vascular tone. Glucagon is a second-line agent."},
+  {q:"Beta-blocker overdose — severe bradycardia, hemodynamic collapse",ans:"Glucagon IV",opts:["Atropine only","Glucagon IV","Calcium gluconate","DigiFab"],exp:"Glucagon bypasses beta receptors and directly stimulates cardiac adenylyl cyclase — works even when beta receptors are completely blocked. Atropine may also help."},
+  {q:"Heparin overdose — active bleeding",ans:"Protamine sulfate",opts:["Vitamin K","Protamine sulfate","Naloxone","FFP only"],exp:"Protamine sulfate binds heparin and neutralizes its anticoagulant effect within minutes. 1 mg protamine per 100 units of heparin given in the last 2–3 hours."},
+  {q:"Symptomatic bradycardia (HR 36, BP 72/48) — first-line drug",ans:"Atropine 0.5 mg IV",opts:["Amiodarone 300 mg IV","Adenosine 6 mg IV","Atropine 0.5 mg IV","Digoxin 0.5 mg IV"],exp:"Atropine 0.5 mg IV is first-line for symptomatic bradycardia — blocks vagal tone, increases HR. Max 3 mg. Ineffective for Mobitz II or 3rd degree block (those need pacing)."},
+  {q:"SVT — hemodynamically stable, vagal maneuvers failed",ans:"Adenosine 6 mg rapid IV push",opts:["Amiodarone 300 mg IV","Synchronized cardioversion","Adenosine 6 mg rapid IV push","Atropine 0.5 mg IV"],exp:"Adenosine 6 mg rapid IV push into a proximal vein + immediate 20 mL NS flush. Transiently blocks AV node — breaks the re-entry circuit. Warn client: brief chest tightness is expected."},
+  {q:"VFib — pulseless — 3rd defibrillation failed",ans:"Amiodarone 300 mg IV",opts:["Atropine 0.5 mg IV","Adenosine 6 mg IV","Digoxin 0.5 mg IV","Amiodarone 300 mg IV"],exp:"ACLS: after 3rd shock → CPR + amiodarone 300 mg IV. Continues with epinephrine 1 mg IV every 3–5 min. Amiodarone is the antiarrhythmic of choice for refractory VFib."},
+  {q:"COPD patient — elevated ICP — cerebral edema",ans:"Mannitol or hypertonic saline",opts:["Furosemide only","Normal saline bolus","Mannitol or hypertonic saline","Acetazolamide"],exp:"Mannitol (osmotic diuretic) draws fluid from brain cells into vascular space. Hold if serum osmolality >320. Hypertonic saline (3%) is preferred when hypotension is also present."},
+  {q:"Norepinephrine (Levophed) extravasation — tissue ischemia",ans:"Phentolamine injected through existing catheter",opts:["Warm compresses only","Remove catheter immediately","Phentolamine injected through existing catheter","Cold compresses + elevation"],exp:"Phentolamine is the antidote for catecholamine extravasation. Inject through the EXISTING catheter into the extravasated area. Removing the catheter first eliminates this treatment route."},
+  {q:"Metabolic alkalosis in a heart failure patient who cannot tolerate large NS volumes",ans:"Acetazolamide",opts:["Give 2L NS bolus","Furosemide","Acetazolamide","Sodium bicarbonate"],exp:"Acetazolamide (carbonic anhydrase inhibitor) blocks bicarbonate reabsorption — kidneys excrete HCO3, correcting metabolic alkalosis without large fluid volumes."},
+];
+
+let chainStreak=0, chainBest=0, chainTotal=0, chainQueue=[], chainLinks=[];
+
+function startChain(){
+  chainQueue=[...CHAIN_DATA]; shuffleArray(chainQueue);
+  chainStreak=0; chainTotal=0; chainLinks=[];
+  document.getElementById('chainStreak').textContent='0';
+  document.getElementById('chainBest').textContent=chainBest;
+  document.getElementById('chainTotal').textContent='0';
+  document.getElementById('chainFeedback').style.display='none';
+  updateChainLinks();
+  renderChain();
+}
+
+function updateChainLinks(){
+  const el=document.getElementById('chainLinks');
+  if(chainLinks.length===0){el.innerHTML='<span style="color:var(--muted);font-size:.82rem;align-self:center">Your chain will appear here…</span>';return;}
+  el.innerHTML=chainLinks.map((l,i)=>
+    `<span style="padding:3px 10px;border-radius:16px;font-size:.78rem;font-weight:600;background:${l?'var(--okb)':'var(--redb)'};color:${l?'var(--ok)':'var(--er)'};border:1px solid ${l?'var(--ok)':'var(--er)'}">${l?'✓':i===chainLinks.length-1?'✗':'✓'}</span>`
+  ).join('<span style="align-self:center;color:var(--muted);font-size:.9rem">→</span>');
+}
+
+function renderChain(){
+  if(chainQueue.length===0){chainQueue=[...CHAIN_DATA];shuffleArray(chainQueue);}
+  const q=chainQueue[0];
+  document.getElementById('chainQ').textContent=q.q;
+  document.getElementById('chainFeedback').style.display='none';
+  const opts=[...q.opts]; shuffleArray(opts);
+  window._chainOpts=opts; window._chainQ=q;
+  document.getElementById('chainOpts').innerHTML=opts.map((o,i)=>
+    `<button class="quiz-opt" onclick="answerChain(${i})">${o}</button>`
+  ).join('');
+}
+
+function answerChain(i){
+  const q=window._chainQ, opts=window._chainOpts;
+  const correct=opts[i]===q.ans;
+  document.querySelectorAll('#chainOpts .quiz-opt').forEach((b,j)=>{
+    b.classList.add('dis');
+    if(opts[j]===q.ans) b.classList.add('correct');
+    else if(j===i&&!correct) b.classList.add('wrong');
+  });
+  const fb=document.getElementById('chainFeedback');
+  fb.style.display='block';
+  fb.style.background=correct?'var(--okb)':'var(--redb)';
+  fb.style.borderLeft='3px solid '+(correct?'var(--ok)':'var(--er)');
+  fb.innerHTML=(correct?'✅ ':'❌ ')+q.exp;
+  chainLinks.push(correct);
+  if(correct){chainStreak++;chainTotal++;if(chainStreak>chainBest)chainBest=chainStreak;}
+  else chainStreak=0;
+  document.getElementById('chainStreak').textContent=chainStreak;
+  document.getElementById('chainBest').textContent=chainBest;
+  document.getElementById('chainTotal').textContent=chainTotal;
+  updateChainLinks();
+  chainQueue.shift();
+  setTimeout(()=>renderChain(), 2400);
+}
+
+// ══════════════════════════════════════════════════════════
+// GAME 3: PATIENT SCENARIO BUILDER
+// ══════════════════════════════════════════════════════════
+const SCENARIOS=[
+  {
+    title:"Mr. T., 68 years old — Cardiac Telemetry",
+    stages:[
+      {header:"🚪 Handoff Report",body:"You are taking over care of Mr. T., 68-year-old male, admitted 2 days ago for chest pain workup. He has a history of hypertension and type 2 diabetes. He is alert and oriented. Current vitals: BP 142/88, HR 82, RR 16, SpO2 97% on room air. No current complaints.",prompt:"What is your FIRST priority as you begin your shift?",opts:["Administer all scheduled medications before assessing the patient","Perform a focused cardiac assessment and review the ECG tracing","Call the provider to report the elevated blood pressure","Immediately apply supplemental oxygen given the cardiac history"],ans:1,exp:"Tanner's Noticing step — collect data before acting. Perform your own assessment and review the monitor first. The elevated BP is at his baseline. There is no immediate oxygen indication with SpO2 97%."},
+      {header:"📊 Assessment Findings",body:"You assess Mr. T. He reports 3/10 chest tightness that started 20 minutes ago, different from his previous angina. 12-lead ECG shows ST elevation of 2 mm in leads II, III, and aVF. His troponin from 2 hours ago was 0.04 ng/mL and is now 0.38 ng/mL.",prompt:"Which action is the PRIORITY right now?",opts:["Administer PRN nitroglycerin and reassess in 30 minutes","Activate the cardiac catheterization lab and notify the provider STAT","Perform a 12-lead ECG now and wait for the provider's morning rounds","Administer aspirin 81 mg and continue routine monitoring"],ans:1,exp:"ST elevation in II, III, aVF = inferior STEMI (RCA occlusion). Rising troponin confirms myocardial injury. This is a time-critical emergency — door-to-balloon goal is 90 minutes. Activate the cath lab immediately."},
+      {header:"🔬 Additional Data",body:"The provider is notified and the cath lab is activated. While preparing Mr. T., you note his BP has dropped to 82/54 mmHg. His HR is 58 bpm. He appears pale and diaphoretic.",prompt:"Inferior STEMI with hypotension and bradycardia — what do you suspect and avoid?",opts:["Left ventricular failure — give furosemide 40 mg IV immediately","Right ventricular involvement — avoid nitrates (RV is preload-dependent)","Cardiogenic shock from LV failure — give aggressive IV fluids","Pericardial tamponade — prepare for pericardiocentesis"],ans:1,exp:"Inferior STEMI (RCA) often involves the right ventricle. RV infarction causes hypotension + bradycardia. The RV is preload-dependent — nitrates cause vasodilation and can precipitate catastrophic hypotension. Check right-sided leads (V4R) to confirm."},
+    ]
+  },
+  {
+    title:"Mrs. K., 72 years old — Medical Floor",
+    stages:[
+      {header:"🚪 Incoming Patient",body:"Mrs. K. is a 72-year-old female admitted from the ED with confusion and fall at home. Her family reports she has been 'not herself' for 2 days. PMH: hypertension, atrial fibrillation on warfarin, type 2 diabetes. Current medications include metformin, lisinopril, metoprolol, warfarin. Vitals: BP 168/94, HR 52 and irregular, RR 14, SpO2 95%, Temp 38.6°C.",prompt:"Which finding is the MOST concerning and requires immediate action?",opts:["Blood pressure 168/94 — administer PRN antihypertensive","Temperature 38.6°C — this is a normal variant in elderly patients","HR 52 irregular — hold the metoprolol and assess for cause of bradycardia with confusion","SpO2 95% — apply supplemental oxygen at 2 L/min nasal cannula"],ans:2,exp:"Bradycardia (HR 52) + confusion + fever in a patient on metoprolol and warfarin requires investigation. Metoprolol causes bradycardia. The confusion + fall may indicate drug toxicity, infection (fever + confusion = sepsis risk), or supratherapeutic warfarin. Address the most immediately dangerous finding first."},
+      {header:"📊 Lab Results",body:"Labs return: K+ 3.1 mEq/L, INR 4.8 (therapeutic range 2–3), WBC 14.2, BUN/Cr normal, blood glucose 210. Urinalysis shows pyuria and bacteriuria. The client is confused, pulling at her IV line, and asking where she is.",prompt:"Which action is SAFEST given the INR of 4.8?",opts:["Administer warfarin as scheduled — INR will correct itself","Hold warfarin, notify provider, monitor for bleeding signs","Give vitamin K 10 mg IV push immediately without provider order","Administer heparin to bridge until INR is in range"],ans:1,exp:"INR 4.8 is supratherapeutic (goal 2–3 for AFib) — significantly elevated bleeding risk. Hold warfarin, notify provider. Vitamin K and/or FFP are provider-ordered decisions based on bleeding status. Never administer without an order."},
+      {header:"🧠 Cognitive Assessment",body:"You perform a neuro assessment. Mrs. K. is A&O x1 (person only). GCS is 12. She is agitated and pulling at lines. The family tells you this is completely unlike her normal behavior — she was independent and sharp before 2 days ago.",prompt:"This presentation — acute onset confusion in an elderly patient that is unlike baseline — is MOST consistent with:",opts:["Dementia — a progressive expected cognitive decline in the elderly","Delirium — acute, reversible altered cognition with a treatable cause","Normal aging — confusion during hospitalization is expected","Depression — the patient is sad about being hospitalized"],ans:1,exp:"Delirium vs dementia: DELIRIUM is ACUTE onset, fluctuating, has a specific cause (infection, medication, metabolic), and is REVERSIBLE with treatment. DEMENTIA is gradual, progressive, and chronic. Family confirming this is unlike baseline = delirium until proven otherwise. Treat the underlying cause (UTI + supratherapeutic warfarin + hypokalemia)."},
+    ]
+  },
+  {
+    title:"Mr. R., 45 years old — Post-Craniotomy Unit",
+    stages:[
+      {header:"🚪 Shift Start",body:"Mr. R. is a 45-year-old male, day 1 post-craniotomy for a subdural hematoma after a motor vehicle accident. He is on continuous neuro checks. Last GCS was 14 (E4V4M6). Current vitals: BP 138/82, HR 74, RR 14, SpO2 98%. He is following commands and oriented x3. HOB at 30 degrees.",prompt:"What does the HOB position of 30 degrees accomplish in this patient?",opts:["Prevents aspiration pneumonia only","Promotes cerebral venous drainage and helps reduce intracranial pressure","Improves cardiac output by reducing preload","Has no clinical significance — it is a comfort measure only"],ans:1,exp:"HOB 30° is standard post-craniotomy positioning. Gravity assists cerebral venous drainage back toward the heart, reducing intracranial blood volume and ICP. It also reduces aspiration risk. Never lay flat (increases ICP) or elevate >30° without a specific order."},
+      {header:"⚠️ 2 Hours Later",body:"You return for your neuro check. Mr. R. is now confused and restless — GCS has dropped to 11 (E3V3M5). He complains of a worsening headache. His right pupil is 5 mm and sluggish compared to the left which is 3 mm and brisk. BP is 148/80.",prompt:"This pupillary change (right sluggish, unequal) is MOST consistent with:",opts:["Expected post-operative findings — document and continue monitoring","CN III compression on the right side from rising ICP — notify neurosurgery STAT","Bilateral blindness from the craniotomy procedure","CN VII damage causing asymmetric facial response"],ans:1,exp:"A unilateral fixed or sluggish dilated pupil = CN III compression from uncal herniation due to rising ICP. This is a neurosurgical emergency. The GCS drop + pupil change + worsening headache = early herniation. Notify neurosurgery immediately."},
+      {header:"🚨 Emergency Develops",body:"Neurosurgery is notified. While waiting, Mr. R. becomes unresponsive. Vitals now: BP 192/52 (widened pulse pressure), HR 44 bpm, respirations irregular at 6/min. Decerebrate posturing is elicited with painful stimuli.",prompt:"The combination of widened pulse pressure, bradycardia, and irregular respirations is called:",opts:["Septic shock — start broad-spectrum antibiotics","Beck's triad — indicating cardiac tamponade","Cushing's triad — a LATE sign of critically elevated ICP and herniation","Virchow's triad — indicating DVT formation"],ans:2,exp:"Cushing's triad = widened pulse pressure + bradycardia + irregular respirations. This is a LATE and ominous sign indicating herniation is occurring. Decerebrate posturing (all extremities extended rigid) = brainstem level injury. This is a code-level emergency requiring immediate intervention."},
+    ]
+  },
+  {
+    title:"Ms. D., 34 years old — IV Therapy Complication",
+    stages:[
+      {header:"🚪 Report",body:"Ms. D. is a 34-year-old female receiving IV antibiotics for a skin and soft tissue infection. She has a 20G peripheral IV in the right forearm, placed yesterday. Vancomycin 1 g in 250 mL NS is currently infusing. She has been on the floor for 18 hours.",prompt:"Which assessment of the IV site should the nurse perform and document EVERY shift?",opts:["Only check if the patient complains of pain","Assess only when changing the IV bag","Site appearance (erythema, swelling, tenderness), catheter security, dressing integrity, and flush patency",  "Check once per day at the same time regardless of infusion status"],ans:2,exp:"IV sites are assessed every shift (and q1h when actively infusing). Document: gauge, location, site appearance (phlebitis scale 0–4), dressing integrity, flush status. Early identification of phlebitis or infiltration prevents serious complications."},
+      {header:"⚠️ Assessment Finding",body:"You assess the IV site and find: the right forearm is mildly erythematous with warmth and tenderness along the vein track for approximately 2 cm. No swelling. The IV flushes easily with no resistance. Ms. D. rates the tenderness 2/10.",prompt:"Based on the phlebitis scale, this is Grade ___ and the appropriate action is:",opts:["Grade 0 — no action needed, continue infusion","Grade 1 — monitor closely, may continue infusion if no worsening","Grade 2 — remove catheter, restart elsewhere, warm compresses, document","Grade 4 — notify provider and send wound culture immediately"],ans:2,exp:"Grade 2 phlebitis = erythema + warmth + tenderness + pain (no streak, no cord yet). Action: remove catheter, restart at a new site (not near the phlebitis), apply warm compresses, document phlebitis grade and treatment, monitor for resolution."},
+      {header:"🔴 New Development",body:"You restart the IV in the left antecubital. Vancomycin is restarted. 20 minutes later Ms. D. calls and says she feels 'hot and itchy all over her face and neck.' You assess: facial flushing, erythema of the face, neck, and upper chest, pruritus. BP is 118/72, HR 88, SpO2 99%, no shortness of breath, no wheeze.",prompt:"This presentation is MOST consistent with which complication — and what is the treatment?",opts:["Anaphylaxis — stop vancomycin permanently, give epinephrine 0.3 mg IM","Red Man Syndrome — slow the infusion to run over at least 60 min and give diphenhydramine as ordered","Septicemia from the IV site infection — obtain blood cultures and start new antibiotics","Allergic reaction — document a vancomycin allergy and switch to a different antibiotic"],ans:1,exp:"Red Man Syndrome = rate-related mast cell degranulation from rapid vancomycin infusion. NOT immune-mediated (not IgE — not a true allergy). Classic presentation: flushing of face, neck, upper chest. Hemodynamically stable. Treatment: slow to ≥60 min (10 mg/min max) + diphenhydramine. Can continue at slower rate. Distinguish from anaphylaxis: no hypotension, no bronchospasm, no angioedema."},
+    ]
+  },
+];
+
+let scenIdx=0, scenStage=0, scenScore=0, scenData=[];
+
+function startScen(){
+  scenData=[...SCENARIOS]; shuffleArray(scenData);
+  scenIdx=0; scenStage=0; scenScore=0;
+  document.getElementById('scenFeedback').style.display='none';
+  renderScen();
+}
+
+function renderScen(){
+  const sc=scenData[scenIdx%scenData.length];
+  const stage=sc.stages[scenStage];
+  document.getElementById('scenHeader').textContent=sc.title+' — Stage '+(scenStage+1)+' of '+sc.stages.length;
+  document.getElementById('scenBody').textContent=stage.body;
+  document.getElementById('scenPrompt').textContent=stage.prompt;
+  document.getElementById('scenFeedback').style.display='none';
+  // Stage pip indicators
+  document.getElementById('scenStageBar').innerHTML=sc.stages.map((_,i)=>
+    `<div style="width:28px;height:8px;border-radius:4px;background:${i<scenStage?'var(--ok)':i===scenStage?'var(--or)':'var(--bdr)'}"></div>`
+  ).join('');
+  document.getElementById('scenScoreDisp').textContent='Score: '+scenScore;
+  const opts=[...stage.opts]; const map=opts.map((_,i)=>i); shuffleArray(map);
+  window._scenOpts=map.map(i=>opts[i]); window._scenAns=opts[stage.ans]; window._scenStage=stage;
+  document.getElementById('scenOpts').innerHTML=window._scenOpts.map((o,i)=>
+    `<button class="quiz-opt" onclick="answerScen(${i})">${o}</button>`
+  ).join('');
+}
+
+function answerScen(i){
+  const stage=window._scenStage, opts=window._scenOpts, ans=window._scenAns;
+  const correct=opts[i]===ans;
+  if(correct) scenScore++;
+  document.querySelectorAll('#scenOpts .quiz-opt').forEach((b,j)=>{
+    b.classList.add('dis');
+    if(opts[j]===ans) b.classList.add('correct');
+    else if(j===i&&!correct) b.classList.add('wrong');
+  });
+  const fb=document.getElementById('scenFeedback');
+  fb.style.display='block';
+  fb.style.background=correct?'var(--okb)':'var(--redb)';
+  fb.style.borderLeft='3px solid '+(correct?'var(--ok)':'var(--er)');
+  fb.innerHTML=(correct?'✅ ':'❌ ')+stage.exp;
+  document.getElementById('scenScoreDisp').textContent='Score: '+scenScore;
+  document.getElementById('scenStageBar').innerHTML=scenData[scenIdx%scenData.length].stages.map((_,i)=>
+    `<div style="width:28px;height:8px;border-radius:4px;background:${i<scenStage?'var(--ok)':i===scenStage?(correct?'var(--ok)':'var(--er)'):'var(--bdr)'}"></div>`
+  ).join('');
+
+  scenStage++;
+  const sc=scenData[scenIdx%scenData.length];
+  if(scenStage>=sc.stages.length){
+    setTimeout(()=>{
+      const allCorrect=(scenScore===sc.stages.length*(scenIdx+1));
+      document.getElementById('scenFeedback').innerHTML+='<br><strong>Scenario complete! Moving to next patient…</strong>';
+      if(scenScore%sc.stages.length===sc.stages.length) confetti();
+      scenIdx++; scenStage=0;
+      setTimeout(()=>renderScen(), 1500);
+    }, 2500);
+  } else {
+    setTimeout(()=>renderScen(), 2500);
+  }
+}
+
+// Override initRecall to init new games
+const _oldInitRecall=initRecall;
+function initRecall(){
+  // Only init once
+  if(window._recallInited) return;
+  window._recallInited=true;
+  startHON();
+  startChain();
+  startScen();
+  renderFlashcards();
+  startMatch();
+}
 
 </script>
 </body>
