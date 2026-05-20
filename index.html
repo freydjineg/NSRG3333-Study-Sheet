@@ -726,22 +726,40 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--txt);min-
   <!-- ══ GAME 3: PATIENT SCENARIO BUILDER ══ -->
   <div class="section">
     <h2>🏥 Patient Scenario — What Happens Next?</h2>
-    <p style="color:var(--muted);font-size:.85rem;margin-bottom:16px">You receive a patient. The scenario unfolds in stages — vitals, then assessment, then monitor. At each stage decide what to do. Tests Tanner&rsquo;s Model reasoning.</p>
+    <p style="color:var(--muted);font-size:.85rem;margin-bottom:16px">A patient scenario unfolds in stages. At each stage choose what to do. Read at your own pace — use Next and Back to navigate. A full recap appears after each scenario before moving on.</p>
     <div id="scenGame">
+
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
         <div id="scenStageBar" style="display:flex;gap:6px"></div>
         <span id="scenScoreDisp" style="font-size:.84rem;font-weight:600;color:var(--muted)">Score: 0</span>
       </div>
-      <div id="scenCard" style="border:2px solid var(--bdr);border-radius:14px;overflow:hidden;margin-bottom:14px">
-        <div id="scenHeader" style="padding:12px 16px;background:var(--or);color:#fff;font-size:.85rem;font-weight:700"></div>
-        <div id="scenBody" style="padding:16px;background:var(--bg);min-height:80px;font-size:.92rem;line-height:1.7;color:var(--txt)"></div>
+
+      <!-- Main stage view -->
+      <div id="scenMain">
+        <div id="scenCard" style="border:2px solid var(--bdr);border-radius:14px;overflow:hidden;margin-bottom:14px">
+          <div id="scenHeader" style="padding:12px 16px;background:var(--or);color:#fff;font-size:.85rem;font-weight:700"></div>
+          <div id="scenBody" style="padding:16px;background:var(--bg);min-height:80px;font-size:.92rem;line-height:1.7;color:var(--txt)"></div>
+        </div>
+        <p id="scenPrompt" style="font-size:.88rem;font-weight:600;color:var(--txt);margin:0 0 10px"></p>
+        <div id="scenOpts" style="display:flex;flex-direction:column;gap:8px;margin-bottom:12px"></div>
+        <div id="scenFeedback" style="display:none;padding:14px 16px;border-radius:9px;font-size:.88rem;line-height:1.7;margin-bottom:14px"></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
+          <button class="btn btn-out" id="scenBackBtn" onclick="scenBack()" style="display:none">← Back</button>
+          <div style="flex:1"></div>
+          <button class="btn btn-or" id="scenNextBtn" onclick="scenNext()" style="display:none">Next Stage →</button>
+          <button class="btn btn-or" id="scenRecapBtn" onclick="scenShowRecap()" style="display:none">📋 See Recap</button>
+        </div>
       </div>
-      <p id="scenPrompt" style="font-size:.88rem;font-weight:600;color:var(--txt);margin:0 0 10px"></p>
-      <div id="scenOpts" style="display:flex;flex-direction:column;gap:8px;margin-bottom:12px"></div>
-      <div id="scenFeedback" style="display:none;padding:12px 16px;border-radius:9px;font-size:.88rem;line-height:1.6;margin-bottom:10px"></div>
-      <div style="text-align:center">
-        <button class="btn btn-out" onclick="startScen()">🔄 New Scenario</button>
+
+      <!-- Recap view -->
+      <div id="scenRecap" style="display:none">
+        <div id="scenRecapContent"></div>
+        <div style="display:flex;justify-content:center;gap:12px;margin-top:16px;flex-wrap:wrap">
+          <button class="btn btn-or" onclick="scenContinue()">Next Patient →</button>
+          <button class="btn btn-out" onclick="startScen()">🔄 Restart All</button>
+        </div>
       </div>
+
     </div>
   </div>
 
@@ -2621,65 +2639,176 @@ const SCENARIOS=[
 ];
 
 let scenIdx=0, scenStage=0, scenScore=0, scenData=[];
+let scenAnswered=[], scenUserChoices=[];
 
 function startScen(){
   scenData=[...SCENARIOS]; shuffleArray(scenData);
   scenIdx=0; scenStage=0; scenScore=0;
-  document.getElementById('scenFeedback').style.display='none';
+  scenAnswered=[]; scenUserChoices=[];
+  document.getElementById('scenRecap').style.display='none';
+  document.getElementById('scenMain').style.display='block';
   renderScen();
 }
 
 function renderScen(){
   const sc=scenData[scenIdx%scenData.length];
   const stage=sc.stages[scenStage];
+  const alreadyAnswered=scenAnswered[scenStage]!==undefined;
+
+  // Header + body
   document.getElementById('scenHeader').textContent=sc.title+' — Stage '+(scenStage+1)+' of '+sc.stages.length;
   document.getElementById('scenBody').textContent=stage.body;
   document.getElementById('scenPrompt').textContent=stage.prompt;
-  document.getElementById('scenFeedback').style.display='none';
-  // Stage pip indicators
-  document.getElementById('scenStageBar').innerHTML=sc.stages.map((_,i)=>
-    `<div style="width:28px;height:8px;border-radius:4px;background:${i<scenStage?'var(--ok)':i===scenStage?'var(--or)':'var(--bdr)'}"></div>`
-  ).join('');
+
+  // Stage pips
+  document.getElementById('scenStageBar').innerHTML=sc.stages.map((_,i)=>{
+    let bg='var(--bdr)';
+    if(scenAnswered[i]!==undefined) bg=scenAnswered[i]?'var(--ok)':'var(--er)';
+    else if(i===scenStage) bg='var(--or)';
+    return `<div style="width:28px;height:8px;border-radius:4px;background:${bg}"></div>`;
+  }).join('');
   document.getElementById('scenScoreDisp').textContent='Score: '+scenScore;
-  const opts=[...stage.opts]; const map=opts.map((_,i)=>i); shuffleArray(map);
-  window._scenOpts=map.map(i=>opts[i]); window._scenAns=opts[stage.ans]; window._scenStage=stage;
-  document.getElementById('scenOpts').innerHTML=window._scenOpts.map((o,i)=>
-    `<button class="quiz-opt" onclick="answerScen(${i})">${o}</button>`
-  ).join('');
+
+  // Answer options
+  if(!alreadyAnswered){
+    // Fresh question — show shuffled opts, no feedback
+    const shuffled=[...stage.opts];
+    const origMap=shuffled.map((_,i)=>i); shuffleArray(origMap);
+    window._scenShuffled=origMap.map(i=>shuffled[i]);
+    window._scenCorrect=stage.opts[stage.ans];
+    document.getElementById('scenOpts').innerHTML=window._scenShuffled.map((o,i)=>
+      `<button class="quiz-opt" onclick="answerScen(${i})">${o}</button>`
+    ).join('');
+    document.getElementById('scenFeedback').style.display='none';
+  } else {
+    // Already answered — restore choices with highlights
+    const chosen=scenUserChoices[scenStage];
+    document.getElementById('scenOpts').innerHTML=window['_scenShuffled_'+scenStage].map((o,i)=>{
+      let cls='quiz-opt dis';
+      if(o===stage.opts[stage.ans]) cls+=' correct';
+      else if(i===chosen&&o!==stage.opts[stage.ans]) cls+=' wrong';
+      return `<button class="${cls}">${o}</button>`;
+    }).join('');
+    const correct=scenAnswered[scenStage];
+    const fb=document.getElementById('scenFeedback');
+    fb.style.display='block';
+    fb.style.background=correct?'var(--okb)':'var(--redb)';
+    fb.style.borderLeft='3px solid '+(correct?'var(--ok)':'var(--er)');
+    fb.innerHTML=(correct?'✅ ':'❌ ')+stage.exp;
+  }
+
+  // Nav buttons
+  const isLast=(scenStage===sc.stages.length-1);
+  const allDone=scenAnswered.length===sc.stages.length && scenAnswered.every(a=>a!==undefined);
+
+  document.getElementById('scenBackBtn').style.display=scenStage>0?'inline-block':'none';
+  document.getElementById('scenNextBtn').style.display=(alreadyAnswered&&!isLast)?'inline-block':'none';
+  document.getElementById('scenRecapBtn').style.display=(alreadyAnswered&&isLast)||allDone?'inline-block':'none';
 }
 
 function answerScen(i){
-  const stage=window._scenStage, opts=window._scenOpts, ans=window._scenAns;
-  const correct=opts[i]===ans;
+  const sc=scenData[scenIdx%scenData.length];
+  const stage=sc.stages[scenStage];
+  const shuffled=window._scenShuffled;
+  const correct=shuffled[i]===stage.opts[stage.ans];
+
+  // Save this shuffled order so Back can restore it
+  window['_scenShuffled_'+scenStage]=shuffled;
+
   if(correct) scenScore++;
+  scenAnswered[scenStage]=correct;
+  scenUserChoices[scenStage]=i;
+
+  // Highlight answers
   document.querySelectorAll('#scenOpts .quiz-opt').forEach((b,j)=>{
     b.classList.add('dis');
-    if(opts[j]===ans) b.classList.add('correct');
+    if(shuffled[j]===stage.opts[stage.ans]) b.classList.add('correct');
     else if(j===i&&!correct) b.classList.add('wrong');
   });
+
+  // Show feedback
   const fb=document.getElementById('scenFeedback');
   fb.style.display='block';
   fb.style.background=correct?'var(--okb)':'var(--redb)';
   fb.style.borderLeft='3px solid '+(correct?'var(--ok)':'var(--er)');
   fb.innerHTML=(correct?'✅ ':'❌ ')+stage.exp;
-  document.getElementById('scenScoreDisp').textContent='Score: '+scenScore;
-  document.getElementById('scenStageBar').innerHTML=scenData[scenIdx%scenData.length].stages.map((_,i)=>
-    `<div style="width:28px;height:8px;border-radius:4px;background:${i<scenStage?'var(--ok)':i===scenStage?(correct?'var(--ok)':'var(--er)'):'var(--bdr)'}"></div>`
-  ).join('');
 
-  scenStage++;
+  document.getElementById('scenScoreDisp').textContent='Score: '+scenScore;
+
+  // Update pips
+  document.getElementById('scenStageBar').innerHTML=sc.stages.map((_,k)=>{
+    let bg='var(--bdr)';
+    if(scenAnswered[k]!==undefined) bg=scenAnswered[k]?'var(--ok)':'var(--er)';
+    else if(k===scenStage) bg=correct?'var(--ok)':'var(--er)';
+    return `<div style="width:28px;height:8px;border-radius:4px;background:${bg}"></div>`;
+  }).join('');
+
+  // Show appropriate nav button — user reads at own pace
+  const isLast=(scenStage===sc.stages.length-1);
+  document.getElementById('scenBackBtn').style.display=scenStage>0?'inline-block':'none';
+  document.getElementById('scenNextBtn').style.display=!isLast?'inline-block':'none';
+  document.getElementById('scenRecapBtn').style.display=isLast?'inline-block':'none';
+}
+
+function scenNext(){
   const sc=scenData[scenIdx%scenData.length];
-  if(scenStage>=sc.stages.length){
-    setTimeout(()=>{
-      const allCorrect=(scenScore===sc.stages.length*(scenIdx+1));
-      document.getElementById('scenFeedback').innerHTML+='<br><strong>Scenario complete! Moving to next patient…</strong>';
-      if(scenScore%sc.stages.length===sc.stages.length) confetti();
-      scenIdx++; scenStage=0;
-      setTimeout(()=>renderScen(), 1500);
-    }, 2500);
-  } else {
-    setTimeout(()=>renderScen(), 2500);
+  if(scenStage<sc.stages.length-1){
+    scenStage++;
+    renderScen();
   }
+}
+
+function scenBack(){
+  if(scenStage>0){
+    scenStage--;
+    renderScen();
+  }
+}
+
+function scenShowRecap(){
+  const sc=scenData[scenIdx%scenData.length];
+  const total=sc.stages.length;
+  const correct=scenAnswered.filter(Boolean).length;
+  const perfect=correct===total;
+  if(perfect) confetti();
+
+  let html=`<div style="background:${perfect?'var(--okb)':'var(--orb)'};border:2px solid ${perfect?'var(--ok)':'var(--orl)'};border-radius:12px;padding:16px 20px;margin-bottom:16px">
+    <p style="font-size:1rem;font-weight:700;color:${perfect?'var(--ok)':'var(--or)'};margin:0 0 4px">${perfect?'🎉 Perfect score!':'📋 Scenario Recap — '+correct+'/'+total+' correct'}</p>
+    <p style="font-size:.85rem;color:var(--muted);margin:0">${sc.title}</p>
+  </div>`;
+
+  sc.stages.forEach((stage,i)=>{
+    const wasCorrect=scenAnswered[i];
+    const chosenIdx=scenUserChoices[i];
+    const shuffled=window['_scenShuffled_'+i]||stage.opts;
+    const chosen=shuffled[chosenIdx];
+    const correctAns=stage.opts[stage.ans];
+    html+=`<div style="border:1.5px solid ${wasCorrect?'var(--ok)':'var(--er)'};border-radius:10px;padding:14px 16px;margin-bottom:12px;background:${wasCorrect?'var(--okb)':'var(--redb)'}">
+      <p style="font-size:.78rem;font-weight:700;color:var(--muted);margin:0 0 4px;text-transform:uppercase;letter-spacing:.04em">${stage.header} — ${wasCorrect?'✅ Correct':'❌ Incorrect'}</p>
+      <p style="font-size:.88rem;font-weight:600;color:var(--txt);margin:0 0 6px">${stage.prompt}</p>
+      ${!wasCorrect?`<p style="font-size:.83rem;color:var(--er);margin:0 0 4px"><strong>You chose:</strong> ${chosen}</p>`:''}
+      <p style="font-size:.83rem;color:var(--ok);margin:0 0 8px"><strong>Correct answer:</strong> ${correctAns}</p>
+      <p style="font-size:.83rem;color:var(--txt);margin:0;line-height:1.6;padding-top:8px;border-top:1px solid rgba(0,0,0,.06)">${stage.exp}</p>
+    </div>`;
+  });
+
+  document.getElementById('scenRecapContent').innerHTML=html;
+  document.getElementById('scenMain').style.display='none';
+  document.getElementById('scenRecap').style.display='block';
+}
+
+function scenContinue(){
+  scenIdx++;
+  scenStage=0;
+  scenAnswered=[];
+  scenUserChoices=[];
+  document.getElementById('scenRecap').style.display='none';
+  document.getElementById('scenMain').style.display='block';
+  if(scenIdx>=scenData.length){
+    scenData=[...SCENARIOS]; shuffleArray(scenData);
+    scenIdx=0;
+  }
+  renderScen();
 }
 
 // Override initRecall to init new games
