@@ -343,6 +343,44 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--txt);min-
   </div>
 
   <div class="section">
+    <h2>⚡ Interactive ECG Strip — PQRST Explorer</h2>
+    <p style="color:var(--muted);font-size:.85rem;margin-bottom:14px">Click directly on any wave in the strip, or select a card — then apply an abnormality to see how the strip changes in real time.</p>
+
+    <div style="background:#fff;border-radius:10px;border:1px solid var(--bdr);padding:10px 8px 4px;margin-bottom:12px">
+      <p style="font-size:11px;color:var(--muted);margin:0 0 5px;padding-left:2px">Click any labeled part of the strip</p>
+      <svg id="ssEcg" viewBox="0 0 700 165" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;cursor:pointer"></svg>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:6px;margin-bottom:12px">
+      <button class="ssWc" id="ssWc-p"   onclick="ssPick('p')"  style="text-align:left;padding:8px 10px;border-radius:8px;border:1.5px solid var(--bdr);background:var(--bg);cursor:pointer;transition:all .15s"><p style="font-size:14px;font-weight:700;margin:0 0 1px;color:#185FA5">P wave</p><p style="font-size:10px;color:var(--muted);margin:0">Atria fire</p></button>
+      <button class="ssWc" id="ssWc-pr"  onclick="ssPick('pr')" style="text-align:left;padding:8px 10px;border-radius:8px;border:1.5px solid var(--bdr);background:var(--bg);cursor:pointer;transition:all .15s"><p style="font-size:14px;font-weight:700;margin:0 0 1px;color:#185FA5">PR</p><p style="font-size:10px;color:var(--muted);margin:0">SA→AV node</p></button>
+      <button class="ssWc" id="ssWc-qrs" onclick="ssPick('qrs')" style="text-align:left;padding:8px 10px;border-radius:8px;border:1.5px solid var(--bdr);background:var(--bg);cursor:pointer;transition:all .15s"><p style="font-size:14px;font-weight:700;margin:0 0 1px;color:#3B6D11">QRS</p><p style="font-size:10px;color:var(--muted);margin:0">Ventricles fire</p></button>
+      <button class="ssWc" id="ssWc-st"  onclick="ssPick('st')"  style="text-align:left;padding:8px 10px;border-radius:8px;border:1.5px solid var(--bdr);background:var(--bg);cursor:pointer;transition:all .15s"><p style="font-size:14px;font-weight:700;margin:0 0 1px;color:#993C1D">ST</p><p style="font-size:10px;color:var(--muted);margin:0">Contracting</p></button>
+      <button class="ssWc" id="ssWc-t"   onclick="ssPick('t')"   style="text-align:left;padding:8px 10px;border-radius:8px;border:1.5px solid var(--bdr);background:var(--bg);cursor:pointer;transition:all .15s"><p style="font-size:14px;font-weight:700;margin:0 0 1px;color:#6d28d9">T wave</p><p style="font-size:10px;color:var(--muted);margin:0">Ventricles recover</p></button>
+      <button class="ssWc" id="ssWc-qt"  onclick="ssPick('qt')"  style="text-align:left;padding:8px 10px;border-radius:8px;border:1.5px solid var(--bdr);background:var(--bg);cursor:pointer;transition:all .15s"><p style="font-size:14px;font-weight:700;margin:0 0 1px;color:#6d28d9">QT</p><p style="font-size:10px;color:var(--muted);margin:0">Full cycle</p></button>
+    </div>
+
+    <div id="ssAbnPanel" style="display:none;border:1.5px solid var(--bdr);border-radius:10px;padding:14px 16px;margin-bottom:12px;background:var(--card)">
+      <p id="ssPTitle" style="font-size:13px;font-weight:700;margin:0 0 2px"></p>
+      <p id="ssPNormal" style="font-size:11px;color:var(--muted);margin:0 0 10px"></p>
+      <p style="font-size:11px;font-weight:600;color:var(--muted);margin:0 0 6px">Apply an abnormality:</p>
+      <div id="ssAbnBtns" style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px"></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <input id="ssAbnInput" type="text" placeholder="Or type e.g. ST elevation, Wenckebach, peaked T…" style="flex:1;min-width:160px;font-size:13px;padding:7px 10px;border:1.5px solid var(--bdr);border-radius:7px;font-family:inherit;background:var(--bg);color:var(--txt)" oninput="ssLiveFilter()" onkeydown="if(event.key==='Enter')ssApplyTyped()"/>
+        <button class="btn btn-or" onclick="ssApplyTyped()" style="font-size:13px;padding:0 14px">Apply</button>
+        <button class="btn btn-out" onclick="ssReset()" style="font-size:13px;padding:0 14px">Reset</button>
+      </div>
+      <div id="ssInpSug" style="display:flex;flex-wrap:wrap;gap:5px;margin-top:7px"></div>
+    </div>
+
+    <div id="ssDetail" style="border-radius:10px;border:1.5px solid var(--bdr);padding:14px 16px;background:var(--card)">
+      <p style="color:var(--muted);font-size:.87rem;margin:0;line-height:1.6">Click any segment on the strip or a card above to explore it — then apply an abnormality to see the strip change.</p>
+    </div>
+  </div>
+
+
+
+  <div class="section">
     <h2>🧠 Neurological Assessment</h2>
     <div class="grid2">
       <div>
@@ -1956,6 +1994,362 @@ function resetIV(){
 const ivStyle=document.createElement('style');
 ivStyle.textContent='@keyframes ivPulse{0%,100%{opacity:0.6}50%{opacity:1}}';
 document.head.appendChild(ivStyle);
+
+
+// ══════════════════════════════════════════════════════════
+// STUDY SHEET ECG WIDGET — ssPrefix to avoid naming collisions
+// ══════════════════════════════════════════════════════════
+(function(){
+const SS_NS='http://www.w3.org/2000/svg';
+const SS_W=700,SS_H=165,SS_BSL=80;
+
+const SS_WCOLS={p:'#185FA5',pr:'#185FA5',qrs:'#3B6D11',st:'#993C1D',t:'#6d28d9',qt:'#6d28d9'};
+const SS_WINFO={
+  p:  {label:'P wave',    normal:'Small rounded bump, upright in lead II, one before every QRS.',
+       info:'The SA node fires and the impulse spreads across both atria, making them squeeze blood into the ventricles.'},
+  pr: {label:'PR interval',normal:'0.12–0.20 sec (3–5 small boxes). Constant every beat.',
+       info:'Conduction time from SA node through AV node — the gatekeeper delay before ventricles fire.'},
+  qrs:{label:'QRS complex',normal:'Narrow < 0.12 sec. Sharp spike — both ventricles firing together.',
+       info:'Both ventricles depolarize simultaneously and squeeze to push blood out to the body and lungs.'},
+  st: {label:'ST segment', normal:'Flat — sitting exactly on the isoelectric baseline.',
+       info:'Ventricles are fully contracted and holding the squeeze before relaxing.'},
+  t:  {label:'T wave',     normal:'Rounded, asymmetric, same direction as QRS.',
+       info:'Ventricular repolarization — the heart muscle resets and recharges for the next beat.'},
+  qt: {label:'QT interval',normal:'QTc ≤440 ms men / ≤460 ms women. QRS start to T wave end.',
+       info:'Total ventricular electrical cycle — depolarization AND repolarization. Prolongation is dangerous.'},
+};
+
+const SS_ABNS={
+  p:[
+    {label:'No P wave (AFib)',t:'afib'},{label:'Absent P (junctional)',t:'no_p'},
+    {label:'Inverted P (ectopic)',t:'inv_p'},{label:'Sawtooth flutter waves',t:'flutter'},
+    {label:'Wide notched P — P mitrale',t:'wide_p'},{label:'Tall peaked P — P pulmonale',t:'tall_p'},
+  ],
+  pr:[
+    {label:'Prolonged PR — 1st degree block',t:'first_deg'},{label:'Lengthening PR — Wenckebach',t:'wenckebach'},
+    {label:'Constant PR + dropped QRS — Mobitz II',t:'mobitz2'},{label:'No PR relationship — 3rd degree',t:'third_deg'},
+    {label:'Short PR < 0.12 sec (WPW)',t:'short_pr'},
+  ],
+  qrs:[
+    {label:'Wide QRS — bundle branch block',t:'wide_qrs'},{label:'Wide QRS + fast — VTach',t:'vtach'},
+    {label:'Chaotic — no QRS (VFib)',t:'vfib'},{label:'Deep Q wave — old MI',t:'deep_q'},
+    {label:'Tall R — ventricular hypertrophy',t:'tall_r'},
+  ],
+  st:[
+    {label:'ST elevation — STEMI',t:'st_elev'},{label:'ST depression — ischemia/NSTEMI',t:'st_dep'},
+    {label:'Saddle-shaped ST — pericarditis',t:'saddle'},{label:'STEMI + reciprocal changes',t:'stemi_rec'},
+  ],
+  t:[
+    {label:'Tall peaked T — hyperkalemia',t:'peaked_t'},{label:'Flat T — hypokalemia',t:'flat_t'},
+    {label:'Inverted T — ischemia',t:'inv_t'},{label:'Wide QRS + peaked T — hyperkalemia',t:'hyperkal'},
+    {label:'Prominent U wave — hypokalemia',t:'u_wave'},
+  ],
+  qt:[
+    {label:'Prolonged QT — torsades risk',t:'long_qt'},{label:'Short QT — hypercalcemia',t:'short_qt'},
+  ],
+};
+
+const SS_DETAILS={
+  first_deg:'<strong>1st-degree AV block:</strong> PR > 0.20 sec on every beat. Every P still conducts — just delayed at the AV node. PR is prolonged but CONSTANT — never changes beat to beat. No treatment if asymptomatic.',
+  wenckebach:'<strong>Wenckebach (Mobitz I):</strong> PR lengthens beat by beat until a QRS drops, then the cycle resets. AV node level. Usually benign. "Longer longer longer drop."',
+  mobitz2:'<strong>Mobitz II:</strong> PR is CONSTANT, then a QRS suddenly drops with NO warning. Infranodal. Dangerous — can deteriorate to complete block. Almost always needs a pacemaker.',
+  third_deg:'<strong>3rd-degree (complete) block:</strong> P waves and QRS are completely independent. Ventricular escape rate 20–45 bpm. Emergency → transcutaneous pacing.',
+  short_pr:'<strong>Short PR (< 0.12 sec):</strong> Signal bypasses AV node via accessory pathway (WPW — Bundle of Kent). Look for delta wave — slurred QRS upstroke.',
+  afib:'<strong>AFib:</strong> No organized P waves — fibrillatory wavy baseline + irregularly irregular R-R intervals. Stroke risk 5×. Rate control + anticoagulation.',
+  no_p:'<strong>Absent P waves:</strong> Impulse not from SA node. Seen in junctional rhythms or AV dissociation.',
+  inv_p:'<strong>Inverted P:</strong> Impulse traveling backward through the atria from an ectopic focus below the SA node.',
+  flutter:'<strong>Atrial flutter:</strong> Organized re-entry producing sawtooth pattern at 250–350 bpm. Ventricular rate depends on AV block ratio — 2:1 gives ~150 bpm.',
+  wide_p:'<strong>P mitrale:</strong> Wide notched P > 0.12 sec. Left atrial enlargement from mitral valve disease or left heart failure.',
+  tall_p:'<strong>P pulmonale:</strong> Tall peaked P > 2.5 mm in lead II. Right atrial enlargement — pulmonary HTN, COPD.',
+  wide_qrs:'<strong>Bundle branch block:</strong> QRS > 0.12 sec — ventricular depolarization took an abnormal route. New LBBB + chest pain = STEMI equivalent.',
+  vtach:'<strong>VTach:</strong> Wide QRS, regular, 100–250 bpm, no P waves. Pulse + stable → amiodarone. Unstable → synchronized cardioversion. Pulseless → DEFIBRILLATE.',
+  vfib:'<strong>VFib:</strong> Completely chaotic — no P, QRS, or T. Pulseless. SHOCKABLE. CPR + defibrillate immediately.',
+  deep_q:'<strong>Deep Q wave:</strong> Q > 0.04 sec or > 25% of QRS height. Old transmural MI — electrically silent scar tissue.',
+  tall_r:'<strong>Tall R wave:</strong> V5/V6 suggests LV hypertrophy. In V1 may indicate RV hypertrophy or posterior MI.',
+  st_elev:'<strong>STEMI:</strong> ST > 1 mm in 2 contiguous leads. Complete coronary occlusion — muscle dying. Activate cath lab. Door-to-balloon goal: 90 min.',
+  st_dep:'<strong>ST depression:</strong> Subendocardial ischemia or reciprocal change opposite a STEMI. Treat as ACS.',
+  saddle:'<strong>Pericarditis:</strong> Concave (saddle-shaped) ST elevation — diffuse, most leads. PR depression also classic.',
+  stemi_rec:'<strong>STEMI + reciprocal:</strong> Primary elevation + mirror-image depression in opposite leads. Inferior STEMI → elevation in II/III/aVF + depression in I/aVL.',
+  peaked_t:'<strong>Hyperkalemia — peaked T:</strong> Symmetric tent-shaped T waves with K+ > 5.5. Progression: peaked T → wide QRS → sine wave → VFib. Calcium gluconate first.',
+  flat_t:'<strong>Hypokalemia — flat T:</strong> T flattens as K+ falls. Prominent U wave appears. Potentiates digoxin toxicity.',
+  inv_t:'<strong>T inversion:</strong> Ischemia, NSTEMI, post-MI reperfusion, or ventricular hypertrophy.',
+  hyperkal:'<strong>Severe hyperkalemia:</strong> Wide QRS + peaked T. Progresses to sine wave then VFib. Calcium gluconate stabilizes cardiac membrane.',
+  u_wave:'<strong>U wave — hypokalemia:</strong> Small positive deflection after T wave. Prominent U + flat T = hypokalemia.',
+  long_qt:'<strong>Prolonged QT:</strong> QTc > 440/460 ms. Risk of torsades de pointes. Causes: amiodarone, sotalol, haloperidol, azithromycin, hypokalemia, hypomagnesemia.',
+  short_qt:'<strong>Short QT:</strong> QTc < 350 ms. Hypercalcemia, digoxin effect, or congenital short QT syndrome.',
+};
+
+const SS_BOTTOM={
+  first_deg:'PR > 0.20 sec (prolonged but constant) — 1st degree AV block',
+  short_pr:'PR < 0.12 sec — bypass tract (WPW)',
+  inv_p:'Inverted P — ectopic atrial focus',wide_p:'Wide notched P — left atrial enlargement',
+  tall_p:'Tall P — right atrial enlargement',wide_qrs:'Wide QRS > 0.12 sec — bundle branch block',
+  deep_q:'Deep Q wave — old myocardial infarction',tall_r:'Tall R — ventricular hypertrophy',
+  st_elev:'ST elevated — STEMI (activate cath lab!)',st_dep:'ST depressed — ischemia / NSTEMI',
+  saddle:'Saddle-shaped ST — pericarditis',stemi_rec:'STEMI + reciprocal depression in opposite leads',
+  peaked_t:'Tall peaked T — hyperkalemia',flat_t:'Flat T + U wave — hypokalemia',
+  inv_t:'T wave inversion — ischemia',hyperkal:'Wide QRS + peaked T — severe hyperkalemia',
+  u_wave:'Flat T + prominent U wave — hypokalemia',long_qt:'Prolonged QT — torsades de pointes risk',
+  short_qt:'Short QT — hypercalcemia',no_p:'Absent P waves — junctional',
+};
+
+let ssSelWave=null, ssSelAbn=null;
+
+function ssE(tag,attrs,txt){
+  const el=document.createElementNS(SS_NS,tag);
+  Object.entries(attrs||{}).forEach(([k,v])=>el.setAttribute(k,v));
+  if(txt!==undefined)el.textContent=txt;
+  return el;
+}
+function ssPth(d,stroke,sw,dash){
+  const p=ssE('path',{d,stroke:stroke||'#c2621a','stroke-width':sw||2.2,fill:'none','stroke-linecap':'round','stroke-linejoin':'round'});
+  if(dash)p.setAttribute('stroke-dasharray',dash);return p;
+}
+
+function ssGrid(svg){
+  svg.appendChild(ssE('rect',{width:SS_W,height:SS_H,fill:'white',rx:6}));
+  for(let x=0;x<=SS_W;x+=20) svg.appendChild(ssE('line',{x1:x,y1:0,x2:x,y2:SS_H,stroke:x%100===0?'#ffccaa':'#ffe5d0','stroke-width':x%100===0?'1':'0.5'}));
+  for(let y=0;y<=SS_H;y+=20) svg.appendChild(ssE('line',{x1:0,y1:y,x2:SS_W,y2:y,stroke:y%100===0?'#ffccaa':'#ffe5d0','stroke-width':y%100===0?'1':'0.5'}));
+}
+
+function ssBeatGeom(x,cfg){
+  const pw=cfg.wideP?20:10, noP=cfg.noP, pAmp=(cfg.pAmp||10)*(cfg.invertP?-1:1);
+  const prLen=cfg.prLen||12, qrsH=cfg.qrsH||38, wideQRS=cfg.wideQRS, deepQ=cfg.deepQ;
+  const stShift=cfg.stShift||0, saddle=cfg.saddle;
+  const stLen=cfg.shortQT?4:cfg.longQT?32:saddle?14:10;
+  const tAmp=(cfg.tAmp||14)*(cfg.invertT?-1:1), tW=cfg.shortQT?12:cfg.longQT?44:22;
+  const uWave=cfg.uWave;
+  const pEnd=noP?x+6:x+pw, prEnd=pEnd+prLen;
+  const qrsEnd=prEnd+(wideQRS?22:13), stEndX=qrsEnd+stLen;
+  const tEnd=stEndX+tW, uEnd=uWave?tEnd+14:tEnd, beatEnd=uEnd+8;
+  return {x,pw,noP,pAmp,prLen,qrsH,wideQRS,deepQ,stShift,saddle,stLen,tAmp,tW,uWave,pEnd,prEnd,qrsEnd,stEndX,tEnd,uEnd,beatEnd};
+}
+
+function ssDrawBeat(svg,g,hl,hlCol){
+  const bsl=SS_BSL;
+  const {x,pw,noP,pAmp,prLen,qrsH,wideQRS,deepQ,stShift,saddle,stLen,tAmp,tW,uWave,pEnd,prEnd,qrsEnd,stEndX,tEnd,uEnd,beatEnd}=g;
+  const col=seg=>{
+    if(!hl) return '#c2621a';
+    const m={p:['p','pr'],pr:['pr'],qrs:['qrs'],st:['st'],t:['t','qt'],qt:['t','qt']};
+    return (m[hl]||[]).includes(seg)?hlCol:'#c2621a';
+  };
+  const sw=seg=>{
+    if(!hl) return 2.2;
+    const m={p:['p','pr'],pr:['pr'],qrs:['qrs'],st:['st'],t:['t','qt'],qt:['t','qt']};
+    return (m[hl]||[]).includes(seg)?3.2:2.2;
+  };
+  if(noP) svg.appendChild(ssPth(`M${x},${bsl} L${pEnd},${bsl}`,col('p'),sw('p')));
+  else    svg.appendChild(ssPth(`M${x},${bsl} C${x+4},${bsl-pAmp} ${x+pw-4},${bsl-pAmp} ${pEnd},${bsl}`,col('p'),sw('p')));
+  svg.appendChild(ssPth(`M${pEnd},${bsl} L${prEnd},${bsl}`,col('pr'),sw('pr')));
+  const qd=deepQ?14:6;
+  if(wideQRS) svg.appendChild(ssPth(`M${prEnd},${bsl} L${prEnd+5},${bsl+qd} L${prEnd+12},${bsl-qrsH} L${prEnd+20},${bsl+9} L${qrsEnd},${bsl}`,col('qrs'),sw('qrs')));
+  else        svg.appendChild(ssPth(`M${prEnd},${bsl} L${prEnd+4},${bsl+qd} L${prEnd+8},${bsl-qrsH} L${prEnd+12},${bsl+8} L${qrsEnd},${bsl}`,col('qrs'),sw('qrs')));
+  const stEndY=bsl+stShift;
+  if(saddle) svg.appendChild(ssPth(`M${qrsEnd},${bsl} L${qrsEnd+3},${bsl-7} L${stEndX-3},${bsl-7} L${stEndX},${stEndY}`,col('st'),sw('st')));
+  else       svg.appendChild(ssPth(`M${qrsEnd},${bsl+8} L${stEndX},${stEndY}`,col('st'),sw('st')));
+  svg.appendChild(ssPth(`M${stEndX},${stEndY} C${stEndX+5},${stEndY-tAmp} ${tEnd-5},${stEndY-tAmp} ${tEnd},${stEndY}`,col('t'),sw('t')));
+  if(uWave) svg.appendChild(ssPth(`M${tEnd},${stEndY} C${tEnd+3},${stEndY-8} ${tEnd+10},${stEndY-8} ${tEnd+13},${stEndY}`,col('t'),1.5));
+  svg.appendChild(ssPth(`M${uEnd},${stEndY} L${beatEnd},${bsl}`,'#c2621a',1.5));
+}
+
+function ssDrawLabels(svg,g,hl,hlCol){
+  const bsl=SS_BSL;
+  const {x,pw,pAmp,pEnd,prEnd,qrsEnd,qrsH,stShift,stEndX,tAmp,tEnd}=g;
+  const col=seg=>hl===seg||(hl==='pr'&&seg==='p')||(hl==='qt'&&(seg==='qrs'||seg==='t'))?hlCol:'#c2621a';
+  [{ch:'P',cx:x+pw/2,cy:bsl-Math.abs(pAmp)-16,seg:'p'},{ch:'Q',cx:prEnd+4,cy:bsl+22,seg:'qrs'},
+   {ch:'R',cx:prEnd+8,cy:bsl-qrsH-16,seg:'qrs'},{ch:'S',cx:prEnd+13,cy:bsl+22,seg:'qrs'},
+   {ch:'T',cx:(stEndX+tEnd)/2,cy:bsl+stShift-Math.abs(tAmp)-14,seg:'t'}].forEach(lb=>{
+    svg.appendChild(ssE('line',{x1:lb.cx,y1:Math.min(lb.cy+6,lb.cy+12),x2:lb.cx,y2:Math.max(lb.cy+6,lb.cy+12),stroke:'#ccc','stroke-width':'1','stroke-dasharray':'3,2'}));
+    svg.appendChild(ssE('text',{x:lb.cx,y:lb.cy,'text-anchor':'middle','font-size':'13',fill:col(lb.seg),'font-weight':'600'},lb.ch));
+  });
+  if(hl==='pr'||g.prLen>20||g.prLen<6){
+    const bCol=hlCol||'#185FA5', x1=pEnd, x2=prEnd, by=bsl+42;
+    svg.appendChild(ssE('line',{x1,y1:by,x2,y2:by,stroke:bCol,'stroke-width':'1.5'}));
+    [x1,x2].forEach(px=>svg.appendChild(ssE('line',{x1:px,y1:by-4,x2:px,y2:by+4,stroke:bCol,'stroke-width':'1.5'})));
+    svg.appendChild(ssE('text',{x:(x1+x2)/2,y:by-5,'text-anchor':'middle','font-size':'10',fill:bCol,'font-weight':'600'},'PR'));
+  }
+  if(hl==='qt'||g.longQT||g.shortQT){
+    const x1=prEnd,x2=tEnd,by=bsl+52;
+    svg.appendChild(ssE('line',{x1,y1:by,x2,y2:by,stroke:'#6d28d9','stroke-width':'1.5'}));
+    [x1,x2].forEach(px=>svg.appendChild(ssE('line',{x1:px,y1:by-4,x2:px,y2:by+4,stroke:'#6d28d9','stroke-width':'1.5'})));
+    svg.appendChild(ssE('text',{x:(x1+x2)/2,y:by-5,'text-anchor':'middle','font-size':'10',fill:'#6d28d9','font-weight':'600'},'QT'));
+  }
+}
+
+function ssClickZones(svg,g){
+  const {x,pEnd,prEnd,qrsEnd,stEndX,tEnd}=g;
+  [{key:'p',x1:x,x2:pEnd},{key:'pr',x1:pEnd,x2:prEnd},{key:'qrs',x1:prEnd,x2:qrsEnd},
+   {key:'st',x1:qrsEnd,x2:stEndX},{key:'t',x1:stEndX,x2:tEnd}].forEach(z=>{
+    const r=ssE('rect',{x:z.x1,y:0,width:Math.max(z.x2-z.x1,20),height:SS_H-8,fill:'transparent',cursor:'pointer'});
+    r.addEventListener('click',()=>ssPick(z.key));
+    r.addEventListener('mouseenter',()=>r.setAttribute('fill','rgba(194,98,26,0.06)'));
+    r.addEventListener('mouseleave',()=>r.setAttribute('fill','transparent'));
+    svg.appendChild(r);
+  });
+}
+
+function ssBuildCfg(abn){
+  const c={};
+  const m={first_deg:{prLen:36},short_pr:{prLen:3},inv_p:{invertP:true},wide_p:{wideP:true},
+    tall_p:{pAmp:22},no_p:{noP:true},wide_qrs:{wideQRS:true},deep_q:{deepQ:true},
+    tall_r:{qrsH:58},st_elev:{stShift:-20},st_dep:{stShift:16},saddle:{saddle:true,stShift:-8},
+    stemi_rec:{stShift:-22},peaked_t:{tAmp:36},flat_t:{tAmp:2},inv_t:{invertT:true},
+    hyperkal:{tAmp:36,wideQRS:true},u_wave:{tAmp:3,uWave:true},long_qt:{longQT:true},short_qt:{shortQT:true}};
+  return m[abn]||c;
+}
+
+function ssSpecial(svg,t){
+  const bsl=SS_BSL;
+  if(t==='afib'||t==='no_p'){
+    if(t==='afib'){let d=`M10,${bsl}`;for(let x=10;x<688;x+=2){const y=bsl+Math.sin(x*.9)*2.5+Math.sin(x*1.6)*1.8+(Math.random()-.5)*1.5;d+=` L${x},${y.toFixed(1)}`;}svg.appendChild(ssPth(d,'#f0997b',1.2));}
+    else svg.appendChild(ssPth(`M10,${bsl} L688,${bsl}`,'#ddd',1));
+    let qd='';[55,120,168,248,326,408,486,564,640].forEach(qx=>{qd+=`M${qx},${bsl} L${qx+3},${bsl+8} L${qx+7},${bsl-36} L${qx+11},${bsl+8} L${qx+18},${bsl} `;});
+    svg.appendChild(ssPth(qd,'#c2621a',2.5));
+    svg.appendChild(ssE('text',{x:350,y:SS_H-4,'text-anchor':'middle','font-size':'11',fill:'#185FA5','font-weight':'600'},t==='no_p'?'Absent P waves — junctional or AV dissociation':'No P waves — fibrillatory baseline (AFib)'));
+    return true;
+  }
+  if(t==='flutter'){
+    let fd=`M10,${bsl}`;for(let x=10;x<700;x+=20){fd+=` L${x+5},${bsl-20} L${x+10},${bsl} L${x+15},${bsl+10} L${x+20},${bsl}`;}
+    svg.appendChild(ssPth(fd,'#f0997b',1.8));
+    let qd='';[40,140,240,340,440,540,640].forEach(qx=>{qd+=`M${qx},${bsl} L${qx+3},${bsl+8} L${qx+8},${bsl-36} L${qx+13},${bsl+8} L${qx+20},${bsl} `;});
+    svg.appendChild(ssPth(qd,'#c2621a',2.5));
+    svg.appendChild(ssE('text',{x:350,y:SS_H-4,'text-anchor':'middle','font-size':'11',fill:'#185FA5','font-weight':'600'},'Sawtooth P waves — atrial flutter (250–350 bpm)'));
+    return true;
+  }
+  if(t==='vfib'){
+    let d=`M10,${bsl}`;for(let x=10;x<690;x+=2){const amp=14+Math.sin(x*.13)*8;d+=` L${x},${(bsl+Math.sin(x*.48)*amp+(Math.random()-.5)*8).toFixed(1)}`;}
+    svg.appendChild(ssPth(d,'#A32D2D',2.2));
+    svg.appendChild(ssE('text',{x:350,y:SS_H-4,'text-anchor':'middle','font-size':'11',fill:'#A32D2D','font-weight':'600'},'VFib — pulseless → DEFIBRILLATE'));
+    return true;
+  }
+  if(t==='vtach'){
+    let d=`M10,${bsl}`,x=10;while(x<675){d+=` L${x+5},${bsl+16} L${x+14},${bsl-42} L${x+26},${bsl+18} L${x+40},${bsl} C${x+48},${bsl-14} ${x+56},${bsl-14} ${x+62},${bsl}`;x+=64;}
+    svg.appendChild(ssPth(d,'#A32D2D',2.5));
+    svg.appendChild(ssE('text',{x:350,y:SS_H-4,'text-anchor':'middle','font-size':'11',fill:'#A32D2D','font-weight':'600'},'Wide QRS tachycardia — VTach'));
+    return true;
+  }
+  if(t==='wenckebach'){
+    const prSeq=[10,22,34];let x=14,d=`M${x},${bsl}`;
+    for(let c=0;c<2;c++){
+      prSeq.forEach(pr=>{const pe=x+10,pre=pe+pr;d+=` C${x+4},${bsl-10} ${x+9},${bsl-10} ${pe},${bsl} L${pre},${bsl} L${pre+4},${bsl+6} L${pre+8},${bsl-36} L${pre+13},${bsl+8} L${pre+20},${bsl} C${pre+24},${bsl-13} ${pre+32},${bsl-13} ${pre+36},${bsl}`;x=pre+36+12;});
+      d+=` L${x+10},${bsl} C${x+14},${bsl-9} ${x+22},${bsl-9} ${x+26},${bsl} L${x+52},${bsl}`;x+=56;
+    }
+    svg.appendChild(ssPth(d,'#185FA5',2.2));
+    svg.appendChild(ssE('text',{x:350,y:SS_H-4,'text-anchor':'middle','font-size':'11',fill:'#185FA5','font-weight':'600'},'PR lengthens each beat → QRS drops → cycle resets (Wenckebach)'));
+    return true;
+  }
+  if(t==='mobitz2'){
+    let x=14,d=`M${x},${bsl}`;
+    [1,1,1,0,1,1,1,0,1,1].forEach(c=>{
+      if(c){const pe=x+10,pre=pe+20;d+=` C${x+4},${bsl-10} ${x+9},${bsl-10} ${pe},${bsl} L${pre},${bsl} L${pre+4},${bsl+6} L${pre+8},${bsl-36} L${pre+14},${bsl+8} L${pre+20},${bsl} C${pre+24},${bsl-13} ${pre+32},${bsl-13} ${pre+36},${bsl}`;x=pre+36+12;}
+      else{d+=` L${x+10},${bsl} C${x+14},${bsl-9} ${x+22},${bsl-9} ${x+26},${bsl} L${x+50},${bsl}`;x+=54;}
+    });
+    svg.appendChild(ssPth(d,'#185FA5',2.2));
+    svg.appendChild(ssE('text',{x:350,y:SS_H-4,'text-anchor':'middle','font-size':'11',fill:'#A32D2D','font-weight':'600'},'Constant PR → sudden dropped QRS — Mobitz II (dangerous!)'));
+    return true;
+  }
+  if(t==='third_deg'){
+    let pd=`M10,${bsl}`,px=10;while(px<685){pd+=` C${px+4},${bsl-9} ${px+14},${bsl-9} ${px+18},${bsl} L${px+50},${bsl}`;px+=50;}
+    svg.appendChild(ssPth(pd,'#aaa',1.5));
+    let vd='',vx=60;while(vx<675){vd+=`M${vx},${bsl} L${vx+5},${bsl+8} L${vx+11},${bsl-36} L${vx+17},${bsl+10} L${vx+27},${bsl} C${vx+32},${bsl-13} ${vx+40},${bsl-13} ${vx+44},${bsl} `;vx+=100;}
+    svg.appendChild(ssPth(vd,'#A32D2D',2.5));
+    svg.appendChild(ssE('text',{x:210,y:SS_H-4,'text-anchor':'middle','font-size':'10',fill:'#888','font-weight':'600'},'P waves (gray)'));
+    svg.appendChild(ssE('text',{x:490,y:SS_H-4,'text-anchor':'middle','font-size':'10',fill:'#A32D2D','font-weight':'600'},'ventricular escape (red) — no relationship'));
+    return true;
+  }
+  return false;
+}
+
+function ssRender(){
+  const svg=document.getElementById('ssEcg');
+  if(!svg) return;
+  svg.innerHTML='';
+  ssGrid(svg);
+  if(ssSelAbn && ssSpecial(svg,ssSelAbn)) return;
+  const cfg=ssSelAbn?ssBuildCfg(ssSelAbn):{};
+  const hl=ssSelWave, hlCol=hl?SS_WCOLS[hl]:'#c2621a';
+  const spacing=cfg.prLen>20?154:cfg.prLen===3?118:120;
+  const numBeats=cfg.prLen>20||cfg.prLen===3?4:5;
+  let x=18, firstG=null;
+  for(let i=0;i<numBeats;i++){
+    const g=ssBeatGeom(x,cfg);
+    if(i===0) firstG=g;
+    ssDrawBeat(svg,g,hl,hlCol);
+    x=g.beatEnd+spacing;
+    if(x>640) break;
+  }
+  if(firstG){ssDrawLabels(svg,firstG,hl,hlCol);ssClickZones(svg,firstG);}
+  const note=ssSelAbn?SS_BOTTOM[ssSelAbn]:null;
+  if(note){const t=ssE('text',{x:350,y:SS_H-4,'text-anchor':'middle','font-size':'11',fill:hlCol,'font-weight':'600'},note);svg.appendChild(t);}
+}
+
+window.ssPick=function(key){
+  ssSelWave=key; ssSelAbn=null;
+  const w=SS_WINFO[key], col=SS_WCOLS[key];
+  document.querySelectorAll('.ssWc').forEach(b=>{b.style.borderColor='var(--bdr)';b.style.background='var(--bg)';});
+  const btn=document.getElementById('ssWc-'+key);
+  if(btn){btn.style.borderColor=col;btn.style.background='#fff5ee';}
+  document.getElementById('ssAbnPanel').style.display='block';
+  document.getElementById('ssPTitle').innerHTML=`<span style="color:${col}">${w.label}</span>`;
+  document.getElementById('ssPNormal').textContent='Normal: '+w.normal;
+  document.getElementById('ssAbnInput').value='';
+  document.getElementById('ssInpSug').innerHTML='';
+  document.getElementById('ssAbnBtns').innerHTML=(SS_ABNS[key]||[]).map(ab=>
+    `<button onclick="ssApplyAbn('${ab.t}','${ab.label.replace(/'/g,"\\'")}','${key}')" style="font-size:11px;padding:3px 9px;border-radius:18px;border:1px solid var(--bdr);background:var(--bg);cursor:pointer;color:var(--txt);transition:all .13s" id="ssAb-${ab.t}">${ab.label}</button>`
+  ).join('');
+  document.getElementById('ssDetail').innerHTML=`<p style="font-size:14px;font-weight:600;color:${col};margin:0 0 5px">${w.label} — normal</p><p style="font-size:.87rem;color:var(--txt);line-height:1.7;margin:0 0 6px">${w.info}</p><p style="font-size:.8rem;color:var(--muted);margin:0"><strong>Normal:</strong> ${w.normal}</p>`;
+  ssRender();
+};
+
+window.ssApplyAbn=function(t,label,waveKey){
+  ssSelAbn=t;
+  const key=waveKey||ssSelWave;
+  const col=SS_WCOLS[key]||'#c2621a';
+  document.querySelectorAll('[id^="ssAb-"]').forEach(b=>{b.style.background='var(--bg)';b.style.borderColor='var(--bdr)';b.style.color='var(--txt)';});
+  const ab=document.getElementById('ssAb-'+t);
+  if(ab){ab.style.background=col;ab.style.borderColor=col;ab.style.color='#fff';}
+  document.getElementById('ssAbnInput').value=label;
+  document.getElementById('ssInpSug').innerHTML='';
+  const det=SS_DETAILS[t]||label;
+  document.getElementById('ssDetail').innerHTML=`<p style="font-size:14px;font-weight:600;color:${col};margin:0 0 5px">${SS_WINFO[key]?.label||''} — <em>${label}</em></p><p style="font-size:.87rem;color:var(--txt);line-height:1.7;margin:0">${det}</p>`;
+  ssRender();
+};
+
+window.ssLiveFilter=function(){
+  const val=document.getElementById('ssAbnInput').value.toLowerCase().trim();
+  document.getElementById('ssInpSug').innerHTML='';
+  if(!val||!ssSelWave) return;
+  const matches=(SS_ABNS[ssSelWave]||[]).filter(a=>a.label.toLowerCase().includes(val)||a.t.includes(val));
+  document.getElementById('ssInpSug').innerHTML=matches.map(m=>
+    `<button onclick="ssApplyAbn('${m.t}','${m.label.replace(/'/g,"\\'")}','${ssSelWave}')" style="font-size:11px;padding:3px 9px;border-radius:18px;border:1px solid var(--bdr);background:var(--bg);cursor:pointer;color:var(--txt)">${m.label}</button>`
+  ).join('');
+};
+
+window.ssApplyTyped=function(){
+  const val=document.getElementById('ssAbnInput').value.toLowerCase().trim();
+  if(!ssSelWave||!val) return;
+  const all=Object.values(SS_ABNS).flat();
+  const match=all.find(a=>a.label.toLowerCase().includes(val)||a.t.includes(val));
+  if(match){
+    const wk=Object.entries(SS_ABNS).find(([k,v])=>v.some(a=>a.t===match.t))?.[0]||ssSelWave;
+    ssSelWave=wk;
+    ssApplyAbn(match.t,match.label,wk);
+  }
+};
+
+window.ssReset=function(){
+  ssSelAbn=null;
+  document.getElementById('ssAbnInput').value='';
+  document.getElementById('ssInpSug').innerHTML='';
+  document.querySelectorAll('[id^="ssAb-"]').forEach(b=>{b.style.background='var(--bg)';b.style.borderColor='var(--bdr)';b.style.color='var(--txt)';});
+  if(ssSelWave) ssPick(ssSelWave);
+  else ssRender();
+};
+
+// Init once DOM is ready
+if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',ssRender);
+else ssRender();
+})();
 
 </script>
 </body>
